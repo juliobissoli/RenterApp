@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:renter_app/scream/login.dart';
 import 'package:renter_app/router.dart';
+import 'package:renter_app/theme.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,9 +18,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      debugShowCheckedModeBanner: false,
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
       initialRoute: '/home',
       routes: appRoutes(),
+      themeMode: ThemeMode.dark,
+      darkTheme: CustimTheme.darkTheme,
       // routes: {'/': (context) => const LoginScream()}
     );
   }
