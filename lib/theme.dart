@@ -13,7 +13,8 @@ class CustimTheme {
       scaffoldBackgroundColor: Colors.black, //Color(0xFF1E1F23),
       colorScheme: ColorScheme.dark(),
       // fontFamily: GoogleFonts.poppins(),
-      textTheme: GoogleFonts.poppinsTextTheme(),
+
+      textTheme: GoogleFonts.poppinsTextTheme().apply(bodyColor: Colors.white),
       cardTheme: CardTheme(color: Color(0x11ffffff)),
       appBarTheme: AppBarTheme(
         backgroundColor: Colors.black,
