@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../components/home/app-bar-custon.dart';
 import '../components/home/balance-card.dart';
+import '../components/home/expenses-card-home.dart';
 import '../components/home/top-bar.dart';
 
 class HomeScream extends StatefulWidget {
@@ -25,15 +26,8 @@ class _HomeScreamState extends State<HomeScream> {
           child: ListView(
             padding: const EdgeInsets.all(8),
             children: <Widget>[
-              Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: BalanceCard(),
-              ),
-              Divider(
-                height: 4,
-              )
+              BalanceCard(),
+              ExpensesCardHome(),
             ],
           ),
         ));
