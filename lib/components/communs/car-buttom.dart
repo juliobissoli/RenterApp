@@ -17,7 +17,7 @@ class CardButtom extends StatelessWidget {
       ),
       child: Column(children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
+          padding: const EdgeInsets.all(8),
           child: TitleButtom(
             title: this.title,
             onClock: this.onClock,

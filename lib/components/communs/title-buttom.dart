@@ -13,7 +13,9 @@ class TitleButtom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: InkWell(
         onTap: this.onClock,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -37,15 +39,13 @@ class TitleButtom extends StatelessWidget {
                 // )
               ],
             ),
-            IconButton(
-              onPressed: this.onClock,
-              icon: Icon(
-                this.icon,
-                size: 18,
-              ),
-              color: Colors.white,
+            Icon(
+              this.icon,
+              size: 18,
             ),
           ],
-        ));
+        ),
+      ),
+    );
   }
 }

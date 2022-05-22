@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:renter_app/components/communs/title-buttom.dart';
-
+import 'package:badges/badges.dart';
+import '../../interfaces/status.dart';
+import '../balance/card-schedule-value.dart';
 import '../communs/car-buttom.dart';
 
 class BalanceCard extends StatelessWidget {
@@ -37,8 +39,8 @@ class BalanceCard extends StatelessWidget {
                           style: TextStyle(color: Colors.red, fontSize: 14),
                         ),
                         Text(
-                          "R\$ 1000",
-                          style: TextStyle(color: Colors.grey, fontSize: 24),
+                          "R\$ 1000,00",
+                          style: TextStyle(color: Colors.grey, fontSize: 22),
                         )
                       ],
                     ),
@@ -52,15 +54,35 @@ class BalanceCard extends StatelessWidget {
                           style: TextStyle(color: Colors.green, fontSize: 14),
                         ),
                         Text(
-                          "R\$ 1000",
-                          style: TextStyle(color: Colors.grey, fontSize: 24),
+                          "R\$ 1000,00",
+                          style: TextStyle(color: Colors.grey, fontSize: 22),
                         )
                       ],
                     ),
                   )
                 ],
               ),
-              Divider()
+              Divider(),
+              SizedBox(
+                height: 8,
+              ),
+              BalanceCardScheduleVlaue(
+                title: "Total a receber",
+                value: "R\$ 23,20",
+                status: BalanceStatus.LATE,
+                date: 'Até 22 jan',
+                labelHilight: '2 atrasados',
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              BalanceCardScheduleVlaue(
+                title: "Total a pagar",
+                value: "R\$ 2133,20",
+                status: BalanceStatus.IN_DEADLINE,
+                date: 'Até 22 jan',
+                labelHilight: '1 no prazo',
+              )
             ],
           ),
         ));

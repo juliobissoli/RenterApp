@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 
 import '../components/home/app-bar-custon.dart';
 import '../components/home/balance-card.dart';
+import '../components/home/calendar-list.dart';
 import '../components/home/expenses-card-home.dart';
+import '../components/home/properties-list.dart';
 import '../components/home/top-bar.dart';
 
 class HomeScream extends StatefulWidget {
@@ -19,17 +21,24 @@ class _HomeScreamState extends State<HomeScream> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBarCustom(
-          title: 'Ana',
+      appBar: AppBarCustom(
+        title: 'Ana',
+      ),
+      body: SafeArea(
+        // child: Expanded(
+        //  double.infinity,
+        child: ListView(
+          padding: const EdgeInsets.all(8),
+          children: <Widget>[
+            BalanceCard(),
+            SizedBox(height: 16),
+            HomePrpertiesList(),
+            SizedBox(height: 16),
+            HomeCalendarList()
+          ],
         ),
-        body: SafeArea(
-          child: ListView(
-            padding: const EdgeInsets.all(8),
-            children: <Widget>[
-              BalanceCard(),
-              ExpensesCardHome(),
-            ],
-          ),
-        ));
+      ),
+      // ),
+    );
   }
 }
