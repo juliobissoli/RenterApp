@@ -21,20 +21,31 @@ class _HomeScreamState extends State<HomeScream> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarCustom(
-        title: 'Ana',
-      ),
+      // appBar: AppBarCustom(
+      //   title: 'Ana',
+      // ),
       body: SafeArea(
         // child: Expanded(
         //  double.infinity,
         child: ListView(
-          padding: const EdgeInsets.all(8),
+          // padding: const EdgeInsets.all(8),
           children: <Widget>[
-            BalanceCard(),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: HomeTopBar(),
+            ),
+            SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: BalanceCard(),
+            ),
             SizedBox(height: 16),
             HomePrpertiesList(),
             SizedBox(height: 16),
-            HomeCalendarList()
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: HomeCalendarList(),
+            )
           ],
         ),
       ),

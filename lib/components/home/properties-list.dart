@@ -16,16 +16,21 @@ class _HomePrpertiesListState extends State<HomePrpertiesList> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TitleButtom(
-          title: 'Imoveis',
-          onClock: () {
-            print("ir para tela de lista de imoveis");
-          },
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: TitleButtom(
+            title: 'Imoveis',
+            onClock: () {
+              Navigator.pushNamed(context, '/properties');
+              print("ir para tela de lista de imoveis");
+            },
+          ),
         ),
         Container(
             height: 100,
             width: 500,
             child: ListView(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
               scrollDirection: Axis.horizontal,
               children: [PrortiesCard(), PrortiesCard()],
             ))

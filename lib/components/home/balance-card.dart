@@ -23,10 +23,13 @@ class BalanceCard extends StatelessWidget {
                   child: Text(
                     '-R\$ 2000',
                     style: TextStyle(
-                        fontSize: 36,
-                        fontWeight: FontWeight.normal,
-                        color: Colors.red),
+                      fontSize: 36,
+                      fontWeight: FontWeight.normal,
+                    ),
                   )),
+              SizedBox(
+                height: 32,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

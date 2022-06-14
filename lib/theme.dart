@@ -10,13 +10,13 @@ class CustimTheme {
       ));
 
   static ThemeData darkTheme = ThemeData(
-      scaffoldBackgroundColor: Color(0xFF1E1F23),
+      scaffoldBackgroundColor: Color(0xFF0D0E12),
       colorScheme: ColorScheme.dark(),
 
       // fontFamily: GoogleFonts.poppins(),
 
       textTheme: GoogleFonts.poppinsTextTheme().apply(bodyColor: Colors.white),
-      cardTheme: CardTheme(color: Color(0xFF151718)),
+      cardTheme: CardTheme(color: Color(0xFF040607)),
       appBarTheme: AppBarTheme(
         backgroundColor: Colors.black,
       ));

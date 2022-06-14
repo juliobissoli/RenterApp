@@ -34,10 +34,7 @@ class PrortiesCard extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
-                ImageBox(
-                  size: 80,
-                  exist: false,
-                ),
+                ImageBox(size: 80, exist: false, border_size: 1),
                 SizedBox(
                   width: 8,
                 ),
