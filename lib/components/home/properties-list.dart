@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:renter_app/core/models/propertie-model.dart';
 
 import '../communs/title-buttom.dart';
 import '../properties/properties-card.dart';
 
 class HomePrpertiesList extends StatefulWidget {
-  HomePrpertiesList({Key? key}) : super();
+  final List<PropertieModel> propertieLis;
+  HomePrpertiesList({Key? key, required this.propertieLis}) : super();
 
   @override
   _HomePrpertiesListState createState() => _HomePrpertiesListState();
@@ -32,7 +34,13 @@ class _HomePrpertiesListState extends State<HomePrpertiesList> {
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               scrollDirection: Axis.horizontal,
-              children: [PrortiesCard(), PrortiesCard()],
+              children: widget.propertieLis
+                  .map((e) => PrortiesCard(
+                        propertie: e,
+                        small: true,
+                      ))
+                  .toList(),
+              //  [PrortiesCard(), PrortiesCard()],
             ))
       ],
     );

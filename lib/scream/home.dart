@@ -2,6 +2,9 @@ import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:renter_app/core/controller/properties-controller.dart';
+import 'package:renter_app/core/models/propertie-model.dart';
 
 import '../components/home/app-bar-custon.dart';
 import '../components/home/balance-card.dart';
@@ -18,8 +21,21 @@ class HomeScream extends StatefulWidget {
 }
 
 class _HomeScreamState extends State<HomeScream> {
+  final propertie_controller = PropertieController();
+  void initState() {
+    super.initState();
+    propertie_controller.loadProrpeties();
+
+    propertie_controller.addListener(() {
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    // PropertieController propertir_controller =
+    //     Provider.of<PropertieController>(context);
+
     return Scaffold(
       // appBar: AppBarCustom(
       //   title: 'Ana',
@@ -40,7 +56,9 @@ class _HomeScreamState extends State<HomeScream> {
               child: BalanceCard(),
             ),
             SizedBox(height: 16),
-            HomePrpertiesList(),
+            HomePrpertiesList(
+              propertieLis: propertie_controller.prorpertieList,
+            ),
             SizedBox(height: 16),
             Padding(
               padding: const EdgeInsets.all(8.0),
