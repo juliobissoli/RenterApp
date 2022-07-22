@@ -22,10 +22,12 @@ class HomeScream extends StatefulWidget {
 }
 
 class _HomeScreamState extends State<HomeScream> {
-  final propertie_controller = PropertieController();
+  final PropertieController propertie_controller = KiwiContainer().resolve();
+
+  // PropertieController();
+  // final KiwiContainer
 
   // container.registerInstance(PropertieController());
-
   void initState() {
     super.initState();
     propertie_controller.loadProrpeties();
