@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:kiwi/kiwi.dart';
 import 'package:provider/provider.dart';
 import 'package:renter_app/core/controller/properties-controller.dart';
 import 'package:renter_app/core/models/propertie-model.dart';
@@ -22,6 +23,9 @@ class HomeScream extends StatefulWidget {
 
 class _HomeScreamState extends State<HomeScream> {
   final propertie_controller = PropertieController();
+
+  // container.registerInstance(PropertieController());
+
   void initState() {
     super.initState();
     propertie_controller.loadProrpeties();
