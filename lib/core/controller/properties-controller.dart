@@ -11,7 +11,11 @@ class PropertieController extends ChangeNotifier {
   AppStatus get fetchingState => _fetchingState;
 
   List<PropertieModel> prorpertieList = [];
+  PropertieModel? propertirDtatil;
+
   RenterApi get api => RenterApi.singleton;
+
+  AppStatus teste = AppStatus.ENPYT;
 
   void setFetchingState(AppStatus fetchingState) {
     _fetchingState = fetchingState;
@@ -21,9 +25,34 @@ class PropertieController extends ChangeNotifier {
   loadProrpeties() async {
     this.setFetchingState(AppStatus.LOADING);
     final dynamic res = await api.api_get('propertie', null);
-    (res as List).forEach((el) => this.add(PropertieModel.fromJson(el)));
+    (res as List).forEach((el) => this.prorpertieList.add(PropertieModel.fromJson(el)));
     this.setFetchingState(AppStatus.SUCCESS);
   }
+
+  Future<void> loadPropertieDetail(String id) async {
+     PropertieModel propertie;
+    // this.teste  = AppStatus.LOADING;
+    // notifyListeners();
+    await Future.delayed(Duration(seconds: 1));
+    print('Bateu aqui => ' + id);
+    // this.setFetchingState(AppStatus.LOADING);
+
+    // return propertie;
+    final dynamic res = await api.api_get('propertie', null);
+    (res as List).forEach((el) => { 
+      propertie =   PropertieModel.fromJson(el),
+      if(propertie.id == id){
+        this.propertirDtatil = propertie
+      }
+      });
+
+    // this.setFetchingState(AppStatus.SUCCESS);
+        // this.teste  = AppStatus.SUCCESS;
+    // notifyListeners();
+    
+  }
+
+
 
   add(PropertieModel data) {
     this.prorpertieList.add(data);

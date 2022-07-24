@@ -38,6 +38,7 @@ class _HomePrpertiesListState extends State<HomePrpertiesList> {
                   .map((e) => PrortiesCard(
                         propertie: e,
                         small: true,
+                        onClock:()=> { Navigator.pushNamed(context, '/propertie_detail', arguments: {"propertie_id": e.id})},
                       ))
                   .toList(),
               //  [PrortiesCard(), PrortiesCard()],

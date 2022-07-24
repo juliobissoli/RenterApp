@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kiwi/kiwi.dart';
@@ -35,6 +33,10 @@ class _HomeScreamState extends State<HomeScream> {
     propertie_controller.addListener(() {
       setState(() {});
     });
+  }
+
+  void dispose(){
+    propertie_controller.removeListener(() {});
   }
 
   @override
