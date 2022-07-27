@@ -5,8 +5,13 @@ import 'package:renter_app/components/communs/car-buttom.dart';
 import 'package:renter_app/components/communs/card-secondary.dart';
 import 'package:renter_app/components/communs/carrocel_image.dart';
 import 'package:renter_app/components/communs/circular_indicator_default.dart';
+import 'package:renter_app/components/communs/image-box.dart';
+import 'package:renter_app/components/communs/list-imagens.dart';
 import 'package:renter_app/components/communs/title-buttom.dart';
+import 'package:renter_app/components/communs/title-subtitle.dart';
 import 'package:renter_app/components/home/card_balance_propertie.dart';
+import 'package:renter_app/components/propertie/badge-propertie.dart';
+import 'package:renter_app/components/propertie/rent_card.dart';
 import 'package:renter_app/core/controller/properties-controller.dart';
 import 'package:renter_app/core/models/propertie-model.dart';
 import 'package:renter_app/interfaces/status.dart';
@@ -43,11 +48,11 @@ class _PropertieDetailState extends State<PropertieDetail> {
 
     return Scaffold(
         appBar: AppBar(
-            title: Text(propertie_controller.propertirDtatil?.label ?? ''),
+            // title: Text(propertie_controller.propertirDtatil?.label ?? ''),
             leading: IconButton(
-              icon: Icon(CupertinoIcons.back),
-              onPressed: () => Navigator.of(context).pop(),
-            )),
+          icon: Icon(CupertinoIcons.back),
+          onPressed: () => Navigator.of(context).pop(),
+        )),
         body: FutureBuilder(
           future: propertie_controller.loadPropertieDetail(propertie_id),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -58,58 +63,118 @@ class _PropertieDetailState extends State<PropertieDetail> {
               //  ];
             } else {
               //  children: [
-              return SafeArea(
+              return SingleChildScrollView(
                 child: Column(children: [
-                  Container(
-                    width: double.infinity,
-                    height: 300,
-                    child: CarouselImages(
-                        list:
-                            propertie_controller.propertirDtatil?.images ?? []),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              propertie_controller.propertirDtatil?.label ?? '',
+                              style: TextStyle(
+                                  fontSize: 24, fontWeight: FontWeight.w200),
+                            ),
+                            Text(
+                              propertie_controller
+                                      .propertirDtatil?.address.label ??
+                                  '',
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          ],
+                        ),
+                        BadgePropertie(
+                            status: this
+                                    .propertie_controller
+                                    .propertirDtatil
+                                    ?.status ??
+                                PropertiesStatus.RENTED)
+                      ],
+                    ),
                   ),
                   Container(
                     width: double.infinity,
-                    height: MediaQuery.of(context).size.height - 400,
-                    child: ListView(
-                      children: [
-                        Container(
-                          height: 100,
-                          child: ListView(
-                            scrollDirection: Axis.horizontal,
-                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                            children: [
-                              CardBalancePropertie(),
-                              CardBalancePropertie()
-                            ],
-                          ),
-                        ),
-                      SizedBox(height: 16,),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('Alugueis', style: TextStyle(fontSize: 22),),
-                              IconButton(onPressed: (){print('Add aluguel');}, icon: Icon(Icons.add))
-                            ],
-                          ),
-                        ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Card(
-                          child: Column(
-                            children: [
-                              Text('Peŕiodo'),
-                              Text('Valor'),
-                              Text('Locador'),
+                    height: MediaQuery.of(context).size.width - 130,
+                    child: ListImagens(
+                      list: propertie_controller.propertirDtatil?.images ?? [],
+                      size: 230,
+                    ),
+                  ),
+                  // Container(
+                  //   width: double.infinity,
+                  //   height: 300,
+                  //   child: CarouselImages(
+                  //       list:
+                  //           propertie_controller.propertirDtatil?.images ?? []),
+                  // ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Expanded(
+                                  child: Padding(
+                                      padding: const EdgeInsets.all(8),
+                                      child: TitleSubtitle()),
+                                ),
+                                VerticalDivider(
+                                  color: Colors.red,
+                                ),
+                                Expanded(
+                                    child: Padding(
+                                  padding: const EdgeInsets.all(8),
+                                  child: TitleSubtitle(),
+                                ))
                               ],
-                          ),
-                          ),
-                      )
+                            ),
+                            Divider(),
+                            Text(
+                              'Saldo desse mês desseimovel (R\$ 0,00)',
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(
+                    height: 16,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Alugueis',
+                          style: TextStyle(fontSize: 22),
+                        ),
+                        IconButton(
+                            onPressed: () {
+                              print('Add aluguel');
+                            },
+                            icon: Icon(Icons.add))
                       ],
                     ),
-
-                  )
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: RentCard()),
+                  Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: RentCard()),
+                  Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: RentCard())
                 ]),
               );
               // Center(

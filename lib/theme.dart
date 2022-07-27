@@ -16,7 +16,12 @@ class CustimTheme {
       // fontFamily: GoogleFonts.poppins(),
 
       textTheme: GoogleFonts.poppinsTextTheme().apply(bodyColor: Colors.white),
-      cardTheme: CardTheme(color: Color(0xFF040607)),
+      cardTheme: CardTheme(
+        color: Color(0xFF040607),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+      ),
       appBarTheme: AppBarTheme(
         backgroundColor: Colors.black,
       ));
