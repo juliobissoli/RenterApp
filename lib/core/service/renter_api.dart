@@ -31,9 +31,9 @@ class RenterApi {
   //   return this._dioInstance.get('$base_url/$rout', queryParameters: data);
   // }
 
-  Future<void> readJson() async {
+  Future<void> readJson(String file) async {
     final String response =
-        await rootBundle.loadString('assets/data/properties.json');
+        await rootBundle.loadString('assets/data/${file}.json');
     final data = await json.decode(response);
     print(data);
     return data;
@@ -41,6 +41,6 @@ class RenterApi {
 
   Future<dynamic> api_get(String route, dynamic data) async {
     await Future.delayed(Duration(milliseconds: 500));
-    return this.readJson();
+    return this.readJson(route);
   }
 }

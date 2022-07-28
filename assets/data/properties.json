@@ -3,6 +3,7 @@
     "id": "1as",
     "label": "Kitnet 3",
     "status": 0,
+    "last_rents": [],
     "address": {
       "label": "Casa Guriri",
       "cep": "231654",
@@ -17,6 +18,7 @@
     "id": "12ca32asx",
     "label": "Arvoredo 3",
     "status": 1,
+    "last_rents": [],
     "address": {
       "label": "Espaço de festa",
       "cep": "231654",

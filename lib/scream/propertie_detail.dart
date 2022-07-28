@@ -7,6 +7,7 @@ import 'package:renter_app/components/communs/carrocel_image.dart';
 import 'package:renter_app/components/communs/circular_indicator_default.dart';
 import 'package:renter_app/components/communs/image-box.dart';
 import 'package:renter_app/components/communs/list-imagens.dart';
+import 'package:renter_app/components/communs/modal.dart';
 import 'package:renter_app/components/communs/title-buttom.dart';
 import 'package:renter_app/components/communs/title-subtitle.dart';
 import 'package:renter_app/components/home/card_balance_propertie.dart';
@@ -161,20 +162,30 @@ class _PropertieDetailState extends State<PropertieDetail> {
                         IconButton(
                             onPressed: () {
                               print('Add aluguel');
+                              _handeInpectStone(context);
                             },
                             icon: Icon(Icons.add))
                       ],
                     ),
                   ),
-                  Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: RentCard()),
-                  Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: RentCard()),
-                  Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: RentCard())
+                  Column(
+                      children: propertie_controller.propertirDtatil?.last_rents
+                              .map(((e) => Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: RentCard(rent: e))))
+                              .toList() ??
+                          [])
+
+                  // Padding(
+                  //     padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  //     child: RentCard()),
+                  // Padding(
+                  //     padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  //     child: RentCard()),
+                  // Padding(
+                  //     padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  //     child: RentCard())
                 ]),
               );
               // Center(
@@ -195,5 +206,22 @@ class _PropertieDetailState extends State<PropertieDetail> {
     //   : Center(child: Text(this.propertie_controller.propertirDtatil?.label ?? 'n tem'))
     //   ,
     // );
+  }
+
+  _handeInpectStone(context) {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (builder) {
+        return new Modal(
+            size_height: 548.0,
+            show_top: false,
+            child: Text(
+              'Teste',
+              style: TextStyle(fontSize: 33),
+            ));
+      },
+    );
   }
 }

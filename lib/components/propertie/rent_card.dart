@@ -1,9 +1,17 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:renter_app/core/models/rent-model.dart';
 
 class RentCard extends StatelessWidget {
+  final RentModel rent;
+
+  RentCard({Key? key, required this.rent});
+
   @override
   Widget build(BuildContext context) {
+    // var create_at =
+    //     DateFormat.yMd('pt_BR').format(widget.stone_data.created_at);
+
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -13,7 +21,7 @@ class RentCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'João Marcelo',
+                  rent.client.name,
                   style: TextStyle(fontSize: 18),
                 ),
                 Badge(
@@ -36,7 +44,7 @@ class RentCard extends StatelessWidget {
                   style: TextStyle(color: Colors.grey),
                 ),
 
-                Text('R\$ 200,00')
+                Text('R\$ ${rent.value_installments}')
               ],
             )
           ],

@@ -1,0 +1,44 @@
+[
+    {
+        "id": "123", 
+        "date_init": "2023-02-02 00:00",
+        "date_end": "2023-02-10: 00:00",
+        "status":0,
+        "client": {
+            "name" : "João Fernandes",
+            "phone" : "27 524851121"
+        },
+        "total_value": 2000.0,
+        "value_installments": 1000.0,
+        "installments": 2,
+        "mode": 7
+    },
+    {
+        "id": "123xqw", 
+        "date_init": "2022-10-02 12:00",
+        "date_end": "2022-10-10: 20:00",
+        "status": 1,
+        "client": {
+            "name" : "Amanda da Silva",
+            "phone" : "27 524851121"
+        },
+        "total_value": 700.0,
+        "value_installments": 7000.0,
+        "installments": 1,
+        "mode": 0
+    },
+    {
+        "id": "12312xqw", 
+        "date_init": "2022-07-02 12:00",
+        "date_end": "2022-07-10: 20:00",
+        "status": 2,
+        "client": {
+            "name" : "Rogerio Brito",
+            "phone" : "27 524851121"
+        },
+        "total_value": 700.0,
+        "value_installments": 7000.0,
+        "installments": 2,
+        "mode": 0
+    }
+]
