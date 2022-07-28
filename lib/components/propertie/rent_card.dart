@@ -1,6 +1,8 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:renter_app/core/models/rent-model.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class RentCard extends StatelessWidget {
   final RentModel rent;
@@ -9,8 +11,10 @@ class RentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // var create_at =
-    //     DateFormat.yMd('pt_BR').format(widget.stone_data.created_at);
+    initializeDateFormatting();
+    var dateFormate = DateFormat('yyyy-MM-dd – kk:mm').format(rent.date_end);
+
+    // .yMd('pt_BR').format(rent.date_end);
 
     return Card(
       child: Padding(
@@ -35,12 +39,14 @@ class RentCard extends StatelessWidget {
                 )
               ],
             ),
-            Divider(),
+            // Divider(),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 // Divider(),
                 Text(
-                  'De 02/Jan a 3/Jan 2022 • ',
+                  _mauntTimeLabel(),
+                  // 'De 02/Jan a 3/Jan 2022 • ',
                   style: TextStyle(color: Colors.grey),
                 ),
 
@@ -51,5 +57,16 @@ class RentCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _mauntTimeLabel() {
+    switch (this.rent.mode) {
+      case RentMolde.HOUR:
+        return '${DateFormat('dd MMM yyyy').format(rent.date_init)} • ${DateFormat('kk:mm').format(rent.date_init)} as ${DateFormat('kk:mm').format(rent.date_end)}';
+      case RentMolde.DAY:
+        return 'de ${DateFormat('dd MMM yyyy • kk:mm').format(rent.date_init)}';
+      default:
+        return 'de ${DateFormat('dd MMM').format(rent.date_init)} a ${DateFormat('dd MMM yyyy').format(rent.date_end)}';
+    }
   }
 }

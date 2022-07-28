@@ -138,7 +138,7 @@ class _PropertieDetailState extends State<PropertieDetail> {
                             ),
                             Divider(),
                             Text(
-                              'Saldo desse mês desseimovel (R\$ 0,00)',
+                              'Saldo desse mês (R\$ 0,00)',
                               style: TextStyle(color: Colors.grey),
                             ),
                           ],

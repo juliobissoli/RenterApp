@@ -14,8 +14,8 @@ RentMolde rentModelDecode(int num) {
 
 class RentModel {
   final String id;
-  final String date_init;
-  final String date_end;
+  final DateTime date_init;
+  final DateTime date_end;
   final RentStatus status;
   final ClientModal client;
   final double total_value;
@@ -51,8 +51,9 @@ class RentModel {
   factory RentModel.fromMap(Map<String, dynamic> map) {
     return RentModel(
       id: map['id'],
-      date_init: map['date_init'],
-      date_end: map['date_end'],
+//  created_at: DateTime.parse(map['created_at']),
+      date_init: DateTime.parse(map['date_init']),
+      date_end: DateTime.parse(map['date_end']),
       status: map['status'],
       client: ClientModal.fromMap(map['client']),
       total_value: map['total_value'],
@@ -65,8 +66,8 @@ class RentModel {
   factory RentModel.fromJson(Map<String, dynamic> map) {
     return RentModel(
       id: map['id'],
-      date_init: map['date_init'],
-      date_end: map['date_end'],
+      date_init: DateTime.parse(map['date_init']),
+      date_end: DateTime.parse(map['date_end']),
       status: rentModelFromJson(map['status']),
       client: ClientModal.fromJson(map['client']),
       total_value: map['total_value'],
