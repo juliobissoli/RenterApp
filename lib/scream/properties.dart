@@ -39,7 +39,13 @@ class _PropertiesScreamState extends State<PropertiesScream> {
       body: ListView(
           padding: const EdgeInsets.all(8),
           children: propertie_controller.prorpertieList
-              .map((e) => PrortiesCard(propertie: e))
+              .map((e) => PrortiesCard(
+                    propertie: e,
+                    onClock: () => {
+                      Navigator.pushNamed(context, '/propertie_detail',
+                          arguments: {"propertie_id": e.id})
+                    },
+                  ))
               .toList()
           //  [PrortiesCard(), PrortiesCard()],
           ),

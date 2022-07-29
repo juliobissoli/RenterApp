@@ -162,7 +162,8 @@ class _PropertieDetailState extends State<PropertieDetail> {
                         IconButton(
                             onPressed: () {
                               print('Add aluguel');
-                              _handeInpectStone(context);
+                              Navigator.pushNamed(context, '/new_rent');
+                              // _handeInpectStone(context);
                             },
                             icon: Icon(Icons.add))
                       ],
