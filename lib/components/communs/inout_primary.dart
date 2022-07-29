@@ -50,7 +50,8 @@ class InputPrimary extends StatelessWidget {
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
             gapPadding: 5,
-            borderSide: new BorderSide(color: Colors.grey, width: 1),
+            borderSide: new BorderSide(
+                color: Theme.of(context).backgroundColor, width: 1),
           ),
           // filled: true,
           // border: OutlineInputBorder(

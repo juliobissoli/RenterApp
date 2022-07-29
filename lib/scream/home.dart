@@ -35,7 +35,7 @@ class _HomeScreamState extends State<HomeScream> {
     });
   }
 
-  void dispose(){
+  void dispose() {
     propertie_controller.removeListener(() {});
   }
 
