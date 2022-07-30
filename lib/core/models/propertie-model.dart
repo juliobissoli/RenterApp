@@ -36,8 +36,8 @@ class PropertieModel {
     return PropertieModel(
       id: map['id'],
       address: AddressModal.fromMap(map['address']),
-      status: map['status'],
-      images: map['images'],
+      status: propertieModelFromJson(map['status']),
+      images: map['images'].cast<String>(),
       label: map['label'],
       last_rents: List<RentModel>.from(
           map['last_rents'].map((x) => RentModel.fromMap(x))),

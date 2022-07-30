@@ -149,7 +149,7 @@ class _PropertieDetailState extends State<PropertieDetail> {
                     height: 16,
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -158,6 +158,7 @@ class _PropertieDetailState extends State<PropertieDetail> {
                           style: TextStyle(fontSize: 22),
                         ),
                         IconButton(
+                            // color: Colors.deepPurpleAccent,
                             onPressed: () {
                               print('Add aluguel');
                               Navigator.pushNamed(context, '/new_rent');

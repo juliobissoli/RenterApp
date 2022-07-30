@@ -39,43 +39,17 @@ class _PropertiesScreamState extends State<PropertiesScream> {
         widith: MediaQuery.of(context).size.width,
       ),
       floatingActionButton: new FloatingActionButton(
-          backgroundColor: Colors.deepPurpleAccent,
-          onPressed: () {
-            print('Hander add propertie');
-          },
-          // icon: ,
-          child: Icon(
-            Icons.add,
-            color: Theme.of(context).primaryColor,
-          )
-          // onPressed: () {
-          //   print('Hander add propertie');
-          // },
-          // ),
-          ),
-
-      // IconButton(
-      //   icon: Icon(Icons.add),
-      //   onPressed: () {
-      //     print('Hander add propertie');
-      //   },
-      // ),
-      // AppBar(
-      //     leading: IconButton(
-      //       icon: Icon(CupertinoIcons.back),
-      //       onPressed: () => Navigator.of(context).pop(),
-      //     ),
-      //     title: Text(
-      //       "Imoveis",
-      //       style: TextStyle(fontSize: 22),
-      //     ),
-      //     actions: [
-      //       IconButton(
-      //           onPressed: () {
-      //             print("add imovel");
-      //           },
-      //           icon: Icon(Icons.add))
-      //     ]),
+        backgroundColor: Colors.deepPurpleAccent,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        onPressed: () {
+          Navigator.pushNamed(context, '/new_properti');
+        },
+        // icon: ,
+        child: Icon(
+          Icons.add,
+          color: Theme.of(context).primaryColor,
+        ),
+      ),
       body: FutureBuilder(
           future: propertie_controller.loadProrpeties(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
