@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -7,6 +8,7 @@ import 'package:renter_app/components/communs/btn.dart';
 import 'package:renter_app/components/communs/inout_primary.dart';
 import 'package:renter_app/core/controller/properties-controller.dart';
 import 'package:renter_app/core/models/rent-model.dart';
+import 'package:renter_app/interfaces/status.dart';
 
 class NewRentScrean extends StatefulWidget {
   @override
@@ -27,7 +29,6 @@ class _NewRentScrean extends State<NewRentScrean> {
 
   TextEditingController nameControllert = TextEditingController();
   TextEditingController phoneControllert = TextEditingController();
-
   TextEditingController valueControllert = TextEditingController();
   TextEditingController installmentControllert = TextEditingController();
   TextEditingController initDateControlle = TextEditingController();
@@ -35,9 +36,26 @@ class _NewRentScrean extends State<NewRentScrean> {
   TextEditingController hourDateControlle = TextEditingController();
 
   bool isValidForm = false;
-  initialState() {
+  initState() {
     this.isValidForm = false;
     this.installmentControllert.text = '1';
+    // this.propertie_controller.addListener(() {
+    //   print('Add o listener');
+    //   print('controler ==> ${installmentControllert.text}');
+    //   setState(() {});
+    // });
+  }
+
+  dispose() {
+    print('Bateu no dispose');
+    this.propertie_controller.removeListener(() {});
+    this.nameControllert.dispose();
+    this.phoneControllert.dispose();
+    this.valueControllert.dispose();
+    this.installmentControllert.dispose();
+    this.initDateControlle.dispose();
+    this.endDateControlle.dispose();
+    this.hourDateControlle.dispose();
   }
 
   _handleValidade(String text) {
@@ -73,11 +91,11 @@ class _NewRentScrean extends State<NewRentScrean> {
     return '';
   }
 
-  _handleSetDate(TextEditingController ctrl, String value) {
+  _handleSetDate(TextEditingController ctrl, String value) async {
     ctrl.text = value;
     _handleValidade('');
-    setState(() {});
     FocusManager.instance.primaryFocus?.unfocus();
+    setState(() {});
   }
 
   Future<String> _handleSelectHours() async {
@@ -85,17 +103,14 @@ class _NewRentScrean extends State<NewRentScrean> {
         await showTimePicker(context: context, initialTime: TimeOfDay.now());
 
     if (pickedDate != null) {
-      print(pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
       String formattedDate = pickedDate.format(context);
-      print(
-          formattedDate); //formatted date output using intl package =>  2021-03-16
-      //you can implement different kind of Date Format here according to your requirement
       return formattedDate;
     }
     return '';
   }
 
-  _handleAddRent() {
+  _handleAddRent() async {
+    this.setState(() {});
     var dateInitList = this.initDateControlle.text.split('/');
     var dateEndList = this.endDateControlle.text.split('/');
 
@@ -127,7 +142,32 @@ class _NewRentScrean extends State<NewRentScrean> {
     };
 
     print(data);
-    this.propertie_controller.createRent(data);
+    try {
+      await this.propertie_controller.createRent(data);
+      this.setState(() {});
+
+      await Future.delayed(Duration(seconds: 1));
+      this.showToats('Aluguel cadastrado', true);
+
+      Navigator.of(context).pop();
+    } catch (e) {
+      this.setState(() {});
+
+      print(e);
+      this.showToats('Erro ao cadastrar aluguel', false);
+    }
+  }
+
+  showToats(String text, bool success) {
+    Fluttertoast.showToast(
+      msg: text,
+      gravity: ToastGravity.SNACKBAR,
+      toastLength: Toast.LENGTH_LONG,
+      timeInSecForIosWeb: 3,
+      backgroundColor: success ? Colors.green : Colors.red,
+      textColor: Colors.white,
+      // fontSize: 14.0
+    );
   }
 
   @override
@@ -139,191 +179,204 @@ class _NewRentScrean extends State<NewRentScrean> {
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Form(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 32),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child:
-                      Text('Sobre o cliente:', style: TextStyle(fontSize: 22)),
-                ),
-                InputPrimary(
-                  type_input: TextInputType.text,
-                  label: 'Nome',
-                  controller_input: nameControllert,
-                  changed_call: _handleValidade,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: InputPrimary(
-                    type_input: TextInputType.number,
-                    label: 'Telephone',
-                    controller_input: phoneControllert,
+      body: Center(
+        child: SingleChildScrollView(
+          child: Form(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 32),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    child: Text('Sobre o cliente:',
+                        style: TextStyle(fontSize: 22)),
+                  ),
+                  InputPrimary(
+                    type_input: TextInputType.text,
+                    label: 'Nome',
+                    controller_input: nameControllert,
                     changed_call: _handleValidade,
-                    inputFormatters: [
-                      MaskTextInputFormatter(
-                          mask: '(##) #####-####',
-                          filter: {"#": RegExp(r'[0-9]')})
-                    ],
-                    icon_sufix: Icon(
-                      Icons.phone,
-                      color: Colors.white,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    child: InputPrimary(
+                      type_input: TextInputType.number,
+                      label: 'Telephone',
+                      controller_input: phoneControllert,
+                      changed_call: _handleValidade,
+                      inputFormatters: [
+                        MaskTextInputFormatter(
+                            mask: '(##) #####-####',
+                            filter: {"#": RegExp(r'[0-9]')})
+                      ],
+                      icon_sufix: Icon(
+                        Icons.phone,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
-                ),
-                Divider(),
-                SizedBox(height: 48),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: Text('Período:', style: TextStyle(fontSize: 22)),
-                ),
-                ToggleButtons(
-                  isSelected: renyMoldes
-                      .map((el) => el['value'] == mooldSelected)
-                      .toList(),
-                  borderRadius: BorderRadius.circular(10),
-                  children: renyMoldes
-                      .map((el) => Container(
-                          alignment: Alignment.center,
-                          width: ((MediaQuery.of(context).size.width - 38) / 4),
-                          child: Text(el['label'])))
-                      .toList(),
-                  onPressed: (int index) {
-                    setState(() {
-                      // isSelected[index] = !isSelected[index];
-                      mooldSelected = renyMoldes[index]['value'];
-                      print(mooldSelected);
-                    });
-                  },
-                  // isSelected: isSelected,
-                ),
-                SizedBox(height: 16),
-                Column(
-                  children: [
-                    if (mooldSelected == RentMolde.HOUR)
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16),
-                        child: InputPrimary(
-                          type_input: TextInputType.number,
-                          label: 'Data',
-                          changed_call: _handleValidade,
-                          controller_input: hourDateControlle,
-                          onTap: () async {
-                            _handleSetDate(this.hourDateControlle,
-                                await this._handleSelectDate());
-                          },
-                          icon_sufix: Icon(
-                            Icons.calendar_month,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: InputPrimary(
-                            type_input: TextInputType.text,
-                            label: 'Início',
-                            changed_call: _handleValidade,
-                            controller_input: initDateControlle,
-                            onTap: () async {
-                              if (this.mooldSelected == RentMolde.HOUR) {
-                                _handleSetDate(this.initDateControlle,
-                                    await this._handleSelectHours());
-                              } else {
-                                _handleSetDate(this.initDateControlle,
-                                    await this._handleSelectDate());
-                              }
-                            },
-                            icon_sufix: Icon(
-                              mooldSelected == RentMolde.HOUR
-                                  ? Icons.timer
-                                  : Icons.calendar_month,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 8),
-                        Expanded(
+                  Divider(),
+                  SizedBox(height: 48),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    child: Text('Período:', style: TextStyle(fontSize: 22)),
+                  ),
+                  ToggleButtons(
+                    isSelected: renyMoldes
+                        .map((el) => el['value'] == mooldSelected)
+                        .toList(),
+                    borderRadius: BorderRadius.circular(10),
+                    children: renyMoldes
+                        .map((el) => Container(
+                            alignment: Alignment.center,
+                            width:
+                                ((MediaQuery.of(context).size.width - 38) / 4),
+                            child: Text(el['label'])))
+                        .toList(),
+                    onPressed: (int index) {
+                      setState(() {
+                        // isSelected[index] = !isSelected[index];
+                        mooldSelected = renyMoldes[index]['value'];
+                        print(mooldSelected);
+                      });
+                    },
+                    // isSelected: isSelected,
+                  ),
+                  SizedBox(height: 16),
+                  Column(
+                    children: [
+                      if (mooldSelected == RentMolde.HOUR)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 16),
                           child: InputPrimary(
                             type_input: TextInputType.number,
-                            label: 'Fim',
+                            label: 'Data',
                             changed_call: _handleValidade,
-                            controller_input: endDateControlle,
+                            controller_input: hourDateControlle,
                             onTap: () async {
-                              if (this.mooldSelected == RentMolde.HOUR) {
-                                _handleSetDate(this.endDateControlle,
-                                    await this._handleSelectHours());
-                              } else {
-                                _handleSetDate(this.endDateControlle,
-                                    await this._handleSelectDate());
-                              }
+                              _handleSetDate(this.hourDateControlle,
+                                  await this._handleSelectDate());
                             },
                             icon_sufix: Icon(
-                              mooldSelected == RentMolde.HOUR
-                                  ? Icons.timer
-                                  : Icons.calendar_month,
-                              color: Colors.grey,
+                              Icons.calendar_month,
+                              color: Colors.white,
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                  ],
-                ),
-                Divider(),
-                SizedBox(height: 48),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: Text('Valor:', style: TextStyle(fontSize: 22)),
-                ),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: ((MediaQuery.of(context).size.width * 0.4) - 24),
-                      child: InputPrimary(
-                        changed_call: _handleValidade,
-                        type_input: TextInputType.number,
-                        label: 'Parcelas',
-                        prefixText: 'x',
-                        controller_input: installmentControllert,
+                      Row(
+                        children: [
+                          Expanded(
+                            child: InputPrimary(
+                              type_input: TextInputType.text,
+                              label: 'Início',
+                              changed_call: _handleValidade,
+                              controller_input: initDateControlle,
+                              onTap: () async {
+                                if (this.mooldSelected == RentMolde.HOUR) {
+                                  _handleSetDate(this.initDateControlle,
+                                      await this._handleSelectHours());
+                                } else {
+                                  _handleSetDate(this.initDateControlle,
+                                      await this._handleSelectDate());
+                                }
+                              },
+                              icon_sufix: Icon(
+                                mooldSelected == RentMolde.HOUR
+                                    ? Icons.timer
+                                    : Icons.calendar_month,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 8),
+                          Expanded(
+                            child: InputPrimary(
+                              type_input: TextInputType.number,
+                              label: 'Fim',
+                              changed_call: _handleValidade,
+                              controller_input: endDateControlle,
+                              onTap: () async {
+                                if (this.mooldSelected == RentMolde.HOUR) {
+                                  _handleSetDate(this.endDateControlle,
+                                      await this._handleSelectHours());
+                                } else {
+                                  _handleSetDate(this.endDateControlle,
+                                      await this._handleSelectDate());
+                                }
+                              },
+                              icon_sufix: Icon(
+                                mooldSelected == RentMolde.HOUR
+                                    ? Icons.timer
+                                    : Icons.calendar_month,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    SizedBox(width: 8),
-                    SizedBox(
-                      width: ((MediaQuery.of(context).size.width * 0.6) - 24),
-                      child: InputPrimary(
-                        changed_call: _handleValidade,
-                        type_input: TextInputType.number,
-                        label: 'Valor',
-                        controller_input: valueControllert,
-                        prefixText: 'R\$',
-                        // inputFormatters: [
-                        //   MaskTextInputFormatter(
-                        //       // mask: 'S,##',
-                        //       filter: {"#": RegExp(r'[+-]?([0-9]*[.])?[0-9]+')})
-                        // ],
-                        icon_sufix: Icon(
-                          Icons.payment,
-                          color: Colors.grey,
+                    ],
+                  ),
+                  Divider(),
+                  SizedBox(height: 48),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    child: Text('Valor:', style: TextStyle(fontSize: 22)),
+                  ),
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: ((MediaQuery.of(context).size.width * 0.4) - 24),
+                        child: InputPrimary(
+                          changed_call: _handleValidade,
+                          type_input: TextInputType.number,
+                          label: 'Parcelas',
+                          prefixText: 'x',
+                          controller_input: installmentControllert,
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                Divider(),
-                SizedBox(height: 32),
-                BtnOutline(
-                  label: 'Cadastrar aluguel',
-                  func: isValidForm ? _handleAddRent : null,
-                )
-              ],
+                      SizedBox(width: 8),
+                      SizedBox(
+                        width: ((MediaQuery.of(context).size.width * 0.6) - 24),
+                        child: InputPrimary(
+                          changed_call: _handleValidade,
+                          type_input: TextInputType.number,
+                          label: 'Valor',
+                          controller_input: valueControllert,
+                          prefixText: 'R\$',
+                          // inputFormatters: [
+                          //   MaskTextInputFormatter(
+                          //       // mask: 'S,##',
+                          //       filter: {"#": RegExp(r'[+-]?([0-9]*[.])?[0-9]+')})
+                          // ],
+                          icon_sufix: Icon(
+                            Icons.payment,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Divider(),
+                  SizedBox(height: 32),
+                  if (propertie_controller.fetchingState == AppStatus.LOADING)
+                    Container(
+                      width: double.infinity,
+                      height: 42,
+                      child: Center(
+                          // decoration: BoxDecoration(color: Colors.red),
+                          // width: 48,
+                          child: CircularProgressIndicator()),
+                    )
+                  else
+                    BtnOutline(
+                      label: 'Cadastrar aluguel',
+                      func: isValidForm ? _handleAddRent : null,
+                    )
+                ],
+              ),
             ),
           ),
         ),

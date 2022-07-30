@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:renter_app/core/models/client-model.dart';
+import 'package:renter_app/interfaces/rent.dart';
 import 'package:renter_app/interfaces/status.dart';
 
 enum RentMolde { EMPYT, HOUR, DAY, WEEK, MONTHM, YEAR }

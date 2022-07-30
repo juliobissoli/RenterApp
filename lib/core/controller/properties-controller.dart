@@ -40,16 +40,15 @@ class PropertieController extends ChangeNotifier {
 
     List<RentModel> rents =
         (teste as List).map((e) => RentModel.fromJson(e)).toList();
-    print('teste');
+    // print('teste');
 
-    if (this.rentSelected.length > 0) {
-      this.rentSelected.addAll(rents);
-    } else {
+    if (this.rentSelected.length == 0) {
+      // this.rentSelected.addAll(rents);
       this.rentSelected = rents;
     }
 
     await Future.delayed(Duration(milliseconds: 500));
-    print('Bateu aqui => ' + id);
+    // print('Bateu aqui => ' + id);
 
     // return propertie;
     // PropertieModel propertie;
@@ -69,11 +68,14 @@ class PropertieController extends ChangeNotifier {
   }
 
   Future<RentModel> createRent(dynamic data) async {
+    this.setFetchingState(AppStatus.LOADING);
     await Future.delayed(Duration(seconds: 1));
 
     final rent = RentModel.fromMap(data);
     this.rentSelected.add(rent);
     print(rent);
+    this.setFetchingState(AppStatus.SUCCESS);
+
     return rent;
   }
 }

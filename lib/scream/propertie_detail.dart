@@ -13,8 +13,10 @@ import 'package:renter_app/components/communs/title-subtitle.dart';
 import 'package:renter_app/components/home/card_balance_propertie.dart';
 import 'package:renter_app/components/propertie/badge-propertie.dart';
 import 'package:renter_app/components/propertie/rent_card.dart';
+import 'package:renter_app/components/propertie/rent_detail.dart';
 import 'package:renter_app/core/controller/properties-controller.dart';
 import 'package:renter_app/core/models/propertie-model.dart';
+import 'package:renter_app/core/models/rent-model.dart';
 import 'package:renter_app/interfaces/status.dart';
 
 class PropertieDetail extends StatefulWidget {
@@ -117,7 +119,8 @@ class _PropertieDetailState extends State<PropertieDetail> {
                                 Expanded(
                                   child: Padding(
                                       padding: const EdgeInsets.all(8),
-                                      child: TitleSubtitle()),
+                                      child: TitleSubtitle(
+                                          title: '2000', subtitle: 'renda')),
                                 ),
                                 VerticalDivider(
                                   color: Colors.red,
@@ -125,7 +128,10 @@ class _PropertieDetailState extends State<PropertieDetail> {
                                 Expanded(
                                     child: Padding(
                                   padding: const EdgeInsets.all(8),
-                                  child: TitleSubtitle(),
+                                  child: TitleSubtitle(
+                                    title: '2000',
+                                    subtitle: 'despesa',
+                                  ),
                                 ))
                               ],
                             ),
@@ -165,20 +171,21 @@ class _PropertieDetailState extends State<PropertieDetail> {
                       children:
                           // propertie_controller.propertirDtatil?.last_rents
                           propertie_controller.rentSelected
-                                  .map(((e) => Padding(
+                              .map(
+                                ((e) => Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 8.0),
-                                      child: RentCard(rent: e))))
-                                  .toList() ??
-                              [])
+                                      child: RentCard(
+                                        rent: e,
+                                        onTap: () {
+                                          _handeInpectRent(context, e);
+                                        },
+                                      ),
+                                    )),
+                              )
+                              .toList())
                 ]),
               );
-              // Center(
-              //     child: Text(
-              //   propertie_controller.propertirDtatil?.label ?? 'NO data',
-              //   style: TextStyle(color: Colors.pink),
-              // ));
-              //  ];
             }
           },
         ));
@@ -193,18 +200,17 @@ class _PropertieDetailState extends State<PropertieDetail> {
     // );
   }
 
-  _handeInpectStone(context) {
+  _handeInpectRent(context, RentModel rent) {
     showModalBottomSheet(
       isScrollControlled: true,
       context: context,
       backgroundColor: Colors.transparent,
       builder: (builder) {
         return new Modal(
-            size_height: 548.0,
+            size_height: 320.0,
             show_top: false,
-            child: Text(
-              'Teste',
-              style: TextStyle(fontSize: 33),
+            child: RentDetail(
+              rent: rent,
             ));
       },
     );
