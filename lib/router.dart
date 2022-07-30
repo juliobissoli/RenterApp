@@ -9,8 +9,8 @@ import 'package:renter_app/scream/splash.dart';
 Map<String, WidgetBuilder> appRoutes() => <String, WidgetBuilder>{
       '/': (context) => SplashScream(),
       '/login': (context) => const LoginScream(),
-      '/home': (context) => HomeScream(),
-      '/properties': (context) => PropertiesScream(),
+      // '/home': (context) => HomeScream(),
+      '/home': (context) => PropertiesScream(),
       '/propertie_detail': (context) => PropertieDetail(),
       '/new_rent': (context) => NewRentScrean(),
     };
