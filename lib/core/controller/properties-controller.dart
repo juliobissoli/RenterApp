@@ -12,7 +12,9 @@ class PropertieController extends ChangeNotifier {
   AppStatus get fetchingState => _fetchingState;
 
   List<PropertieModel> prorpertieList = [];
+
   PropertieModel? propertirDtatil;
+  List<RentModel> rentSelected = [];
 
   RenterApi get api => RenterApi.singleton;
 
@@ -38,7 +40,13 @@ class PropertieController extends ChangeNotifier {
 
     List<RentModel> rents =
         (teste as List).map((e) => RentModel.fromJson(e)).toList();
-    print(teste);
+    print('teste');
+
+    if (this.rentSelected.length > 0) {
+      this.rentSelected.addAll(rents);
+    } else {
+      this.rentSelected = rents;
+    }
 
     await Future.delayed(Duration(milliseconds: 500));
     print('Bateu aqui => ' + id);
@@ -60,7 +68,12 @@ class PropertieController extends ChangeNotifier {
     // notifyListeners();
   }
 
-  add(PropertieModel data) {
-    this.prorpertieList.add(data);
+  Future<RentModel> createRent(dynamic data) async {
+    await Future.delayed(Duration(seconds: 1));
+
+    final rent = RentModel.fromMap(data);
+    this.rentSelected.add(rent);
+    print(rent);
+    return rent;
   }
 }

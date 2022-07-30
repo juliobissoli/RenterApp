@@ -104,13 +104,6 @@ class _PropertieDetailState extends State<PropertieDetail> {
                       size: 230,
                     ),
                   ),
-                  // Container(
-                  //   width: double.infinity,
-                  //   height: 300,
-                  //   child: CarouselImages(
-                  //       list:
-                  //           propertie_controller.propertirDtatil?.images ?? []),
-                  // ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: Card(
@@ -146,7 +139,6 @@ class _PropertieDetailState extends State<PropertieDetail> {
                       ),
                     ),
                   ),
-
                   SizedBox(
                     height: 16,
                   ),
@@ -170,23 +162,15 @@ class _PropertieDetailState extends State<PropertieDetail> {
                     ),
                   ),
                   Column(
-                      children: propertie_controller.propertirDtatil?.last_rents
-                              .map(((e) => Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
-                                  child: RentCard(rent: e))))
-                              .toList() ??
-                          [])
-
-                  // Padding(
-                  //     padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  //     child: RentCard()),
-                  // Padding(
-                  //     padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  //     child: RentCard()),
-                  // Padding(
-                  //     padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  //     child: RentCard())
+                      children:
+                          // propertie_controller.propertirDtatil?.last_rents
+                          propertie_controller.rentSelected
+                                  .map(((e) => Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0),
+                                      child: RentCard(rent: e))))
+                                  .toList() ??
+                              [])
                 ]),
               );
               // Center(

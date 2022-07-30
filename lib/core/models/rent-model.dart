@@ -12,6 +12,15 @@ RentMolde rentModelDecode(int num) {
   return RentMolde.EMPYT;
 }
 
+int rentModelEncode(RentMolde num) {
+  if (num == RentMolde.HOUR) return 0;
+  if (num == RentMolde.DAY) return 1;
+  if (num == RentMolde.WEEK) return 7;
+  if (num == RentMolde.MONTHM) return 30;
+  if (num == RentMolde.YEAR) return 360;
+  return 0;
+}
+
 class RentModel {
   final String id;
   final DateTime date_init;
@@ -54,12 +63,12 @@ class RentModel {
 //  created_at: DateTime.parse(map['created_at']),
       date_init: DateTime.parse(map['date_init']),
       date_end: DateTime.parse(map['date_end']),
-      status: map['status'],
+      status: rentModelFromJson(map['status']),
       client: ClientModal.fromMap(map['client']),
       total_value: map['total_value'],
       value_installments: map['value_installments'],
       installments: map['installments'],
-      mode: map['mode'],
+      mode: rentModelDecode(map['mode']),
     );
   }
 

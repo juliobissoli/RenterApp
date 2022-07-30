@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class InputPrimary extends StatelessWidget {
   final String label;
   final String? type;
   final bool not_floating_label;
   TextInputType type_input;
-  Function? changed_call;
+  final Function(String)? changed_call;
   final String? sulfix;
   final Icon? icon_sufix;
   final VoidCallback? func_icon_sufix;
+  final VoidCallback? onTap;
   final TextCapitalization capitalization;
   final TextEditingController? controller_input;
+  final List<TextInputFormatter>? inputFormatters;
+  final String? prefixText;
 
   InputPrimary(
       {Key? key,
@@ -23,7 +27,10 @@ class InputPrimary extends StatelessWidget {
       this.sulfix = null,
       this.func_icon_sufix = null,
       this.icon_sufix,
-      this.capitalization = TextCapitalization.sentences})
+      this.onTap,
+      this.capitalization = TextCapitalization.sentences,
+      this.prefixText,
+      this.inputFormatters})
       : super(key: key);
 
   @override
@@ -34,8 +41,9 @@ class InputPrimary extends StatelessWidget {
         controller: controller_input,
         textCapitalization: capitalization,
         // onSubmitted: (){},
-        // onChanged: changed_call,
-
+        onChanged: changed_call,
+        onTap: this.onTap,
+        inputFormatters: inputFormatters,
         keyboardType: type_input,
         obscureText: this.type == "password",
         decoration: InputDecoration(
@@ -61,7 +69,7 @@ class InputPrimary extends StatelessWidget {
           //   borderSide: new BorderSide(color: Colors.black),
 
           // ),
-
+          prefixText: this.prefixText,
           suffixText: sulfix != null ? sulfix : "",
         ),
       ),
