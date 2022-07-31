@@ -35,6 +35,7 @@ class _PropertiesScreamState extends State<PropertiesScream> {
         is_visible: true,
         func: () {
           print('Q função e essa');
+          Navigator.pushNamed(context, '/setting');
         },
         widith: MediaQuery.of(context).size.width,
       ),

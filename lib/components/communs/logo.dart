@@ -33,7 +33,6 @@ class Logo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('assets/images/logo_${mode}_${bg}_${fg}.png');
     return Container(
       width: size,
       height: mode == 'large' ? (size / 2.4) : size,
