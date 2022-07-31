@@ -204,7 +204,7 @@ class _NewPropertirScreamState extends State<NewPropertirScream> {
               )
             : Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: BtnOutline(
+                child: Btn(
                   label: 'Cadastrar imóvels',
                   func: isValidForm ? _handleAddProrpertie : null,
                 ),

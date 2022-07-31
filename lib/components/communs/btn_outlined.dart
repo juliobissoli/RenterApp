@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
 
-class Btn extends StatelessWidget {
+class BtnOutlined extends StatelessWidget {
   final VoidCallback? func;
   final String label;
   final String mode;
-  final bool outlined;
 
-  Btn(
-      {required this.func,
-      required this.label,
-      this.mode = "light",
-      this.outlined = false});
+  BtnOutlined({required this.func, required this.label, this.mode = "light"});
 
   @override
   Widget build(BuildContext context) {
@@ -20,23 +15,18 @@ class Btn extends StatelessWidget {
       child: ElevatedButton(
         onPressed: func,
         style: ButtonStyle(
-          // foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-          // backgroundColor: !outlined
-          //     ? MaterialStateProperty.all<Color>(Colors.deepPurpleAccent)
-          //     : MaterialStateProperty.all<Color>(Colors.transparent),
+          backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
-              // side: BorderSide(color: _getColor(context)),
+              side: BorderSide(color: _getColor(context)),
             ),
           ),
         ),
         child: Text(
           label,
           style: TextStyle(
-              color: this.func != null
-                  ? Colors.white
-                  : Colors.grey, //_getColor(context),
+              color: Colors.white, //_getColor(context),
               fontSize: 18,
               fontWeight: FontWeight.w400),
         ),

@@ -371,7 +371,7 @@ class _NewRentScrean extends State<NewRentScrean> {
                           child: CircularProgressIndicator()),
                     )
                   else
-                    BtnOutline(
+                    Btn(
                       label: 'Cadastrar aluguel',
                       func: isValidForm ? _handleAddRent : null,
                     )
