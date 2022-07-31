@@ -1,5 +1,6 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:renter_app/components/communs/card-secondary.dart';
 import 'package:renter_app/core/models/rent-model.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -21,7 +22,7 @@ class RentCard extends StatelessWidget {
 
     return InkWell(
       onTap: onTap,
-      child: Card(
+      child: CardSecondary(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -60,7 +61,7 @@ class RentCard extends StatelessWidget {
                         'R\$ ${rent.value_installments}',
                   )
                 ],
-              )
+              ),
             ],
           ),
         ),

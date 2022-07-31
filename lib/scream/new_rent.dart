@@ -9,6 +9,7 @@ import 'package:renter_app/components/communs/inout_primary.dart';
 import 'package:renter_app/core/controller/properties-controller.dart';
 import 'package:renter_app/core/models/rent-model.dart';
 import 'package:renter_app/interfaces/status.dart';
+import 'package:renter_app/utils/showToats.dart';
 
 class NewRentScrean extends StatefulWidget {
   @override
@@ -17,6 +18,7 @@ class NewRentScrean extends StatefulWidget {
 
 class _NewRentScrean extends State<NewRentScrean> {
   final PropertieController propertie_controller = KiwiContainer().resolve();
+  AppStatus currentSatus = AppStatus.ENPYT;
 
   List<dynamic> renyMoldes = [
     {"value": RentMolde.HOUR, "label": "Por hora"},
@@ -39,6 +41,8 @@ class _NewRentScrean extends State<NewRentScrean> {
   initState() {
     this.isValidForm = false;
     this.installmentControllert.text = '1';
+    this.currentSatus = AppStatus.ENPYT;
+
     // this.propertie_controller.addListener(() {
     //   print('Add o listener');
     //   print('controler ==> ${installmentControllert.text}');
@@ -48,14 +52,14 @@ class _NewRentScrean extends State<NewRentScrean> {
 
   dispose() {
     print('Bateu no dispose');
-    this.propertie_controller.removeListener(() {});
-    this.nameControllert.dispose();
-    this.phoneControllert.dispose();
-    this.valueControllert.dispose();
-    this.installmentControllert.dispose();
-    this.initDateControlle.dispose();
-    this.endDateControlle.dispose();
-    this.hourDateControlle.dispose();
+    // this.propertie_controller.removeListener(() {});
+    // this.nameControllert.dispose();
+    // this.phoneControllert.dispose();
+    // this.valueControllert.dispose();
+    // this.installmentControllert.dispose();
+    // this.initDateControlle.dispose();
+    // this.endDateControlle.dispose();
+    // this.hourDateControlle.dispose();
   }
 
   _handleValidade(String text) {
@@ -110,6 +114,8 @@ class _NewRentScrean extends State<NewRentScrean> {
   }
 
   _handleAddRent() async {
+    this.currentSatus = AppStatus.LOADING;
+
     this.setState(() {});
     var dateInitList = this.initDateControlle.text.split('/');
     var dateEndList = this.endDateControlle.text.split('/');
@@ -144,31 +150,36 @@ class _NewRentScrean extends State<NewRentScrean> {
     print(data);
     try {
       await this.propertie_controller.createRent(data);
+
       this.setState(() {});
 
       await Future.delayed(Duration(seconds: 1));
-      this.showToats('Aluguel cadastrado', true);
+      this.currentSatus = AppStatus.SUCCESS;
+
+      showToats('Aluguel cadastrado', true);
 
       Navigator.of(context).pop();
     } catch (e) {
+      this.currentSatus = AppStatus.ERROR;
+
       this.setState(() {});
 
       print(e);
-      this.showToats('Erro ao cadastrar aluguel', false);
+      showToats('Erro ao cadastrar aluguel', false);
     }
   }
 
-  showToats(String text, bool success) {
-    Fluttertoast.showToast(
-      msg: text,
-      gravity: ToastGravity.SNACKBAR,
-      toastLength: Toast.LENGTH_LONG,
-      timeInSecForIosWeb: 3,
-      backgroundColor: success ? Colors.green : Colors.red,
-      textColor: Colors.white,
-      // fontSize: 14.0
-    );
-  }
+  // showToats(String text, bool success) {
+  //   Fluttertoast.showToast(
+  //     msg: text,
+  //     gravity: ToastGravity.SNACKBAR,
+  //     toastLength: Toast.LENGTH_LONG,
+  //     timeInSecForIosWeb: 3,
+  //     backgroundColor: success ? Colors.green : Colors.red,
+  //     textColor: Colors.white,
+  //     // fontSize: 14.0
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -361,20 +372,11 @@ class _NewRentScrean extends State<NewRentScrean> {
                   ),
                   Divider(),
                   SizedBox(height: 32),
-                  if (propertie_controller.fetchingState == AppStatus.LOADING)
-                    Container(
-                      width: double.infinity,
-                      height: 42,
-                      child: Center(
-                          // decoration: BoxDecoration(color: Colors.red),
-                          // width: 48,
-                          child: CircularProgressIndicator()),
-                    )
-                  else
-                    Btn(
-                      label: 'Cadastrar aluguel',
-                      func: isValidForm ? _handleAddRent : null,
-                    )
+                  Btn(
+                    label: 'Cadastrar aluguel',
+                    func: isValidForm ? _handleAddRent : null,
+                    isLoading: currentSatus == AppStatus.LOADING,
+                  )
                 ],
               ),
             ),

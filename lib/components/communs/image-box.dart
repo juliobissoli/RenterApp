@@ -28,7 +28,7 @@ class ImageBox extends StatelessWidget {
       height: size,
       decoration: BoxDecoration(
         color: Color(0xff000000),
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(16),
         image: exist
             ? DecorationImage(
                 image:
