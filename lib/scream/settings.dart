@@ -13,7 +13,8 @@ class SttingsSrceam extends StatefulWidget {
 class _SttingsSrceamState extends State<SttingsSrceam> {
   final UserController user_controller = KiwiContainer().resolve();
 
-  _handleLogout(context) {
+  _handleLogout(context) async {
+    await user_controller.cleanDataLocal();
     Navigator.of(context).pushReplacementNamed('/');
   }
 

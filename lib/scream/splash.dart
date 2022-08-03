@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:kiwi/kiwi.dart';
 import 'package:renter_app/components/communs/btn.dart';
 import 'package:renter_app/components/communs/btn_outlined.dart';
 import 'package:renter_app/components/communs/logo.dart';
+import 'package:renter_app/core/controller/user-controller.dart';
 
 class SplashScream extends StatefulWidget {
   SplashScream({Key? key}) : super(key: key);
@@ -10,14 +12,18 @@ class SplashScream extends StatefulWidget {
 }
 
 class _SplashScreamState extends State<SplashScream> {
+  final UserController user_controller = KiwiContainer().resolve();
+
   Future<void> _verifyAuthentication(constext) async {
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(Duration(seconds: 1));
+    await this.user_controller.getDataLocal();
+
+// getDataLocal
     // return false;
-    // if (user_controller.is_logged) {
-    // Navigator.of(context).pushReplacementNamed('/home');
-    // } else {
-    // Navigator.of(context).pushReplacementNamed('/login');
-    // }
+    if (user_controller.is_logged) {
+      Navigator.of(context).pushReplacementNamed('/home');
+    }
+    await Future.delayed(Duration(seconds: 1));
   }
 
   @override

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:renter_app/components/communs/btn_outlined.dart';
 import 'package:renter_app/components/communs/car-buttom.dart';
 import 'package:renter_app/components/communs/card-secondary.dart';
 import 'package:renter_app/components/communs/carrocel_image.dart';
@@ -29,16 +30,20 @@ class PropertieDetail extends StatefulWidget {
 }
 
 class _PropertieDetailState extends State<PropertieDetail> {
+  final AppStatus currentStatus = AppStatus.ENPYT;
+
   final PropertieController propertie_controller = KiwiContainer().resolve();
 
-  void initState() {
-    print('Init state');
+  // void initState() async {
+  //   print('Init state');
 
-    // propertie_controller.addListener(() {
-    //   print('Atualiza');
-    //   setState((){});
-    // });
-  }
+  //   // await propertie_controller.loadPropertieDetail(propertie_id)
+
+  //   // propertie_controller.addListener(() {
+  //   //   print('Atualiza');
+  //   //   setState((){});
+  //   // });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +53,91 @@ class _PropertieDetailState extends State<PropertieDetail> {
     // if(propertie_id.length > 0){
     // this.propertie_controller.loadPropertieDetail(propertie_id);
     // }
+    _handeInpectRent(context, RentModel rent) {
+      showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        backgroundColor: Colors.transparent,
+        builder: (builder) {
+          return new Modal(
+              size_height: 320.0,
+              show_top: false,
+              child: RentDetail(
+                rent: rent,
+              ));
+        },
+      );
+    }
+
+    _handeInpectImage(context, String url_img) {
+      showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        backgroundColor: Colors.transparent,
+        builder: (builder) {
+          return new Modal(
+              size_height: MediaQuery.of(context).size.width + 48,
+              show_top: false,
+              child: Stack(
+                children: [
+                  ImageBox(
+                    url_image: url_img,
+                    size: MediaQuery.of(context).size.width,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      // crossAxisAlignment: CrossAxisAlignment.,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: Colors.black,
+                          child: IconButton(
+                            onPressed: () {
+                              print('Compartilhar');
+                            },
+                            icon: Icon(
+                              Icons.share,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        CircleAvatar(
+                          backgroundColor: Colors.black,
+                          child: IconButton(
+                            onPressed: () {
+                              print('Compartilhar');
+                            },
+                            icon: Icon(
+                              Icons.delete_outline_outlined,
+                              color: Colors.red,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(horizontal: 16),
+                  //   child: BtnOutlined(
+                  //       func: () {
+                  //         print('Compartilgar');
+                  //       },
+                  //       label: 'Compartihar'),
+                  // ),
+                  // SizedBox(height: 16),
+                  // BtnOutlined(
+                  //     mode: "danger",
+                  //     func: () {
+                  //       print('Excluir');
+                  //     },
+                  //     label: 'Excluir')
+                ],
+              ));
+        },
+      );
+    }
 
     return Scaffold(
         appBar: AppBar(
@@ -102,118 +192,117 @@ class _PropertieDetailState extends State<PropertieDetail> {
                     width: double.infinity,
                     height: MediaQuery.of(context).size.width - 130,
                     child: ListImagens(
+                      onLongPress: (url) {
+                        _handeInpectImage(context, url);
+                      },
                       list: propertie_controller.propertirDtatil?.images ?? [],
                       size: 230,
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Expanded(
-                                  child: Padding(
-                                      padding: const EdgeInsets.all(8),
-                                      child: TitleSubtitle(
-                                          title: '2000', subtitle: 'renda')),
-                                ),
-                                VerticalDivider(
-                                  color: Colors.red,
-                                ),
-                                Expanded(
-                                    child: Padding(
-                                  padding: const EdgeInsets.all(8),
-                                  child: TitleSubtitle(
-                                    title: '2000',
-                                    subtitle: 'despesa',
-                                  ),
-                                ))
-                              ],
-                            ),
-                            Divider(),
-                            Text(
-                              'Saldo desse mês (R\$ 0,00)',
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  //   child: Card(
+                  //     child: Padding(
+                  //       padding: const EdgeInsets.all(8),
+                  //       child: Column(
+                  //         children: [
+                  //           Row(
+                  //             mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  //             children: [
+                  //               Expanded(
+                  //                 child: Padding(
+                  //                     padding: const EdgeInsets.all(8),
+                  //                     child: TitleSubtitle(
+                  //                         title: '2000', subtitle: 'renda')),
+                  //               ),
+                  //               VerticalDivider(
+                  //                 color: Colors.red,
+                  //               ),
+                  //               Expanded(
+                  //                   child: Padding(
+                  //                 padding: const EdgeInsets.all(8),
+                  //                 child: TitleSubtitle(
+                  //                   title: '2000',
+                  //                   subtitle: 'despesa',
+                  //                 ),
+                  //               ))
+                  //             ],
+                  //           ),
+                  //           Divider(),
+                  //           Text(
+                  //             'Saldo desse mês (R\$ 0,00)',
+                  //             style: TextStyle(color: Colors.grey),
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                  //
                   SizedBox(
                     height: 16,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Alugueis',
-                          style: TextStyle(fontSize: 22),
+                  // Center(
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  //     child: Row(
+                  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //       children: [
+                  //         Text(
+                  //           'Alugueis',
+                  //           style: TextStyle(fontSize: 22),
+                  //         ),
+                  //         IconButton(
+                  //             // color: Colors.deepPurpleAccent,
+                  //             onPressed: () {
+                  //               print('Add aluguel');
+                  //               Navigator.pushNamed(context, '/new_rent');
+                  //               // _handeInpectStone(context);
+                  //             },
+                  //             icon: Icon(Icons.add))
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
+                  Card(
+                    child: Column(children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Alugueis',
+                              style: TextStyle(fontSize: 22),
+                            ),
+                            IconButton(
+                                onPressed: () {
+                                  Navigator.pushNamed(context, '/new_rent');
+                                },
+                                icon: Icon(Icons.add))
+                          ],
                         ),
-                        IconButton(
-                            // color: Colors.deepPurpleAccent,
-                            onPressed: () {
-                              print('Add aluguel');
-                              Navigator.pushNamed(context, '/new_rent');
-                              // _handeInpectStone(context);
-                            },
-                            icon: Icon(Icons.add))
-                      ],
-                    ),
-                  ),
-                  Column(
-                      children:
-                          // propertie_controller.propertirDtatil?.last_rents
-                          propertie_controller.rentSelected
-                              .map(
-                                ((e) => Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8.0),
-                                      child: RentCard(
-                                        rent: e,
-                                        onTap: () {
-                                          _handeInpectRent(context, e);
-                                        },
-                                      ),
-                                    )),
-                              )
-                              .toList())
+                      ),
+                      ...propertie_controller.rentSelected
+                          .map(
+                            ((e) => Padding(
+                                  padding: const EdgeInsets.only(
+                                      bottom: 8, right: 8, left: 8),
+                                  child: RentCard(
+                                    rent: e,
+                                    onTap: () {
+                                      _handeInpectRent(context, e);
+                                    },
+                                  ),
+                                )),
+                          )
+                          .toList()
+                    ]),
+                  )
                 ]),
               );
             }
           },
         ));
-    // return Scaffold(
-
-    //   body: this.propertie_controller.fetchingState == AppStatus.LOADING
-    //   ? Center(
-    //     child: CircularIndicatorDefault(),
-    //   )
-    //   : Center(child: Text(this.propertie_controller.propertirDtatil?.label ?? 'n tem'))
-    //   ,
-    // );
-  }
-
-  _handeInpectRent(context, RentModel rent) {
-    showModalBottomSheet(
-      isScrollControlled: true,
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (builder) {
-        return new Modal(
-            size_height: 320.0,
-            show_top: false,
-            child: RentDetail(
-              rent: rent,
-            ));
-      },
-    );
   }
 }
