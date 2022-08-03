@@ -52,14 +52,15 @@ class _NewRentScrean extends State<NewRentScrean> {
 
   dispose() {
     print('Bateu no dispose');
-    // this.propertie_controller.removeListener(() {});
-    // this.nameControllert.dispose();
-    // this.phoneControllert.dispose();
-    // this.valueControllert.dispose();
-    // this.installmentControllert.dispose();
-    // this.initDateControlle.dispose();
-    // this.endDateControlle.dispose();
-    // this.hourDateControlle.dispose();
+    super.dispose();
+    this.propertie_controller.removeListener(() {});
+    this.nameControllert.dispose();
+    this.phoneControllert.dispose();
+    this.valueControllert.dispose();
+    this.installmentControllert.dispose();
+    this.initDateControlle.dispose();
+    this.endDateControlle.dispose();
+    this.hourDateControlle.dispose();
   }
 
   _handleValidade(String text) {
@@ -149,6 +150,7 @@ class _NewRentScrean extends State<NewRentScrean> {
 
     print(data);
     try {
+      this.currentSatus = AppStatus.LOADING;
       await this.propertie_controller.createRent(data);
 
       this.setState(() {});

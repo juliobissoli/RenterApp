@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class ImageBox extends StatelessWidget {
@@ -38,11 +39,19 @@ class ImageBox extends StatelessWidget {
                     NetworkImage(this.url_image ?? ''),
                 fit: BoxFit.cover)
             : null,
+
         // border: Border.all(
         //   color: Color.fromRGBO(250, 250, 250, 1),
         //   width: border_size ?? 2,
         // ),
       ),
+      child: !exist
+          ? Center(
+              child: Icon(
+              Icons.image,
+              color: Colors.grey,
+            ))
+          : null,
     );
   }
 }

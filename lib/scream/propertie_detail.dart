@@ -34,16 +34,16 @@ class _PropertieDetailState extends State<PropertieDetail> {
 
   final PropertieController propertie_controller = KiwiContainer().resolve();
 
-  // void initState() async {
-  //   print('Init state');
+  void initState() {
+    print('Init state');
 
-  //   // await propertie_controller.loadPropertieDetail(propertie_id)
-
-  //   // propertie_controller.addListener(() {
-  //   //   print('Atualiza');
-  //   //   setState((){});
-  //   // });
-  // }
+    // await propertie_controller.loadPropertieDetail(propertie_id)
+    super.initState();
+    propertie_controller.addListener(() {
+      print('Atualiza');
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

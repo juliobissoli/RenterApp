@@ -10,8 +10,8 @@ class PrortiesCard extends StatelessWidget {
   final bool small;
   final VoidCallback? onClock;
 
-
-  PrortiesCard({Key? key, required this.propertie, this.small = false, this.onClock})
+  PrortiesCard(
+      {Key? key, required this.propertie, this.small = false, this.onClock})
       : super();
 
   @override
@@ -61,6 +61,7 @@ class PrortiesCard extends StatelessWidget {
                   ImageBox(
                       size: this.small ? 80 : 100,
                       border_size: 1,
+                      exist: this.propertie.images.length > 0,
                       url_image: this.propertie.images.length > 0
                           ? this.propertie.images[0]
                           : null),
@@ -87,7 +88,8 @@ class PrortiesCard extends StatelessWidget {
                           shape: BadgeShape.square,
                           padding: const EdgeInsets.symmetric(
                               horizontal: 4, vertical: 2),
-                          badgeColor: handleGetBadjeColor(this.propertie.status),
+                          badgeColor:
+                              handleGetBadjeColor(this.propertie.status),
                           borderRadius: BorderRadius.circular(8),
                           badgeContent: Text(
                               handleGetBadjeLabel(this.propertie.status),

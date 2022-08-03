@@ -25,12 +25,15 @@ class PropertieController extends ChangeNotifier {
     notifyListeners();
   }
 
-  loadProrpeties() async {
-    this.setFetchingState(AppStatus.LOADING);
+  Future<List<PropertieModel>> loadProrpeties() async {
+    // this.setFetchingState(AppStatus.LOADING);
+    Future.delayed(Duration(milliseconds: 500));
     final dynamic res = await api.api_get('properties', null);
     (res as List)
         .forEach((el) => this.prorpertieList.add(PropertieModel.fromJson(el)));
-    this.setFetchingState(AppStatus.SUCCESS);
+    // this.setFetchingState(AppStatus.SUCCESS);
+
+    return this.prorpertieList;
   }
 
   Future<void> loadPropertieDetail(String id) async {
@@ -76,13 +79,14 @@ class PropertieController extends ChangeNotifier {
   }
 
   Future<PropertieModel> createPropertie(dynamic data) async {
-    this.setFetchingState(AppStatus.LOADING);
+    // this.setFetchingState(AppStatus.LOADING);
     await Future.delayed(Duration(seconds: 1));
 
     final rent = PropertieModel.fromMap(data);
     this.prorpertieList.add(rent);
     print(rent);
-    this.setFetchingState(AppStatus.SUCCESS);
+    // this.setFetchingState(AppStatus.SUCCESS);
+    notifyListeners();
 
     return rent;
   }
