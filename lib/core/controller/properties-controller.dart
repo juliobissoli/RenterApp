@@ -26,12 +26,20 @@ class PropertieController extends ChangeNotifier {
   }
 
   Future<List<PropertieModel>> loadProrpeties() async {
-    // this.setFetchingState(AppStatus.LOADING);
-    Future.delayed(Duration(milliseconds: 500));
-    final dynamic res = await api.api_get('properties', null);
-    (res as List)
-        .forEach((el) => this.prorpertieList.add(PropertieModel.fromJson(el)));
-    // this.setFetchingState(AppStatus.SUCCESS);
+    try {
+      this.setFetchingState(AppStatus.LOADING);
+      final res = await api.api_get("properties", null);
+      if (res.statusCode == 200) {
+        var list =
+            (res.data as List).map((e) => PropertieModel.fromJson(e)).toList();
+
+        this.prorpertieList = list;
+        this.setFetchingState(AppStatus.SUCCESS);
+      }
+    } catch (e) {
+      this.setFetchingState(AppStatus.ERROR);
+      print("Erro getStoneAPi -> $e");
+    }
 
     return this.prorpertieList;
   }
@@ -78,16 +86,21 @@ class PropertieController extends ChangeNotifier {
     return rent;
   }
 
-  Future<PropertieModel> createPropertie(dynamic data) async {
+  Future<void> createPropertie(dynamic data) async {
     // this.setFetchingState(AppStatus.LOADING);
     await Future.delayed(Duration(seconds: 1));
+    try {
+      print('Vai tentar add => $data');
+      final res = await this.api.api_post('properties', data);
+      print('Result =>  ${res.data}');
+      final propertie = PropertieModel.fromJson(res.data);
+      this.prorpertieList.add(propertie);
+      print(propertie);
+    } catch (e) {
+      print('Alguma coisa deu errado $e');
+    }
 
-    final rent = PropertieModel.fromMap(data);
-    this.prorpertieList.add(rent);
-    print(rent);
     // this.setFetchingState(AppStatus.SUCCESS);
     notifyListeners();
-
-    return rent;
   }
 }

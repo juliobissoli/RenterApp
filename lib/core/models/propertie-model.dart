@@ -34,13 +34,13 @@ class PropertieModel {
 
   factory PropertieModel.fromMap(Map<String, dynamic> map) {
     return PropertieModel(
-      id: map['id'],
+      id: map['_id'],
       address: AddressModal.fromMap(map['address']),
       status: propertieModelFromJson(map['status']),
       images: map['images'].cast<String>(),
       label: map['label'],
-      last_rents: List<RentModel>.from(
-          map['last_rents'].map((x) => RentModel.fromMap(x))),
+      last_rents:
+          List<RentModel>.from(map['rents'].map((x) => RentModel.fromMap(x))),
     );
 
     // images: List<String>.from(
@@ -50,13 +50,13 @@ class PropertieModel {
   factory PropertieModel.fromJson(Map<String, dynamic> map) {
     print(map);
     return PropertieModel(
-      id: map['id'],
+      id: map['_id'],
       label: map['label'],
       address: AddressModal.fromJson(map['address']),
       status: propertieModelFromJson(map['status']),
       images: List<String>.from(map['images']?.map((x) => x.toString())),
-      last_rents: List<RentModel>.from(
-          map['last_rents'].map((x) => RentModel.fromJson(x))),
+      last_rents:
+          List<RentModel>.from(map['rents'].map((x) => RentModel.fromJson(x))),
     );
   }
 }

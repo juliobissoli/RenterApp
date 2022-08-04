@@ -52,7 +52,6 @@ class _NewPropertirScreamState extends State<NewPropertirScream> {
       "id": "1234",
       "label": this.labelControllert.text,
       "status": 1,
-      "last_rents": [],
       "address": {
         "label": this.labelAddressControllert.text,
         "cep": this.cepControllert.text,
@@ -67,6 +66,7 @@ class _NewPropertirScreamState extends State<NewPropertirScream> {
     print(data);
     try {
       this.setState(() {});
+      print('Algo de erradp n esta certo => $data');
       await this.propertie_controller.createPropertie(data);
 
       await Future.delayed(Duration(seconds: 1));

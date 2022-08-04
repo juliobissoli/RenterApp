@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/date_symbol_data_http_request.dart';
 import 'package:intl/intl.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -39,6 +40,9 @@ class _NewRentScrean extends State<NewRentScrean> {
 
   bool isValidForm = false;
   initState() {
+    super.initState();
+    initializeDateFormatting('pt', 'BR');
+
     this.isValidForm = false;
     this.installmentControllert.text = '1';
     this.currentSatus = AppStatus.ENPYT;
