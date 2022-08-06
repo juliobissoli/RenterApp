@@ -256,7 +256,7 @@ class DBProvider {
   newRent(RentModel rent, String propertie_id) async {
     final db = await database;
     // final created_at = DateTime.now().toString();
-
+    print('rent => $rent');
     var res = await db.rawInsert(
         "INSERT Into rents ( propertie_id, date_init, date_end, status, client_name, client_phone, total_value, value_installments, installments, mode)"
         "VALUES ( ${int.parse(propertie_id)}, '${rent.date_init}', '${rent.date_end}' ,${rentStatusEncode(rent.status)} ,'${rent.client.name}' ,'${rent.client.phone}' ,${rent.total_value} ,${rent.value_installments} ,${rent.installments} ,${rentModelEncode(rent.mode)})  ");
@@ -269,14 +269,16 @@ class DBProvider {
     dynamic data = {
       "date_init": rentToMat['date_init'],
       "date_end": rentToMat['date_end'],
-      "status,": rentToMat['status'],
-      "client_name,": rent.client.name,
-      "client_phone,": rent.client.phone,
-      "total_value,": rent.total_value,
-      "value_installments,": rent.value_installments,
-      "installments,": rent.installments,
+      "status": rentToMat['status'],
+      "client_name": rent.client.name,
+      "client_phone": rent.client.phone,
+      "total_value": rent.total_value,
+      "value_installments": rent.value_installments,
+      "installments": rent.installments,
       "mode": rentToMat['mode'] // "propertie_id": int.parse(propertie_id),
     };
+
+    print('data $data');
 
     return await db.update('rents', data,
         where: '$propertie_id = ?', whereArgs: [int.parse(propertie_id)]);

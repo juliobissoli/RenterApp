@@ -54,19 +54,19 @@ class _NewRentScrean extends State<NewRentScrean> {
     // });
   }
 
-  // @override
-  // void dispose() {
-  //   print('Bateu no dispose');
-  //   super.dispose();
-  //   this.rent_controller.removeListener(() {});
-  //   this.nameControllert.dispose();
-  //   this.phoneControllert.dispose();
-  //   this.valueControllert.dispose();
-  //   this.installmentControllert.dispose();
-  //   this.initDateControlle.dispose();
-  //   this.endDateControlle.dispose();
-  //   this.hourDateControlle.dispose();
-  // }
+  @override
+  void dispose() {
+    super.dispose();
+    print('Bateu no dispose');
+    this.rent_controller.removeListener(() {});
+    this.nameControllert.dispose();
+    this.phoneControllert.dispose();
+    this.valueControllert.dispose();
+    this.installmentControllert.dispose();
+    this.initDateControlle.dispose();
+    this.endDateControlle.dispose();
+    this.hourDateControlle.dispose();
+  }
 
   _handleValidade(String text) {
     print(text);
@@ -148,7 +148,7 @@ class _NewRentScrean extends State<NewRentScrean> {
         "name": this.nameControllert.text,
         "phone": this.phoneControllert.text
       },
-      " value_installments": double.parse(this.valueControllert.text),
+      "value_installments": double.parse(this.valueControllert.text),
       "total_value": double.parse(this.valueControllert.text) *
           int.parse(this.installmentControllert.text),
       "installments": int.parse(this.installmentControllert.text),
@@ -158,9 +158,7 @@ class _NewRentScrean extends State<NewRentScrean> {
     print(data);
     try {
       this.currentSatus = AppStatus.LOADING;
-      await this
-          .rent_controller
-          .createRent(data, this.propertie_controller.propertirDtatil?.id);
+      await this.rent_controller.createRent(data, this.propertie_controller.propertirDtatil?.id);
 
       this.setState(() {});
 

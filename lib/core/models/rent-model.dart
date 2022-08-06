@@ -60,6 +60,8 @@ class RentModel {
     };
   }
 
+
+
   factory RentModel.fromMap(Map<String, dynamic> map) {
     return RentModel(
       id: map['id'],

@@ -50,6 +50,7 @@ class RentController extends ChangeNotifier {
 
       try {
         final rent = RentModel.fromMap(data);
+        print('mont=> $rent');
         this.db_local.newRent(rent, propertie_id);
 
         this.setFetchingState(AppStatus.LOADING);
@@ -71,6 +72,7 @@ class RentController extends ChangeNotifier {
     try {
       final res = await this.db_local.updateRent(rent, propertie_id);
       print('Atualização feita com sucesso: $res');
+      this.loadRent(propertie_id);
       this.setFetchingState(AppStatus.SUCCESS);
     } catch (e) {
       print('erro ao atualizar rent: $e');

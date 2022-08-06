@@ -46,7 +46,7 @@ class _PropertieDetailState extends State<PropertieDetail> {
 
     this
         .rent_controller
-        .loadRent(this.propertie_controller?.propertirDtatil?.id);
+        .loadRent(this.propertie_controller.propertirDtatil?.id);
     this.rent_controller.addListener(() {
       print('Atualiza');
       setState(() {});
