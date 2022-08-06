@@ -1,10 +1,13 @@
 import 'package:flutter/foundation.dart';
+import 'package:renter_app/core/database/db_local.dart';
 
 import '../../interfaces/status.dart';
 import '../models/rent-model.dart';
 import '../service/renter_api.dart';
 
 class RentController extends ChangeNotifier {
+  DBProvider db_local = DBProvider();
+
   AppStatus _fetchingState = AppStatus.ENPYT;
 
   AppStatus get fetchingState => _fetchingState;
@@ -24,32 +27,53 @@ class RentController extends ChangeNotifier {
   }
 
   Future<void> loadRent(String id) async {
-    dynamic teste = await api.api_get('rents', null);
+    this.setFetchingState(AppStatus.LOADING);
 
-    List<RentModel> rents =
-        (teste as List).map((e) => RentModel.fromJson(e)).toList();
-    // print('teste');
-
-    if (this.rentList.length == 0) {
-      this.rentList = rents;
+    try {
+      List<RentModel> res = await this.db_local.getRents(id);
+      print('Lista de akugueis: $res');
+      this.rentList = res;
+      this.setFetchingState(AppStatus.SUCCESS);
+    } catch (e) {
+      print('erro ao carregar rent: $e');
+      this.setFetchingState(AppStatus.ERROR);
     }
 
-    await Future.delayed(Duration(milliseconds: 500));
+    // dynamic teste = await api.api_get('rents', null);
 
-    this.setFetchingState(AppStatus.SUCCESS);
+    // List<RentModel> rents =
+    //     (teste as List).map((e) => RentModel.fromJson(e)).toList();
+    // // print('teste');
+
+    // if (this.rentList.length == 0) {
+    //   this.rentList = rents;
+    // }
+
+    // await Future.delayed(Duration(milliseconds: 500));
+
+    // this.setFetchingState(AppStatus.SUCCESS);
     // this.teste  = AppStatus.SUCCESS;
     // notifyListeners();
   }
 
-  Future<RentModel> createRent(dynamic data) async {
-    this.setFetchingState(AppStatus.LOADING);
-    await Future.delayed(Duration(seconds: 1));
+  Future<void> createRent(dynamic data, String? propertie_id) async {
+    if (propertie_id != null) {
+      this.setFetchingState(AppStatus.LOADING);
 
-    final rent = RentModel.fromMap(data);
-    this.rentList.insert(0, rent);
-    print(rent);
-    this.setFetchingState(AppStatus.SUCCESS);
+      try {
+        final rent = RentModel.fromMap(data);
+        this.db_local.newRent(rent, propertie_id);
 
-    return rent;
+        this.setFetchingState(AppStatus.LOADING);
+        await Future.delayed(Duration(seconds: 1));
+
+        this.rentList.insert(0, rent);
+        print(rent);
+        this.setFetchingState(AppStatus.SUCCESS);
+      } catch (e) {
+        print('erro ao cadastrar alugual: $e');
+        this.setFetchingState(AppStatus.ERROR);
+      }
+    }
   }
 }

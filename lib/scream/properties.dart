@@ -28,7 +28,9 @@ class _PropertiesScreamState extends State<PropertiesScream> {
     super.initState();
     propertie_controller.addListener(() {
       setState(() {
-        // _handleLoadProperties();
+        if (this.propertie_controller.fetchingState == AppStatus.SUCCESS) {
+          _handleLoadProperties();
+        }
       });
       print('Atualiza');
     });

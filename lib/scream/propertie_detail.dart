@@ -54,6 +54,11 @@ class _PropertieDetailState extends State<PropertieDetail> {
   }
 
   @override
+  void dispose() {
+    this.rent_controller.removeListener(() {});
+  }
+
+  @override
   Widget build(BuildContext context) {
     Map arguments = ModalRoute.of(context)?.settings.arguments as Map;
 

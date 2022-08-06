@@ -35,68 +35,37 @@ class PropertieController extends ChangeNotifier {
     try {
       final res = await this.db_local.getProperties();
       print('Res local => $res');
-      this.prorpertieList.addAll(res);
+      this.prorpertieList = res;
       // this.prorpertieList.add(PropertieModel.fromJson(res))
-    } catch (e) {}
-
-    // Future.delayed(Duration(milliseconds: 500));
-    // final dynamic res = await api.api_get('properties', null);
-    // (res as List)
-    //     .forEach((el) => this.prorpertieList.add(PropertieModel.fromJson(el)));
-    // this.setFetchingState(AppStatus.SUCCESS);
+    } catch (e) {
+      print('erro ao carregar imoves: $e');
+    }
 
     return this.prorpertieList;
   }
 
-  // Future<void> loadPropertieDetail(String id) async {
-  //   PropertieModel propertie;
-
-  //   dynamic teste = await api.api_get('rents', null);
-
-  //   // List<RentModel> rents =
-  //   //     (teste as List).map((e) => RentModel.fromJson(e)).toList();
-  //   // // print('teste');
-
-  //   // if (this.rentSelected.length == 0) {
-  //   //   this.rentSelected = rents;
-  //   // }
-
-  //   await Future.delayed(Duration(milliseconds: 500));
-
-  //   dynamic res = await api.api_get('properties', null);
-  //   (res as List).forEach((el) => {
-  //         el['last_rents'] = teste,
-  //         propertie = PropertieModel.fromJson(el),
-  //         if (propertie.id == id)
-  //           {
-  //             this.propertirDtatil = propertie,
-  //           }
-  //       });
-
-  //   // this.setFetchingState(AppStatus.SUCCESS);
-  //   // this.teste  = AppStatus.SUCCESS;
-  //   // notifyListeners();
-  // }
-
   Future<PropertieModel> createPropertie(dynamic data) async {
     // this.setFetchingState(AppStatus.LOADING);
-    await Future.delayed(Duration(seconds: 1));
+    // await Future.delayed(Duration(seconds: 1));
 
     final propertie = PropertieModel.fromMap(data);
+    this.setFetchingState(AppStatus.LOADING);
 
     try {
       print('Vai add no db');
       final res = await db_local.newProperties(propertie);
+      this.setFetchingState(AppStatus.SUCCESS);
 
       print('Add ==> $res');
     } catch (e) {
       print('Alguma coisa deu errado ==> $e');
+      this.setFetchingState(AppStatus.ERROR);
     }
 
-    this.prorpertieList.insert(0, propertie);
+    // this.prorpertieList.insert(0, propertie);
     print(propertie);
     // this.setFetchingState(AppStatus.SUCCESS);
-    notifyListeners();
+    // notifyListeners();
 
     return propertie;
   }

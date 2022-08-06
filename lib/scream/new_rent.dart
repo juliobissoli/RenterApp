@@ -11,6 +11,7 @@ import 'package:renter_app/core/controller/rent_controller.dart';
 import 'package:renter_app/core/models/rent-model.dart';
 import 'package:renter_app/interfaces/status.dart';
 import 'package:renter_app/utils/showToats.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class NewRentScrean extends StatefulWidget {
   @override
@@ -19,6 +20,8 @@ class NewRentScrean extends StatefulWidget {
 
 class _NewRentScrean extends State<NewRentScrean> {
   final RentController rent_controller = KiwiContainer().resolve();
+  final PropertieController propertie_controller = KiwiContainer().resolve();
+
   AppStatus currentSatus = AppStatus.ENPYT;
 
   List<dynamic> renyMoldes = [
@@ -51,19 +54,19 @@ class _NewRentScrean extends State<NewRentScrean> {
     // });
   }
 
-  @override
-  void dispose() {
-    print('Bateu no dispose');
-    super.dispose();
-    this.rent_controller.removeListener(() {});
-    this.nameControllert.dispose();
-    this.phoneControllert.dispose();
-    this.valueControllert.dispose();
-    this.installmentControllert.dispose();
-    this.initDateControlle.dispose();
-    this.endDateControlle.dispose();
-    this.hourDateControlle.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   print('Bateu no dispose');
+  //   super.dispose();
+  //   this.rent_controller.removeListener(() {});
+  //   this.nameControllert.dispose();
+  //   this.phoneControllert.dispose();
+  //   this.valueControllert.dispose();
+  //   this.installmentControllert.dispose();
+  //   this.initDateControlle.dispose();
+  //   this.endDateControlle.dispose();
+  //   this.hourDateControlle.dispose();
+  // }
 
   _handleValidade(String text) {
     print(text);
@@ -82,6 +85,8 @@ class _NewRentScrean extends State<NewRentScrean> {
   }
 
   Future<String> _handleSelectDate() async {
+    FocusManager.instance.primaryFocus?.unfocus();
+
     DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -143,8 +148,8 @@ class _NewRentScrean extends State<NewRentScrean> {
         "name": this.nameControllert.text,
         "phone": this.phoneControllert.text
       },
-      "total_value": double.parse(this.valueControllert.text),
-      "value_installments": double.parse(this.valueControllert.text) *
+      " value_installments": double.parse(this.valueControllert.text),
+      "total_value": double.parse(this.valueControllert.text) *
           int.parse(this.installmentControllert.text),
       "installments": int.parse(this.installmentControllert.text),
       "mode": rentModelEncode(this.mooldSelected),
@@ -153,7 +158,9 @@ class _NewRentScrean extends State<NewRentScrean> {
     print(data);
     try {
       this.currentSatus = AppStatus.LOADING;
-      await this.rent_controller.createRent(data);
+      await this
+          .rent_controller
+          .createRent(data, this.propertie_controller.propertirDtatil?.id);
 
       this.setState(() {});
 
@@ -187,6 +194,8 @@ class _NewRentScrean extends State<NewRentScrean> {
 
   @override
   Widget build(BuildContext context) {
+    initializeDateFormatting();
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(

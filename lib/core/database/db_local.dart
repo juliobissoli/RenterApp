@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:renter_app/core/models/rent-model.dart';
+import 'package:renter_app/interfaces/rent.dart';
 import 'package:renter_app/interfaces/status.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -67,7 +69,7 @@ class DBProvider {
         "propertie_id INTEGER,"
         "date_init TEXT,"
         "date_end TEXT,"
-        "status TEXT,"
+        "status INTEGER,"
         "client_name TEXT,"
         "client_phone TEXT,"
         "total_value NUMERIC,"
@@ -93,10 +95,6 @@ class DBProvider {
     var res = await db.rawInsert(
         "INSERT Into properties (address_label, address_cep, address_city, address_public_place, status, label)"
         "VALUES ('${propertie.address.label}', '${propertie.address.cep}', '${propertie.address.city}', '${propertie.address.public_place}', ${propertiStatusDecode(propertie.status)}, '${propertie.label}')");
-
-    // var res = await db.rawInsert(
-    //     "INSERT Into stones (address_label, address_cep, address_city, address_public_place, status, label)"
-    //     "VALUES ( ${propertie.address.label}, '${propertie.name}', '${propertie.type}', ${propertie.number}, ${propertie.height}, ${propertie.width}, ${propertie.weight}, ${propertie.length}, '${created_at}' ,'saved')");
     return res;
   }
 
@@ -137,43 +135,51 @@ class DBProvider {
       "properties",
       // where: 'user_id = ?',
       // whereArgs: [this._user_id],
+      orderBy: "id DESC",
     );
 
     List<PropertieModel> list = [];
-    print('No db ==> $res');
-
     await Future.wait(res.map((e) => setDataPropertie(e, list)));
-    print('No db ==> $res');
 
     return list.toList();
   }
 
-  Future setDataPropertie(dynamic propertie, List<dynamic> list) async {
-    var images = [];
+  Future setDataPropertie(dynamic propertie, List<PropertieModel> list) async {
+    try {
+      List<dynamic> images = [];
+      images = await getMedia(propertie['id']);
 
-    print('Data q cgego ==> $propertie');
+      // videos = await getMedia(propertie['id'], 'video', true);
+
+      dynamic data = {
+        // ...propertie,'
+        'id': propertie['id'].toString(),
+        'label': propertie['label'],
+        'status': propertie['status'],
+        'images': images
+            .map(
+              (el) => el['path'],
+            )
+            .toList(),
+        'address': {
+          'label': propertie['address_label'],
+          'cep': propertie['address_cep'],
+          'city': propertie['address_city'],
+          'public_place': propertie['address_public_place']
+        }
+      };
+      list.add(PropertieModel.fromJson(data));
+    } catch (e) {
+      print('Erro ao carregar imagem: $e');
+    }
+
     // var videos = [];
-
-    images = await getMedia(propertie['id']);
-    // videos = await getMedia(propertie['id'], 'video', true);
-
-    list.add(PropertieModel.fromJson({
-      ...propertie,
-      'images': images,
-      'address': {
-        'label': propertie['address_label'],
-        'cep': propertie['address_cep'],
-        'city': propertie['address_city'],
-        'public_place': propertie['address_public_place']
-      }
-    }));
   }
 
   Future<List<dynamic>> getMedia(int id) async {
     final db = await database;
     List<Map> res =
         await db.rawQuery('SELECT * FROM images WHERE propertie_id = $id');
-
     return res;
   }
 
@@ -211,5 +217,59 @@ class DBProvider {
       print('Delete media erro -> $e');
       // Error in getting access to the file.
     }
+  }
+
+  Future<List<RentModel>> getRents(String propertie_id) async {
+    print('Bateu aqui=============');
+    final db = await database;
+    List<dynamic> res = [];
+    res = await db.query(
+      "rents",
+      where: 'propertie_id = ?',
+      whereArgs: [int.parse(propertie_id)],
+      orderBy: "id DESC",
+    );
+
+    print('res => $res');
+    List<RentModel> list = res
+        .map((el) => RentModel.fromJson({
+              'id': el['id'].toString(),
+              // "propertie_id": int.parse(propertie_id),
+              "date_init": el['date_init'],
+              "date_end": el['date_end'],
+              "status": el['status'],
+              "client": {
+                "name": el["client_name"],
+                "phone": el["client_phone"]
+              },
+              "total_value": el['total_value'].toDouble(),
+              "value_installments": el['value_installments'].toDouble(),
+              "installments": el['installments'],
+              "mode": el['mode']
+            }))
+        .toList();
+    // await Future.wait(res.map((e) => setDataPropertie(e, list)));
+
+    return list;
+  }
+
+  //   newRent(PropertieModel propertie) async {
+  //   final db = await database;
+  //   // final created_at = DateTime.now().toString();
+
+  //   var res = await db.rawInsert(
+  //       "INSERT Into properties (address_label, address_cep, address_city, address_public_place, status, label)"
+  //       "VALUES ('${propertie.address.label}', '${propertie.address.cep}', '${propertie.address.city}', '${propertie.address.public_place}', ${propertiStatusDecode(propertie.status)}, '${propertie.label}')");
+  //   return res;
+  // }
+
+  newRent(RentModel rent, String propertie_id) async {
+    final db = await database;
+    // final created_at = DateTime.now().toString();
+
+    var res = await db.rawInsert(
+        "INSERT Into rents ( propertie_id, date_init, date_end, status, client_name, client_phone, total_value, value_installments, installments, mode)"
+        "VALUES ( ${int.parse(propertie_id)}, '${rent.date_init}', '${rent.date_end}' ,${rentStatusEncode(rent.status)} ,'${rent.client.name}' ,'${rent.client.phone}' ,${rent.total_value} ,${rent.value_installments} ,${rent.installments} ,${rentModelEncode(rent.mode)})  ");
+    return res;
   }
 }
