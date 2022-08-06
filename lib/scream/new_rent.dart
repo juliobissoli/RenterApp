@@ -7,6 +7,7 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:renter_app/components/communs/btn.dart';
 import 'package:renter_app/components/communs/inout_primary.dart';
 import 'package:renter_app/core/controller/properties-controller.dart';
+import 'package:renter_app/core/controller/rent_controller.dart';
 import 'package:renter_app/core/models/rent-model.dart';
 import 'package:renter_app/interfaces/status.dart';
 import 'package:renter_app/utils/showToats.dart';
@@ -17,7 +18,7 @@ class NewRentScrean extends StatefulWidget {
 }
 
 class _NewRentScrean extends State<NewRentScrean> {
-  final PropertieController propertie_controller = KiwiContainer().resolve();
+  final RentController rent_controller = KiwiContainer().resolve();
   AppStatus currentSatus = AppStatus.ENPYT;
 
   List<dynamic> renyMoldes = [
@@ -43,17 +44,18 @@ class _NewRentScrean extends State<NewRentScrean> {
     this.installmentControllert.text = '1';
     this.currentSatus = AppStatus.ENPYT;
 
-    // this.propertie_controller.addListener(() {
+    // this.rent_controller.addListener(() {
     //   print('Add o listener');
     //   print('controler ==> ${installmentControllert.text}');
     //   setState(() {});
     // });
   }
 
-  dispose() {
+  @override
+  void dispose() {
     print('Bateu no dispose');
     super.dispose();
-    this.propertie_controller.removeListener(() {});
+    this.rent_controller.removeListener(() {});
     this.nameControllert.dispose();
     this.phoneControllert.dispose();
     this.valueControllert.dispose();
@@ -151,7 +153,7 @@ class _NewRentScrean extends State<NewRentScrean> {
     print(data);
     try {
       this.currentSatus = AppStatus.LOADING;
-      await this.propertie_controller.createRent(data);
+      await this.rent_controller.createRent(data);
 
       this.setState(() {});
 

@@ -8,6 +8,11 @@ import 'package:renter_app/components/communs/inout_primary.dart';
 import 'package:renter_app/core/controller/properties-controller.dart';
 import 'package:renter_app/interfaces/status.dart';
 
+import '../interfaces/status.dart';
+import '../interfaces/status.dart';
+import '../interfaces/status.dart';
+import '../interfaces/status.dart';
+
 class NewPropertirScream extends StatefulWidget {
   @override
   _NewPropertirScreamState createState() => _NewPropertirScreamState();
@@ -15,6 +20,8 @@ class NewPropertirScream extends StatefulWidget {
 
 class _NewPropertirScreamState extends State<NewPropertirScream> {
   final PropertieController propertie_controller = KiwiContainer().resolve();
+
+  AppStatus current_status = AppStatus.ENPYT;
 
   bool isValidForm = false;
 
@@ -62,18 +69,21 @@ class _NewPropertirScreamState extends State<NewPropertirScream> {
       "images": [],
     };
 
-    print(data);
-
-    print(data);
+    this.current_status = AppStatus.LOADING;
+    this.setState(() {});
     try {
-      this.setState(() {});
       await this.propertie_controller.createPropertie(data);
 
       await Future.delayed(Duration(seconds: 1));
-      this.showToats('Aluguel cadastrado', true);
+      this.showToats('Imóvel cadastrado', true);
+
+      this.current_status = AppStatus.SUCCESS;
+      this.setState(() {});
 
       Navigator.of(context).pop();
     } catch (e) {
+      this.current_status = AppStatus.ERROR;
+
       this.setState(() {});
 
       print(e);
@@ -193,22 +203,14 @@ class _NewPropertirScreamState extends State<NewPropertirScream> {
         ),
       ),
       bottomNavigationBar: SafeArea(
-        child: propertie_controller.fetchingState == AppStatus.LOADING
-            ? Container(
-                width: double.infinity,
-                height: 42,
-                child: Center(
-                    // decoration: BoxDecoration(color: Colors.red),
-                    // width: 48,
-                    child: CircularProgressIndicator()),
-              )
-            : Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Btn(
-                  label: 'Cadastrar imóvels',
-                  func: isValidForm ? _handleAddProrpertie : null,
-                ),
-              ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Btn(
+            isLoading: this.current_status == AppStatus.LOADING,
+            label: 'Cadastrar imóvels',
+            func: isValidForm ? _handleAddProrpertie : null,
+          ),
+        ),
       ),
     );
   }

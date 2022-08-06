@@ -11,7 +11,7 @@ class PropertieModel {
   final List<String> images;
   final PropertiesStatus status;
   final String label;
-  final List<RentModel> last_rents;
+  final List<RentModel>? last_rents;
 
   PropertieModel(
       {required this.id,
@@ -19,7 +19,7 @@ class PropertieModel {
       required this.images,
       required this.status,
       required this.label,
-      required this.last_rents});
+      this.last_rents});
 
   Map<String, dynamic> toMap() {
     return {
@@ -28,7 +28,7 @@ class PropertieModel {
       'status': status,
       'images': images.toList(),
       'label': label,
-      'last_rents': last_rents.map((x) => x.toMap()).toList(),
+      'last_rents': last_rents?.map((x) => x.toMap()).toList(),
     };
   }
 

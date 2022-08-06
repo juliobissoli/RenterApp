@@ -14,7 +14,7 @@ class PropertieController extends ChangeNotifier {
   List<PropertieModel> prorpertieList = [];
 
   PropertieModel? propertirDtatil;
-  List<RentModel> rentSelected = [];
+  // List<RentModel> rentSelected = [];
 
   RenterApi get api => RenterApi.singleton;
 
@@ -41,13 +41,13 @@ class PropertieController extends ChangeNotifier {
 
     dynamic teste = await api.api_get('rents', null);
 
-    List<RentModel> rents =
-        (teste as List).map((e) => RentModel.fromJson(e)).toList();
-    // print('teste');
+    // List<RentModel> rents =
+    //     (teste as List).map((e) => RentModel.fromJson(e)).toList();
+    // // print('teste');
 
-    if (this.rentSelected.length == 0) {
-      this.rentSelected = rents;
-    }
+    // if (this.rentSelected.length == 0) {
+    //   this.rentSelected = rents;
+    // }
 
     await Future.delayed(Duration(milliseconds: 500));
 
@@ -66,24 +66,12 @@ class PropertieController extends ChangeNotifier {
     // notifyListeners();
   }
 
-  Future<RentModel> createRent(dynamic data) async {
-    this.setFetchingState(AppStatus.LOADING);
-    await Future.delayed(Duration(seconds: 1));
-
-    final rent = RentModel.fromMap(data);
-    this.rentSelected.add(rent);
-    print(rent);
-    this.setFetchingState(AppStatus.SUCCESS);
-
-    return rent;
-  }
-
   Future<PropertieModel> createPropertie(dynamic data) async {
     // this.setFetchingState(AppStatus.LOADING);
     await Future.delayed(Duration(seconds: 1));
 
     final rent = PropertieModel.fromMap(data);
-    this.prorpertieList.add(rent);
+    this.prorpertieList.insert(0, rent);
     print(rent);
     // this.setFetchingState(AppStatus.SUCCESS);
     notifyListeners();

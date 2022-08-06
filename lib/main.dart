@@ -29,17 +29,5 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.dark,
       darkTheme: CustimTheme.darkTheme,
     );
-
-//     MultiProvider(
-//         providers: [
-//           ChangeNotifierProvider<PropertieController>(
-//             create: (_) => PropertieController(),
-//           ),
-//         ],
-//         child:
-
-// ,
-
-//         );
   }
 }

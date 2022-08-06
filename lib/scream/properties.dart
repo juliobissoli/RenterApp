@@ -94,6 +94,8 @@ class _PropertiesScreamState extends State<PropertiesScream> {
                                   propertie: e,
                                   small: true,
                                   onClock: () => {
+                                    this.propertie_controller.propertirDtatil =
+                                        e,
                                     Navigator.pushNamed(
                                         context, '/propertie_detail',
                                         arguments: {"propertie_id": e.id})
@@ -104,62 +106,6 @@ class _PropertiesScreamState extends State<PropertiesScream> {
                         ),
                   ),
                 ],
-              )
-
-        // FutureBuilder(
-        //     future: propertie_controller.loadProrpeties(),
-        //     builder: (BuildContext context, AsyncSnapshot snapshot) {
-        //       if (snapshot.connectionState == ConnectionState.waiting) {
-        //         return Center(child: CircularIndicatorDefault());
-        //         //  ];
-        //       } else {
-        //         return Column(
-        //           mainAxisAlignment: MainAxisAlignment.start,
-        //           crossAxisAlignment: CrossAxisAlignment.start,
-        //           children: [
-        //             Padding(
-        //               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        //               child: Text(
-        //                 'Imóveis',
-        //                 style: TextStyle(fontSize: 28),
-        //               ),
-        //             ),
-        //             Expanded(
-        //               child: ListView(
-        //                   padding: const EdgeInsets.all(8),
-        //                   children: propertie_controller.prorpertieList
-        //                       .map((e) => PrortiesCard(
-        //                             propertie: e,
-        //                             small: true,
-        //                             onClock: () => {
-        //                               Navigator.pushNamed(
-        //                                   context, '/propertie_detail',
-        //                                   arguments: {"propertie_id": e.id})
-        //                             },
-        //                           ))
-        //                       .toList()
-        //                   //  [PrortiesCard(), PrortiesCard()],
-        //                   ),
-        //             ),
-        //           ],
-        //         );
-        //       }
-        //     }
-        //     // child: ListView(
-        //     //     padding: const EdgeInsets.all(8),
-        //     //     children: propertie_controller.prorpertieList
-        //     //         .map((e) => PrortiesCard(
-        //     //               propertie: e,
-        //     //               small: true,
-        //     //               onClock: () => {
-        //     //                 Navigator.pushNamed(context, '/propertie_detail',
-        //     //                     arguments: {"propertie_id": e.id})
-        //     //               },
-        //     //             ))
-        //     //         .toList()
-        //     //     //  [PrortiesCard(), PrortiesCard()],
-        //     //     ),
-        //     ),
-        );
+              ));
   }
 }
