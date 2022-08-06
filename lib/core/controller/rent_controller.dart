@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/foundation.dart';
 import 'package:renter_app/core/database/db_local.dart';
 
@@ -26,34 +28,20 @@ class RentController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> loadRent(String id) async {
-    this.setFetchingState(AppStatus.LOADING);
+  Future<void> loadRent(String? id) async {
+    if (id != null) {
+      this.setFetchingState(AppStatus.LOADING);
 
-    try {
-      List<RentModel> res = await this.db_local.getRents(id);
-      print('Lista de akugueis: $res');
-      this.rentList = res;
-      this.setFetchingState(AppStatus.SUCCESS);
-    } catch (e) {
-      print('erro ao carregar rent: $e');
-      this.setFetchingState(AppStatus.ERROR);
+      try {
+        List<RentModel> res = await this.db_local.getRents(id);
+        print('Lista de akugueis: $res');
+        this.rentList = res;
+        this.setFetchingState(AppStatus.SUCCESS);
+      } catch (e) {
+        print('erro ao carregar rent: $e');
+        this.setFetchingState(AppStatus.ERROR);
+      }
     }
-
-    // dynamic teste = await api.api_get('rents', null);
-
-    // List<RentModel> rents =
-    //     (teste as List).map((e) => RentModel.fromJson(e)).toList();
-    // // print('teste');
-
-    // if (this.rentList.length == 0) {
-    //   this.rentList = rents;
-    // }
-
-    // await Future.delayed(Duration(milliseconds: 500));
-
-    // this.setFetchingState(AppStatus.SUCCESS);
-    // this.teste  = AppStatus.SUCCESS;
-    // notifyListeners();
   }
 
   Future<void> createRent(dynamic data, String? propertie_id) async {
@@ -74,6 +62,19 @@ class RentController extends ChangeNotifier {
         print('erro ao cadastrar alugual: $e');
         this.setFetchingState(AppStatus.ERROR);
       }
+    }
+  }
+
+  Future<void> updateRent(RentModel rent, String propertie_id) async {
+    this.setFetchingState(AppStatus.LOADING);
+
+    try {
+      final res = await this.db_local.updateRent(rent, propertie_id);
+      print('Atualização feita com sucesso: $res');
+      this.setFetchingState(AppStatus.SUCCESS);
+    } catch (e) {
+      print('erro ao atualizar rent: $e');
+      this.setFetchingState(AppStatus.ERROR);
     }
   }
 }

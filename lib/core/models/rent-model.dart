@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:renter_app/core/models/client-model.dart';
 import 'package:renter_app/interfaces/rent.dart';
 import 'package:renter_app/interfaces/status.dart';
@@ -48,14 +49,14 @@ class RentModel {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'date_init': date_init,
-      'date_end': date_end,
-      'status': status,
-      'client': client,
+      'date_init': DateFormat('yyyy-MM-dd kk:mm').format(date_init),
+      'date_end': DateFormat('yyyy-MM-dd kk:mm').format(date_end),
+      'status': rentStatusEncode(status),
+      'client': ClientModal(name: client.name, phone: client.phone).toMap(),
       'total_value': total_value,
       'value_installments': value_installments,
       'installments': installments,
-      'mode': mode,
+      'mode': rentModelEncode(mode),
     };
   }
 

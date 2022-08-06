@@ -2,14 +2,19 @@ import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
+import 'package:kiwi/kiwi.dart';
 import 'package:renter_app/components/communs/title-subtitle.dart';
+import 'package:renter_app/core/controller/rent_controller.dart';
 import 'package:renter_app/core/models/rent-model.dart';
 import 'package:renter_app/interfaces/rent.dart';
 import 'package:renter_app/interfaces/status.dart';
 
 class RentDetail extends StatefulWidget {
+  final RentController rent_controller = KiwiContainer().resolve();
+
   final RentModel rent;
-  RentDetail({Key? key, required this.rent});
+  final String? propertie_id;
+  RentDetail({Key? key, required this.rent, required this.propertie_id});
 
   @override
   State<RentDetail> createState() => _RentDetailState();
@@ -24,6 +29,14 @@ class _RentDetailState extends State<RentDetail> {
     stateMachineRent.add(widget.rent.status);
     stateMachineRent.addAll(rentStatusStateMachine(widget.rent.status));
     print(stateMachineRent);
+  }
+
+  _handleSetNewStats(RentStatus? newValue) {
+    if (newValue != null) {
+      setState(() {
+        dropdownValue = newValue!;
+      });
+    }
   }
 
   Widget build(BuildContext context) {
@@ -54,9 +67,7 @@ class _RentDetailState extends State<RentDetail> {
                 borderRadius: BorderRadius.circular(10),
                 underline: SizedBox(),
                 onChanged: (RentStatus? newValue) {
-                  setState(() {
-                    dropdownValue = newValue!;
-                  });
+                  _handleSetNewStats(newValue);
                 },
                 items: stateMachineRent
                     .map<DropdownMenuItem<RentStatus>>((RentStatus value) {

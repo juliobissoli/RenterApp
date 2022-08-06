@@ -46,7 +46,7 @@ class _PropertieDetailState extends State<PropertieDetail> {
 
     this
         .rent_controller
-        .loadRent(this.propertie_controller?.propertirDtatil?.id ?? '-');
+        .loadRent(this.propertie_controller?.propertirDtatil?.id);
     this.rent_controller.addListener(() {
       print('Atualiza');
       setState(() {});
@@ -62,7 +62,7 @@ class _PropertieDetailState extends State<PropertieDetail> {
   Widget build(BuildContext context) {
     Map arguments = ModalRoute.of(context)?.settings.arguments as Map;
 
-    final String propertie_id = arguments['propertie_id'];
+    // final String propertie_id = arguments['propertie_id'];
     // if(propertie_id.length > 0){
     // this.propertie_controller.loadPropertieDetail(propertie_id);
     // }
@@ -77,6 +77,7 @@ class _PropertieDetailState extends State<PropertieDetail> {
               show_top: false,
               child: RentDetail(
                 rent: rent,
+                propertie_id: this.propertie_controller?.propertirDtatil?.id,
               ));
         },
       );
