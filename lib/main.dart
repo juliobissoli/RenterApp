@@ -9,6 +9,8 @@ import 'package:provider/provider.dart';
 
 void main() {
   Intl.defaultLocale = 'pt_BR';
+  WidgetsFlutterBinding.ensureInitialized();
+
   createDependencies();
   runApp(const MyApp());
 }
