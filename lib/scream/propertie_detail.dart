@@ -13,6 +13,7 @@ import 'package:renter_app/components/communs/title-buttom.dart';
 import 'package:renter_app/components/communs/title-subtitle.dart';
 import 'package:renter_app/components/home/card_balance_propertie.dart';
 import 'package:renter_app/components/propertie/badge-propertie.dart';
+import 'package:renter_app/components/propertie/new_image_modal.dart';
 import 'package:renter_app/components/propertie/rent_card.dart';
 import 'package:renter_app/components/propertie/rent_detail.dart';
 import 'package:renter_app/core/controller/properties-controller.dart';
@@ -137,12 +138,28 @@ class _PropertieDetailState extends State<PropertieDetail> {
       );
     }
 
+    _handleAddImage(){
+       showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        backgroundColor: Colors.transparent,
+        builder: (builder) {
+          return new Modal(
+                size_height: 400,
+                title: 'Adicionar imagem',
+              // show_top: false,
+              child: NewImageModal(),
+          );
+          }
+        );
+    }
+
     return Scaffold(
         appBar: AppBar(
             // title: Text(propertie_controller.propertirDtatil?.label ?? ''),
             leading: IconButton(
           icon: Icon(CupertinoIcons.back),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => Navigator.pushNamed(context, '/home'),
         )),
         body: currentStatus == AppStatus.LOADING
             ? Center(child: CircularIndicatorDefault())
@@ -185,6 +202,7 @@ class _PropertieDetailState extends State<PropertieDetail> {
                       onLongPress: (url) {
                         _handeInpectImage(context, url);
                       },
+                      newImageFunc:  _handleAddImage,
                       list: propertie_controller.propertirDtatil?.images ?? [],
                       size: 230,
                     ),

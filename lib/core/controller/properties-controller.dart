@@ -69,4 +69,20 @@ class PropertieController extends ChangeNotifier {
 
     return propertie;
   }
+
+  Future addImage(String propertie_id, String url)async {
+    if(propertie_id != '-'){
+
+      try {
+      this.setFetchingState(AppStatus.LOADING);
+        
+      final res = await this.db_local.addImage(url, propertie_id);
+      this.setFetchingState(AppStatus.SUCCESS);
+  
+      } catch (e) {
+      this.setFetchingState(AppStatus.ERROR);
+        print('Erro ao adicionar imagen: $e');
+      }
+    }
+  }
 }

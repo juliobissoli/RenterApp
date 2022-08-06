@@ -15,6 +15,8 @@ class InputPrimary extends StatelessWidget {
   final TextEditingController? controller_input;
   final List<TextInputFormatter>? inputFormatters;
   final String? prefixText;
+  final double? height;
+  final int? maxLin;
 
   InputPrimary(
       {Key? key,
@@ -30,13 +32,15 @@ class InputPrimary extends StatelessWidget {
       this.onTap,
       this.capitalization = TextCapitalization.sentences,
       this.prefixText,
+      this.height,
+      this.maxLin,
       this.inputFormatters})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 48,
+      height: this.height ?? 48,
       child: TextField(
         controller: controller_input,
         textCapitalization: capitalization,
@@ -46,6 +50,7 @@ class InputPrimary extends StatelessWidget {
         inputFormatters: inputFormatters,
         keyboardType: type_input,
         obscureText: this.type == "password",
+        maxLines: maxLin,
         decoration: InputDecoration(
           // hintText: 'Email',
           // hasFloatingPlaceholder:

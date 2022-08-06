@@ -7,7 +7,7 @@ RentStatus rentModelFromJson(int num) {
   if (num == 0) return RentStatus.SCHEDULE;
   if (num == 1) return RentStatus.COMFIRMED;
   if (num == 2) return RentStatus.FINIXE;
-  if (num == -1) return RentStatus.CANCELED;
+  if (num == 3) return RentStatus.CANCELED;
   return RentStatus.EMPYT;
 }
 

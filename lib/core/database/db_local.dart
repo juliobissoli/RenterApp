@@ -98,18 +98,19 @@ class DBProvider {
     return res;
   }
 
-  addImage(List<String> medias, int propertie_id) async {
+  addImage(String url, String propertie_id) async {
     final db = await database;
 
     String values = "VALUES";
     int i;
-    for (i = 0; i < medias.length; i++) {
-      values +=
-          '(${propertie_id}, "${medias[i]})${i == (medias.length - 1) ? ';' : ','}';
-    }
+    // for (i = 0; i < medias.length; i++) {
+    //   values +=
+    //       '(${propertie_id}, "${medias[i]})${i == (medias.length - 1) ? ';' : ','}';
+    // }
 
     var res = await db
-        .rawInsert("INSERT Into images (propertie_id, path)" "${values}");
+        .rawInsert("INSERT Into images (propertie_id, path)" "VALUES ('${propertie_id}', '${url}')");
+        print('resposta => $res');
     return res;
   }
 
