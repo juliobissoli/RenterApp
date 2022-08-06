@@ -213,7 +213,7 @@ class _NewRentScrean extends State<NewRentScrean> {
                   SizedBox(height: 32),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
-                    child: Text('Sobre o cliente:',
+                    child: Text('Sobre o locador:',
                         style: TextStyle(fontSize: 22)),
                   ),
                   InputPrimary(

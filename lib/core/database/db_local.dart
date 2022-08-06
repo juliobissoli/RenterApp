@@ -282,6 +282,6 @@ class DBProvider {
     print('data $data');
 
     return await db.update('rents', data,
-        where: '$propertie_id = ?', whereArgs: [int.parse(propertie_id)]);
+        where: 'id = ?', whereArgs: [int.parse(rent.id)]);
   }
 }

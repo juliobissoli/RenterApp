@@ -50,7 +50,7 @@ class InputPrimary extends StatelessWidget {
         inputFormatters: inputFormatters,
         keyboardType: type_input,
         obscureText: this.type == "password",
-        maxLines: maxLin,
+        // maxLines: maxLin ?? 2,
         decoration: InputDecoration(
           // hintText: 'Email',
           // hasFloatingPlaceholder:

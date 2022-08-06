@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:renter_app/components/communs/btn.dart';
 import 'package:renter_app/components/communs/inout_primary.dart';
@@ -32,13 +33,24 @@ class _NewImageModalState extends State<NewImageModal> {
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
-          InputPrimary(
-            height: 100,
-            maxLin: 3,
-                   type_input: TextInputType.text,
-                      label: 'copie o link aqui',
-                      controller_input: urlControllert,
-                      ),
+               TextField(
+        controller: urlControllert,
+        keyboardType: TextInputType.text,
+        maxLines: 3,
+        decoration: InputDecoration(
+
+          fillColor: Theme.of(context).scaffoldBackgroundColor,
+          focusColor: Theme.of(context).scaffoldBackgroundColor,
+          labelText: 'copie o link aqui',
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            gapPadding: 5,
+            borderSide: new BorderSide(
+                color: Theme.of(context).backgroundColor, width: 1),
+          ),
+        ),
+      ),
+
       SizedBox(height: 16),
                       Btn(func: () => {
                         this.propertie_controller.addImage(this.propert_id, urlControllert.text)}, label: 'Adicionar imagen')
