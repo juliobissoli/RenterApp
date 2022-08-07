@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:renter_app/components/communs/circular_indicator_default.dart';
 import 'package:renter_app/components/home/app-bar-custon.dart';
 import 'package:renter_app/core/controller/properties-controller.dart';
+import 'package:renter_app/core/controller/user-controller.dart';
 import 'package:renter_app/interfaces/status.dart';
 
 import '../components/properties/properties-card.dart';
@@ -17,13 +18,16 @@ class PropertiesScream extends StatefulWidget {
 
 class _PropertiesScreamState extends State<PropertiesScream> {
   final PropertieController propertie_controller = KiwiContainer().resolve();
+  final UserController user_controller = KiwiContainer().resolve();
 
+  // String nameUser = '';
   AppStatus currentStatus = AppStatus.ENPYT;
 
   @override
   void initState() {
     // TODO: implement initState
-
+    //  this.nameUser = user_controller.getNameWelcome();
+    
     _handleLoadProperties();
     super.initState();
     propertie_controller.addListener(() {
@@ -53,10 +57,9 @@ class _PropertiesScreamState extends State<PropertiesScream> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBarCustom(
-          title: 'Julio',
+          title: user_controller.getNameWelcome(),
           is_visible: true,
           func: () {
-            print('Q função e essa');
             Navigator.pushNamed(context, '/setting');
           },
           widith: MediaQuery.of(context).size.width,
@@ -82,7 +85,7 @@ class _PropertiesScreamState extends State<PropertiesScream> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: Text(
                       'Imóveis',
                       style: TextStyle(fontSize: 28),

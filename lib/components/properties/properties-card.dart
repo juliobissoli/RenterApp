@@ -52,52 +52,56 @@ class PrortiesCard extends StatelessWidget {
         onTap: this.onClock,
         child: Card(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(30),
             ),
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              this.propertie.label,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(fontSize: 18),
+                            ),
+                            Text(
+                              this.propertie.address.label,
+                              style: TextStyle(color: Colors.grey),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ]),
+                      Badge(
+                        toAnimate: false,
+                        shape: BadgeShape.square,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 4, vertical: 2),
+                        badgeColor: handleGetBadjeColor(this.propertie.status),
+                        borderRadius: BorderRadius.circular(8),
+                        badgeContent: Text(
+                            handleGetBadjeLabel(this.propertie.status),
+                            style: TextStyle(fontSize: 8)),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
                   ImageBox(
-                      size: this.small ? 80 : 100,
-                      border_size: 1,
+                      size: MediaQuery.of(context).size.width - 32,
+                      border_radius: 20.0,
+                      height: 200,
                       exist: this.propertie.images.length > 0,
                       url_image: this.propertie.images.length > 0
                           ? this.propertie.images[0]
                           : null),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  Flexible(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          this.propertie.label,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(fontSize: 18),
-                        ),
-                        Text(
-                          this.propertie.address.label,
-                          style: TextStyle(color: Colors.grey),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        Badge(
-                          toAnimate: false,
-                          shape: BadgeShape.square,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 4, vertical: 2),
-                          badgeColor:
-                              handleGetBadjeColor(this.propertie.status),
-                          borderRadius: BorderRadius.circular(8),
-                          badgeContent: Text(
-                              handleGetBadjeLabel(this.propertie.status),
-                              style: TextStyle(fontSize: 8)),
-                        )
-                      ],
-                    ),
-                  )
                 ],
               ),
             )),

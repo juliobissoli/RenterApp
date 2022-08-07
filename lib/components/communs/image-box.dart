@@ -4,7 +4,9 @@ import 'package:flutter/widgets.dart';
 class ImageBox extends StatelessWidget {
   final double size;
   final String? image_name;
-  final double? border_size;
+  final double? width;
+  final double? height;
+  final double? border_radius;
   final String? url_image;
   final bool? is_local;
   final bool exist;
@@ -12,8 +14,10 @@ class ImageBox extends StatelessWidget {
   ImageBox(
       {Key? key,
       this.size = 60,
+      this.width,
+      this.height,
       this.image_name,
-      this.border_size = 0.0,
+      this.border_radius = 16,
       this.url_image,
       this.is_local = true,
       this.exist = true})
@@ -23,11 +27,11 @@ class ImageBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       // width: MediaQuery.of(context).size.width * 0.35,
-      width: size,
-      height: size,
+      width:  width ?? size,
+      height: height ?? size,
       decoration: BoxDecoration(
-        color: Color(0xff000000),
-        borderRadius: BorderRadius.circular(16),
+        color: Color(0xff333333),
+        borderRadius: BorderRadius.circular(this.border_radius ?? 16),
         image: exist
             ? DecorationImage(
                 image:
@@ -40,7 +44,7 @@ class ImageBox extends StatelessWidget {
 
         // border: Border.all(
         //   color: Color.fromRGBO(250, 250, 250, 1),
-        //   width: border_size ?? 2,
+        //   width: border_radius ?? 2,
         // ),
       ),
       child: !exist

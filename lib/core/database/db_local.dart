@@ -48,6 +48,13 @@ class DBProvider {
   }
 
   _createTables(Database db) async {
+        await db.execute("CREATE TABLE users ("
+        "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+        "name TEXT,"
+        "email TEXT,"
+        "password TEXT"
+        ")");
+
     await db.execute("CREATE TABLE properties ("
         "id INTEGER PRIMARY KEY AUTOINCREMENT,"
         "address_label TEXT,"
@@ -88,6 +95,35 @@ class DBProvider {
     //     ")");
   }
 
+  newUser(String name, String email, String password) async {
+    final db = await database;
+    // final created_at = DateTime.now().toString();
+
+    List<dynamic> validate = await getUser(email);
+
+    if(validate != null && validate.length >0){
+      print('Usuário já existe');
+      return -1;
+    }
+
+    final res = await db.rawInsert(
+        "INSERT Into users (name, email, password)"
+        "VALUES ('${name}', '${email}', '${password}')");
+    return res;
+  }
+
+  Future<List<dynamic>> getUser(String email) async {
+    final db = await database;
+      final  res = await db.query(
+      "users",
+      where: 'email = ?',
+      whereArgs: [email],
+    );
+
+    return res;
+  }
+
+
   newProperties(PropertieModel propertie) async {
     final db = await database;
     // final created_at = DateTime.now().toString();
@@ -113,6 +149,7 @@ class DBProvider {
         print('resposta => $res');
     return res;
   }
+
 
   // addMedias(List<StoneMediaModel> medias, int stone_id, String type) async {
   //   final db = await database;
