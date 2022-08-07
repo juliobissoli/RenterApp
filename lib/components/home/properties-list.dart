@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:renter_app/core/models/propertie-model.dart';
 
 import '../communs/title-buttom.dart';
-import '../properties/properties-card.dart';
+import '../propertie/properties-card.dart';
 
 class HomePrpertiesList extends StatefulWidget {
   final List<PropertieModel> propertieLis;

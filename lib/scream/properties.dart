@@ -5,11 +5,12 @@ import 'package:kiwi/kiwi.dart';
 import 'package:provider/provider.dart';
 import 'package:renter_app/components/communs/circular_indicator_default.dart';
 import 'package:renter_app/components/home/app-bar-custon.dart';
+import 'package:renter_app/components/propertie/title-scream.dart';
 import 'package:renter_app/core/controller/properties-controller.dart';
 import 'package:renter_app/core/controller/user-controller.dart';
 import 'package:renter_app/interfaces/status.dart';
 
-import '../components/properties/properties-card.dart';
+import '../components/propertie/properties-card.dart';
 
 class PropertiesScream extends StatefulWidget {
   @override
@@ -56,14 +57,14 @@ class _PropertiesScreamState extends State<PropertiesScream> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBarCustom(
-          title: user_controller.getNameWelcome(),
-          is_visible: true,
-          func: () {
-            Navigator.pushNamed(context, '/setting');
-          },
-          widith: MediaQuery.of(context).size.width,
-        ),
+        // appBar: AppBarCustom(
+        //   title: user_controller.getNameWelcome(),
+        //   is_visible: true,
+        //   func: () {
+        //     Navigator.pushNamed(context, '/setting');
+        //   },
+        //   widith: MediaQuery.of(context).size.width,
+        // ),
         floatingActionButton: new FloatingActionButton(
           backgroundColor: Colors.deepPurpleAccent,
           shape:
@@ -84,13 +85,16 @@ class _PropertiesScreamState extends State<PropertiesScream> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Text(
-                      'Imóveis',
-                      style: TextStyle(fontSize: 28),
-                    ),
-                  ),
+                  SizedBox(height: 72),
+                  TitlePropertieScream(),
+                  // Padding(
+                  //   padding: const EdgeInsets.all(16.0),
+                  //   child: Text(
+                  //     'Imóveis',
+                  //     style: TextStyle(fontSize: 32),
+                  //   ),
+                  // ),
+                  // SizedBox(height: 16),
                   Expanded(
                     child: ListView(
                         padding: const EdgeInsets.all(8),
