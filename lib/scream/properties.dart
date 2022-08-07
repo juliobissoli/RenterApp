@@ -21,14 +21,14 @@ class _PropertiesScreamState extends State<PropertiesScream> {
   final PropertieController propertie_controller = KiwiContainer().resolve();
   final UserController user_controller = KiwiContainer().resolve();
 
-  // String nameUser = '';
+  String key_filter_properties = ''; // String nameUser = '';
   AppStatus currentStatus = AppStatus.ENPYT;
 
   @override
   void initState() {
     // TODO: implement initState
     //  this.nameUser = user_controller.getNameWelcome();
-    
+
     _handleLoadProperties();
     super.initState();
     propertie_controller.addListener(() {
@@ -52,6 +52,13 @@ class _PropertiesScreamState extends State<PropertiesScream> {
       this.currentStatus = AppStatus.ERROR;
       print('Ta errpr $e');
     }
+  }
+
+  _handleFilter(String str) {
+    setState(() {
+      this.key_filter_properties = str;
+    print('str => $str');
+    });
   }
 
   @override
@@ -85,24 +92,27 @@ class _PropertiesScreamState extends State<PropertiesScream> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 72),
-                  TitlePropertieScream(),
-                  // Padding(
-                  //   padding: const EdgeInsets.all(16.0),
-                  //   child: Text(
-                  //     'Imóveis',
-                  //     style: TextStyle(fontSize: 32),
-                  //   ),
-                  // ),
-                  // SizedBox(height: 16),
+                  SizedBox(height: 32),
+                  TitlePropertieScream(
+                    tap_setting: () => Navigator.pushNamed(context, '/setting'),
+                    changed_call: _handleFilter,
+                  ),
+                  SizedBox(height: 16),
                   Expanded(
                     child: ListView(
                         padding: const EdgeInsets.all(8),
-                        children: propertie_controller.prorpertieList
-                            .map((e) => PrortiesCard(
+                        children: 
+                        (
+                          this.key_filter_properties != ''
+                          ? propertie_controller.prorpertieList.where((el) => el.label.contains(this.key_filter_properties))
+                          : propertie_controller.prorpertieList)
+                        .map((e) => PrortiesCard(
                                   propertie: e,
                                   small: true,
                                   onClock: () => {
+                                    this
+                                        .propertie_controller
+                                        .propertie_selected_id = e.id,
                                     this.propertie_controller.propertirDtatil =
                                         e,
                                     Navigator.pushNamed(

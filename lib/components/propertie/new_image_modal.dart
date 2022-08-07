@@ -22,7 +22,7 @@ class _NewImageModalState extends State<NewImageModal> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    propert_id = this.propertie_controller?.propertirDtatil?.id ?? '--'; 
+    propert_id = this.propertie_controller.propertie_selected_id; 
 
   }
 

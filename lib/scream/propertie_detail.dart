@@ -47,7 +47,7 @@ class _PropertieDetailState extends State<PropertieDetail> {
 
     this
         .rent_controller
-        .loadRent(this.propertie_controller.propertirDtatil?.id);
+        .loadRent(this.propertie_controller.propertie_selected_id);
     this.rent_controller.addListener(() {
       print('Atualiza');
       setState(() {});
@@ -78,7 +78,7 @@ class _PropertieDetailState extends State<PropertieDetail> {
               show_top: false,
               child: RentDetail(
                 rent: rent,
-                propertie_id: this.propertie_controller?.propertirDtatil?.id,
+                propertie_id: this.propertie_controller.propertie_selected_id,
               ));
         },
       );
@@ -159,7 +159,9 @@ class _PropertieDetailState extends State<PropertieDetail> {
             // title: Text(propertie_controller.propertirDtatil?.label ?? ''),
             leading: IconButton(
           icon: Icon(CupertinoIcons.back),
-          onPressed: () => Navigator.pushNamed(context, '/home'),
+          onPressed: () => {
+            this.propertie_controller.propertie_selected_id = '-1',
+            Navigator.pushNamed(context, '/home')},
         )),
         body: currentStatus == AppStatus.LOADING
             ? Center(child: CircularIndicatorDefault())

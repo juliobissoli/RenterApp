@@ -158,7 +158,7 @@ class _NewRentScrean extends State<NewRentScrean> {
     print(data);
     try {
       this.currentSatus = AppStatus.LOADING;
-      await this.rent_controller.createRent(data, this.propertie_controller.propertirDtatil?.id);
+      await this.rent_controller.createRent(data, this.propertie_controller.propertie_selected_id);
 
       this.setState(() {});
 

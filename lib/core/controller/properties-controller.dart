@@ -18,6 +18,8 @@ class PropertieController extends ChangeNotifier {
   List<PropertieModel> prorpertieList = [];
 
   PropertieModel? propertirDtatil;
+
+  String propertie_selected_id = '-1';
   // List<RentModel> rentSelected = [];
 
   RenterApi get api => RenterApi.singleton;
@@ -71,7 +73,7 @@ class PropertieController extends ChangeNotifier {
   }
 
   Future addImage(String propertie_id, String url)async {
-    if(propertie_id != '-'){
+    if(propertie_id != '-1'){
 
       try {
       this.setFetchingState(AppStatus.LOADING);
