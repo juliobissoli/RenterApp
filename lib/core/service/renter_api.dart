@@ -35,7 +35,7 @@ class RenterApi {
     final String response =
         await rootBundle.loadString('assets/data/${file}.json');
     final data = await json.decode(response);
-    print(data);
+    // print(data);
     return data;
   }
 

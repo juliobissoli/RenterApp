@@ -2,20 +2,26 @@ import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
+import 'package:kiwi/kiwi.dart';
 import 'package:renter_app/components/communs/title-subtitle.dart';
+import 'package:renter_app/core/controller/rent_controller.dart';
 import 'package:renter_app/core/models/rent-model.dart';
 import 'package:renter_app/interfaces/rent.dart';
 import 'package:renter_app/interfaces/status.dart';
 
 class RentDetail extends StatefulWidget {
   final RentModel rent;
-  RentDetail({Key? key, required this.rent});
+  final String? propertie_id;
+  RentDetail({Key? key, required this.rent, required this.propertie_id});
 
   @override
   State<RentDetail> createState() => _RentDetailState();
 }
 
 class _RentDetailState extends State<RentDetail> {
+  final RentController rent_controller = KiwiContainer().resolve();
+  
+
   @override
   RentStatus dropdownValue = RentStatus.EMPYT;
   List<RentStatus> stateMachineRent = [];
@@ -26,9 +32,30 @@ class _RentDetailState extends State<RentDetail> {
     print(stateMachineRent);
   }
 
+  Future _handleSetNewStats(RentStatus? newValue) async {
+    if (newValue != null && newValue != widget.rent.status && widget.propertie_id != null) {
+      var r = widget.rent;
+      var copyRent = new RentModel(id: r.id,
+       date_init: r.date_init,
+       date_end: r.date_end,
+       status: newValue,
+       client: r.client,
+       total_value: r.total_value,
+       value_installments: r.value_installments,
+       installments: r.installments,
+       mode: r.mode);
+      this.rent_controller.updateRent(copyRent, widget.propertie_id ?? '');
+      setState(() {
+        print(newValue);
+        dropdownValue = newValue;
+      });
+    }
+  }
+
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
+
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,9 +81,7 @@ class _RentDetailState extends State<RentDetail> {
                 borderRadius: BorderRadius.circular(10),
                 underline: SizedBox(),
                 onChanged: (RentStatus? newValue) {
-                  setState(() {
-                    dropdownValue = newValue!;
-                  });
+                  _handleSetNewStats(newValue);
                 },
                 items: stateMachineRent
                     .map<DropdownMenuItem<RentStatus>>((RentStatus value) {

@@ -13,12 +13,16 @@ import 'package:renter_app/components/communs/title-buttom.dart';
 import 'package:renter_app/components/communs/title-subtitle.dart';
 import 'package:renter_app/components/home/card_balance_propertie.dart';
 import 'package:renter_app/components/propertie/badge-propertie.dart';
+import 'package:renter_app/components/propertie/new_image_modal.dart';
 import 'package:renter_app/components/propertie/rent_card.dart';
 import 'package:renter_app/components/propertie/rent_detail.dart';
 import 'package:renter_app/core/controller/properties-controller.dart';
+import 'package:renter_app/core/controller/rent_controller.dart';
 import 'package:renter_app/core/models/propertie-model.dart';
 import 'package:renter_app/core/models/rent-model.dart';
 import 'package:renter_app/interfaces/status.dart';
+
+import '../interfaces/status.dart';
 
 class PropertieDetail extends StatefulWidget {
   // final String propertie_id;
@@ -33,23 +37,33 @@ class _PropertieDetailState extends State<PropertieDetail> {
   final AppStatus currentStatus = AppStatus.ENPYT;
 
   final PropertieController propertie_controller = KiwiContainer().resolve();
+  final RentController rent_controller = KiwiContainer().resolve();
 
-  // void initState() async {
-  //   print('Init state');
+  void initState() {
+    print('Init state');
 
-  //   // await propertie_controller.loadPropertieDetail(propertie_id)
+    // await propertie_controller.loadPropertieDetail(propertie_id)
+    super.initState();
 
-  //   // propertie_controller.addListener(() {
-  //   //   print('Atualiza');
-  //   //   setState((){});
-  //   // });
-  // }
+    this
+        .rent_controller
+        .loadRent(this.propertie_controller.propertie_selected_id);
+    this.rent_controller.addListener(() {
+      print('Atualiza');
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    this.rent_controller.removeListener(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
     Map arguments = ModalRoute.of(context)?.settings.arguments as Map;
 
-    final String propertie_id = arguments['propertie_id'];
+    // final String propertie_id = arguments['propertie_id'];
     // if(propertie_id.length > 0){
     // this.propertie_controller.loadPropertieDetail(propertie_id);
     // }
@@ -64,6 +78,7 @@ class _PropertieDetailState extends State<PropertieDetail> {
               show_top: false,
               child: RentDetail(
                 rent: rent,
+                propertie_id: this.propertie_controller.propertie_selected_id,
               ));
         },
       );
@@ -117,26 +132,25 @@ class _PropertieDetailState extends State<PropertieDetail> {
                       ],
                     ),
                   ),
-
-                  // Padding(
-                  //   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  //   child: BtnOutlined(
-                  //       func: () {
-                  //         print('Compartilgar');
-                  //       },
-                  //       label: 'Compartihar'),
-                  // ),
-                  // SizedBox(height: 16),
-                  // BtnOutlined(
-                  //     mode: "danger",
-                  //     func: () {
-                  //       print('Excluir');
-                  //     },
-                  //     label: 'Excluir')
                 ],
               ));
         },
       );
+    }
+
+    _handleAddImage() {
+      showModalBottomSheet(
+          isScrollControlled: true,
+          context: context,
+          backgroundColor: Colors.transparent,
+          builder: (builder) {
+            return new Modal(
+              size_height: 400,
+              title: 'Adicionar imagem',
+              // show_top: false,
+              child: NewImageModal(),
+            );
+          });
     }
 
     return Scaffold(
@@ -144,19 +158,14 @@ class _PropertieDetailState extends State<PropertieDetail> {
             // title: Text(propertie_controller.propertirDtatil?.label ?? ''),
             leading: IconButton(
           icon: Icon(CupertinoIcons.back),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => {
+            this.propertie_controller.propertie_selected_id = '-1',
+            Navigator.pushNamed(context, '/home')
+          },
         )),
-        body: FutureBuilder(
-          future: propertie_controller.loadPropertieDetail(propertie_id),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            //  List<Widget> children;
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              //  children: [
-              return Center(child: CircularIndicatorDefault());
-              //  ];
-            } else {
-              //  children: [
-              return SingleChildScrollView(
+        body: currentStatus == AppStatus.LOADING
+            ? Center(child: CircularIndicatorDefault())
+            : SingleChildScrollView(
                 child: Column(children: [
                   Padding(
                     padding: const EdgeInsets.all(16.0),
@@ -195,75 +204,14 @@ class _PropertieDetailState extends State<PropertieDetail> {
                       onLongPress: (url) {
                         _handeInpectImage(context, url);
                       },
+                      newImageFunc: _handleAddImage,
                       list: propertie_controller.propertirDtatil?.images ?? [],
                       size: 230,
                     ),
                   ),
-                  // Padding(
-                  //   padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  //   child: Card(
-                  //     child: Padding(
-                  //       padding: const EdgeInsets.all(8),
-                  //       child: Column(
-                  //         children: [
-                  //           Row(
-                  //             mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  //             children: [
-                  //               Expanded(
-                  //                 child: Padding(
-                  //                     padding: const EdgeInsets.all(8),
-                  //                     child: TitleSubtitle(
-                  //                         title: '2000', subtitle: 'renda')),
-                  //               ),
-                  //               VerticalDivider(
-                  //                 color: Colors.red,
-                  //               ),
-                  //               Expanded(
-                  //                   child: Padding(
-                  //                 padding: const EdgeInsets.all(8),
-                  //                 child: TitleSubtitle(
-                  //                   title: '2000',
-                  //                   subtitle: 'despesa',
-                  //                 ),
-                  //               ))
-                  //             ],
-                  //           ),
-                  //           Divider(),
-                  //           Text(
-                  //             'Saldo desse mês (R\$ 0,00)',
-                  //             style: TextStyle(color: Colors.grey),
-                  //           ),
-                  //         ],
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                  //
                   SizedBox(
                     height: 16,
                   ),
-                  // Center(
-                  //   child: Padding(
-                  //     padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  //     child: Row(
-                  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //       children: [
-                  //         Text(
-                  //           'Alugueis',
-                  //           style: TextStyle(fontSize: 22),
-                  //         ),
-                  //         IconButton(
-                  //             // color: Colors.deepPurpleAccent,
-                  //             onPressed: () {
-                  //               print('Add aluguel');
-                  //               Navigator.pushNamed(context, '/new_rent');
-                  //               // _handeInpectStone(context);
-                  //             },
-                  //             icon: Icon(Icons.add))
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
                   Card(
                     child: Column(children: [
                       Padding(
@@ -283,7 +231,7 @@ class _PropertieDetailState extends State<PropertieDetail> {
                           ],
                         ),
                       ),
-                      ...propertie_controller.rentSelected
+                      ...rent_controller.rentList
                           .map(
                             ((e) => Padding(
                                   padding: const EdgeInsets.only(
@@ -296,13 +244,36 @@ class _PropertieDetailState extends State<PropertieDetail> {
                                   ),
                                 )),
                           )
-                          .toList()
+                          .toList(),
+                      if (rent_controller.rentList.length == 0)
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: CardSecondary(
+                            child: InkWell(
+                              onTap: () =>
+                                  Navigator.pushNamed(context, '/new_rent'),
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Center(
+                                    child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                      Icon(
+                                        Icons.home,
+                                        color: Colors.grey,
+                                      ),
+                                      Text('Cadastrado primeiro aluguel!')
+                                    ])),
+                              ),
+                            ),
+                          ),
+                        )
                     ]),
                   )
                 ]),
-              );
-            }
-          },
-        ));
+              ));
   }
 }

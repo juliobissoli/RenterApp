@@ -1,6 +1,3 @@
-import 'dart:io';
-
-// import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 // import 'package:stone_box_app/theme/styles.dart';
 
@@ -13,9 +10,10 @@ class CarouselImages extends StatefulWidget {
 }
 
 class _CarouselImagesState extends State<CarouselImages> {
-  final PageController page_controller = PageController(initialPage: 0, keepPage: false);
+  final PageController page_controller =
+      PageController(initialPage: 0, keepPage: false);
   var page_selecte = 0;
-  
+
   @override
   void initState() {
     // TODO: implement initState
@@ -35,15 +33,13 @@ class _CarouselImagesState extends State<CarouselImages> {
             children: widget.list
                 .map((image) => Container(
                       decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image:  NetworkImage(image),
-                              fit: BoxFit.cover),
-                          // borderRadius: BorderRadius.only(
-                          //   topLeft: const Radius.circular(20.0),
-                          //   topRight: const Radius.circular(20.0),
-                          // )
-                          
-                          ),
+                        image: DecorationImage(
+                            image: NetworkImage(image), fit: BoxFit.cover),
+                        // borderRadius: BorderRadius.only(
+                        //   topLeft: const Radius.circular(20.0),
+                        //   topRight: const Radius.circular(20.0),
+                        // )
+                      ),
                     ))
                 .toList()),
         Container(

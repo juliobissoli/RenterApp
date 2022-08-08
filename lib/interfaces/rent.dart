@@ -7,8 +7,17 @@ RentStatus rentModelFromJson(int num) {
   if (num == 0) return RentStatus.SCHEDULE;
   if (num == 1) return RentStatus.COMFIRMED;
   if (num == 2) return RentStatus.FINIXE;
-  if (num == -1) return RentStatus.CANCELED;
+  if (num == 3) return RentStatus.CANCELED;
   return RentStatus.EMPYT;
+}
+
+int rentStatusEncode(RentStatus num) {
+  if (num == RentStatus.SCHEDULE) return 0;
+  if (num == RentStatus.COMFIRMED) return 1;
+  if (num == RentStatus.FINIXE) return 2;
+  if (num == RentStatus.CANCELED) return 3;
+  if (num == RentStatus.EMPYT) return -1;
+  return -1;
 }
 
 Color rentGetColor(RentStatus num) {

@@ -30,12 +30,12 @@ class _SttingsSrceamState extends State<SttingsSrceam> {
               children: [
                 SizedBox(height: 100),
                 TitleSubtitle(
-                    title: 'Julio Bissoli',
+                    title: this.user_controller.username,
                     titleStyle: TextStyle(fontSize: 32),
                     subtitle: 'Nome'),
                 SizedBox(height: 32),
                 TitleSubtitle(
-                    title: 'admin@admin.com',
+                    title: this.user_controller.email,
                     titleStyle: TextStyle(fontSize: 32),
                     subtitle: 'Email'),
                 SizedBox(height: 64),

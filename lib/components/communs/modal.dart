@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 
 class Modal extends StatelessWidget {
   // var children = List<Widget>;
-  Widget child;
-  final show_top;
-  final size_height;
-  Modal({required this.child, this.show_top = true, this.size_height = 500});
+  final Widget child;
+  final bool? show_top;
+  final double? size_height;
+  final String? title;
+  Modal({required this.child, this.show_top = true, this.size_height = 500.0, this.title = "Bottom Modal"});
 
   @override
   Widget build(BuildContext context) {
@@ -30,14 +31,14 @@ class Modal extends StatelessWidget {
         alignment: Alignment.topLeft,
         child: Column(
           children: <Widget>[
-            show_top
+            show_top ?? false
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Container(
                         margin: EdgeInsets.all(16),
                         child: Text(
-                          "Bottom Modal",
+                         this.title ??  "Bottom Modal",
                           style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w900,
