@@ -14,3 +14,12 @@ administração de locação de imóveis pessoal, por meio de um aplicativo móv
 # Tecnologías utilizadas:
 
 Flutter...
+
+
+## Instalação
+
+fvm install 2.10.4
+
+fvm flutter pub get
+
+fvm flutter run
