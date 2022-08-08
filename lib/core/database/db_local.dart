@@ -147,35 +147,12 @@ class DBProvider {
   addImage(String url, String propertie_id) async {
     final db = await database;
 
-    // String values = "VALUES";
-    // int i;
-    // for (i = 0; i < medias.length; i++) {
-    //   values +=
-    //       '(${propertie_id}, "${medias[i]})${i == (medias.length - 1) ? ';' : ','}';
-    // }
-
-    final String created_at = DateFormat('dd MMM yyyy').format(DateTime.now());
-    print('date image => $created_at');
-    var res = await db.rawInsert(
-        "INSERT Into images (propertie_id, path, created_at, is_favorite)"
-        "VALUES ('${propertie_id}', '${url}', '${created_at}', ${0})");
+    var res = await db
+        .rawInsert("INSERT Into images (propertie_id, path, is_favorite)"
+            "VALUES ('${propertie_id}', '${url}', ${0})");
     print('resposta => $res');
     return res;
   }
-
-  // addMedias(List<StoneMediaModel> medias, int stone_id, String type) async {
-  //   final db = await database;
-  //   String values = "VALUES";
-  //   int i;
-  //   for (i = 0; i < medias.length; i++) {
-  //     values +=
-  //         '(${stone_id}, "${medias[i].path}", ${medias[i].is_favoryt ? 1 : 0}, "${type}")${i == (medias.length - 1) ? ';' : ','}';
-  //   }
-
-  //   var res = await db.rawInsert(
-  //       "INSERT Into medias (stone_id, path, is_favorite, type)" "${values}");
-  //   return res;
-  // }
 
   Future<List<PropertieModel>> getProperties() async {
     print('Bateu aqui=============');
@@ -332,5 +309,17 @@ class DBProvider {
 
     return await db.update('rents', data,
         where: 'id = ?', whereArgs: [int.parse(rent.id)]);
+  }
+
+  Future<int> changePassword(String password) async {
+    final db = await database;
+    dynamic data = {
+      "password": password,
+    };
+
+    print('data $data');
+
+    return await db
+        .update('users', data, where: 'id = ?', whereArgs: [this._user_id]);
   }
 }

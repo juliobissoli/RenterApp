@@ -121,4 +121,12 @@ class UserController with ChangeNotifier {
           (last_leter != null ? last_leter[0] + '.' : '');
     }
   }
+
+  Future changePassword(String new_password) async {
+    try {
+      this.db_local.changePassword(new_password);
+    } catch (e) {
+      print('Erro ao alterar senha: $e');
+    }
+  }
 }
