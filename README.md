@@ -11,6 +11,10 @@
 O Renter e uma plataforma que visa prover serviços de gerência e
 administração de locação de imóveis pessoal, por meio de um aplicativo móvel.
 
+# Principais funcionalidades
+- Gerencia de imoveis (CRUD)
+- Gerencia de alugueis (CRUD)
+
 # Tecnologías utilizadas:
 
 Flutter...
