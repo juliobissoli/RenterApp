@@ -138,20 +138,19 @@ class _PropertieDetailState extends State<PropertieDetail> {
       );
     }
 
-    _handleAddImage(){
-       showModalBottomSheet(
-        isScrollControlled: true,
-        context: context,
-        backgroundColor: Colors.transparent,
-        builder: (builder) {
-          return new Modal(
-                size_height: 400,
-                title: 'Adicionar imagem',
+    _handleAddImage() {
+      showModalBottomSheet(
+          isScrollControlled: true,
+          context: context,
+          backgroundColor: Colors.transparent,
+          builder: (builder) {
+            return new Modal(
+              size_height: 400,
+              title: 'Adicionar imagem',
               // show_top: false,
               child: NewImageModal(),
-          );
-          }
-        );
+            );
+          });
     }
 
     return Scaffold(
@@ -161,7 +160,8 @@ class _PropertieDetailState extends State<PropertieDetail> {
           icon: Icon(CupertinoIcons.back),
           onPressed: () => {
             this.propertie_controller.propertie_selected_id = '-1',
-            Navigator.pushNamed(context, '/home')},
+            Navigator.pushNamed(context, '/home')
+          },
         )),
         body: currentStatus == AppStatus.LOADING
             ? Center(child: CircularIndicatorDefault())
@@ -204,7 +204,7 @@ class _PropertieDetailState extends State<PropertieDetail> {
                       onLongPress: (url) {
                         _handeInpectImage(context, url);
                       },
-                      newImageFunc:  _handleAddImage,
+                      newImageFunc: _handleAddImage,
                       list: propertie_controller.propertirDtatil?.images ?? [],
                       size: 230,
                     ),
@@ -244,173 +244,36 @@ class _PropertieDetailState extends State<PropertieDetail> {
                                   ),
                                 )),
                           )
-                          .toList()
+                          .toList(),
+                      if (rent_controller.rentList.length == 0)
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: CardSecondary(
+                            child: InkWell(
+                              onTap: () =>
+                                  Navigator.pushNamed(context, '/new_rent'),
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Center(
+                                    child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                      Icon(
+                                        Icons.home,
+                                        color: Colors.grey,
+                                      ),
+                                      Text('Cadastrado primeiro aluguel!')
+                                    ])),
+                              ),
+                            ),
+                          ),
+                        )
                     ]),
                   )
                 ]),
-              )
-
-        // FutureBuilder(
-        //   future: propertie_controller.loadPropertieDetail(propertie_id),
-        //   builder: (BuildContext context, AsyncSnapshot snapshot) {
-        //     //  List<Widget> children;
-        //     if (snapshot.connectionState == ConnectionState.waiting) {
-        //       //  children: [
-        //       return Center(child: CircularIndicatorDefault());
-        //       //  ];
-        //     } else {
-        //       //  children: [
-        //       return
-        //        SingleChildScrollView(
-        //         child: Column(children: [
-        //           Padding(
-        //             padding: const EdgeInsets.all(16.0),
-        //             child: Row(
-        //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //               children: [
-        //                 Column(
-        //                   crossAxisAlignment: CrossAxisAlignment.start,
-        //                   children: [
-        //                     Text(
-        //                       propertie_controller.propertirDtatil?.label ?? '',
-        //                       style: TextStyle(
-        //                           fontSize: 24, fontWeight: FontWeight.w200),
-        //                     ),
-        //                     Text(
-        //                       propertie_controller
-        //                               .propertirDtatil?.address.label ??
-        //                           '',
-        //                       style: TextStyle(color: Colors.grey),
-        //                     ),
-        //                   ],
-        //                 ),
-        //                 BadgePropertie(
-        //                     status: this
-        //                             .propertie_controller
-        //                             .propertirDtatil
-        //                             ?.status ??
-        //                         PropertiesStatus.RENTED)
-        //               ],
-        //             ),
-        //           ),
-        //           Container(
-        //             width: double.infinity,
-        //             height: MediaQuery.of(context).size.width - 130,
-        //             child: ListImagens(
-        //               onLongPress: (url) {
-        //                 _handeInpectImage(context, url);
-        //               },
-        //               list: propertie_controller.propertirDtatil?.images ?? [],
-        //               size: 230,
-        //             ),
-        //           ),
-        //           // Padding(
-        //           //   padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        //           //   child: Card(
-        //           //     child: Padding(
-        //           //       padding: const EdgeInsets.all(8),
-        //           //       child: Column(
-        //           //         children: [
-        //           //           Row(
-        //           //             mainAxisAlignment: MainAxisAlignment.spaceAround,
-        //           //             children: [
-        //           //               Expanded(
-        //           //                 child: Padding(
-        //           //                     padding: const EdgeInsets.all(8),
-        //           //                     child: TitleSubtitle(
-        //           //                         title: '2000', subtitle: 'renda')),
-        //           //               ),
-        //           //               VerticalDivider(
-        //           //                 color: Colors.red,
-        //           //               ),
-        //           //               Expanded(
-        //           //                   child: Padding(
-        //           //                 padding: const EdgeInsets.all(8),
-        //           //                 child: TitleSubtitle(
-        //           //                   title: '2000',
-        //           //                   subtitle: 'despesa',
-        //           //                 ),
-        //           //               ))
-        //           //             ],
-        //           //           ),
-        //           //           Divider(),
-        //           //           Text(
-        //           //             'Saldo desse mês (R\$ 0,00)',
-        //           //             style: TextStyle(color: Colors.grey),
-        //           //           ),
-        //           //         ],
-        //           //       ),
-        //           //     ),
-        //           //   ),
-        //           // ),
-        //           //
-        //           SizedBox(
-        //             height: 16,
-        //           ),
-        //           // Center(
-        //           //   child: Padding(
-        //           //     padding: const EdgeInsets.symmetric(horizontal: 10.0),
-        //           //     child: Row(
-        //           //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //           //       children: [
-        //           //         Text(
-        //           //           'Alugueis',
-        //           //           style: TextStyle(fontSize: 22),
-        //           //         ),
-        //           //         IconButton(
-        //           //             // color: Colors.deepPurpleAccent,
-        //           //             onPressed: () {
-        //           //               print('Add aluguel');
-        //           //               Navigator.pushNamed(context, '/new_rent');
-        //           //               // _handeInpectStone(context);
-        //           //             },
-        //           //             icon: Icon(Icons.add))
-        //           //       ],
-        //           //     ),
-        //           //   ),
-        //           // ),
-        //           Card(
-        //             child: Column(children: [
-        //               Padding(
-        //                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        //                 child: Row(
-        //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //                   children: [
-        //                     Text(
-        //                       'Alugueis',
-        //                       style: TextStyle(fontSize: 22),
-        //                     ),
-        //                     IconButton(
-        //                         onPressed: () {
-        //                           Navigator.pushNamed(context, '/new_rent');
-        //                         },
-        //                         icon: Icon(Icons.add))
-        //                   ],
-        //                 ),
-        //               ),
-        //               ...propertie_controller.rentSelected
-        //                   .map(
-        //                     ((e) => Padding(
-        //                           padding: const EdgeInsets.only(
-        //                               bottom: 8, right: 8, left: 8),
-        //                           child: RentCard(
-        //                             rent: e,
-        //                             onTap: () {
-        //                               _handeInpectRent(context, e);
-        //                             },
-        //                           ),
-        //                         )),
-        //                   )
-        //                   .toList()
-        //             ]),
-        //           )
-        //         ]),
-        //       );
-
-        //     }
-        //   },
-        // )
-
-        );
+              ));
   }
 }

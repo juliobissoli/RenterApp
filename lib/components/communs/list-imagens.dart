@@ -46,10 +46,17 @@ class ListImagens extends StatelessWidget {
                     // color: Theme.of(context).scaffoldBackgroundColor,
 
                     borderRadius: BorderRadius.circular(16)),
-                child: Icon(
-                  Icons.add_circle_outline,
-                  size: 32,
-                  color: Colors.grey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.image,
+                      size: 32,
+                      color: Colors.grey,
+                    ),
+                    Text('Adicionar imagem'),
+                  ],
                 ),
               ),
             ),

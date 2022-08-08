@@ -1,10 +1,12 @@
 import 'dart:io';
 
+import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:renter_app/core/models/rent-model.dart';
 import 'package:renter_app/interfaces/rent.dart';
 import 'package:renter_app/interfaces/status.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../models/propertie-model.dart';
@@ -41,6 +43,13 @@ class DBProvider {
   Future<Database> initDB() async {
     var documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, "RenterDB.db");
+
+    final data_local = await SharedPreferences.getInstance();
+    // data_local.getInt("@user_id") ?? -1;
+    this._user_id = data_local.getInt("@user_id") ?? -1;
+
+    print('Id user ===> $_user_id');
+
     return await openDatabase(path,
         version: 1,
         onOpen: (db) {},
@@ -48,7 +57,7 @@ class DBProvider {
   }
 
   _createTables(Database db) async {
-        await db.execute("CREATE TABLE users ("
+    await db.execute("CREATE TABLE users ("
         "id INTEGER PRIMARY KEY AUTOINCREMENT,"
         "name TEXT,"
         "email TEXT,"
@@ -57,6 +66,7 @@ class DBProvider {
 
     await db.execute("CREATE TABLE properties ("
         "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+        "user_id INTEGER,"
         "address_label TEXT,"
         "address_cep TEXT,"
         "address_city TEXT,"
@@ -68,7 +78,9 @@ class DBProvider {
     await db.execute("CREATE TABLE images ("
         "id INTEGER PRIMARY KEY AUTOINCREMENT,"
         "propertie_id INTEGER,"
-        "path TEXT"
+        "path TEXT,"
+        "created_at TEXT,"
+        "is_favorite NUMERIC" // BOOL
         ")");
 
     await db.execute("CREATE TABLE rents ("
@@ -101,20 +113,19 @@ class DBProvider {
 
     List<dynamic> validate = await getUser(email);
 
-    if(validate != null && validate.length >0){
+    if (validate != null && validate.length > 0) {
       print('Usuário já existe');
       return -1;
     }
 
-    final res = await db.rawInsert(
-        "INSERT Into users (name, email, password)"
+    final res = await db.rawInsert("INSERT Into users (name, email, password)"
         "VALUES ('${name}', '${email}', '${password}')");
     return res;
   }
 
   Future<List<dynamic>> getUser(String email) async {
     final db = await database;
-      final  res = await db.query(
+    final res = await db.query(
       "users",
       where: 'email = ?',
       whereArgs: [email],
@@ -123,33 +134,34 @@ class DBProvider {
     return res;
   }
 
-
   newProperties(PropertieModel propertie) async {
     final db = await database;
     // final created_at = DateTime.now().toString();
 
     var res = await db.rawInsert(
-        "INSERT Into properties (address_label, address_cep, address_city, address_public_place, status, label)"
-        "VALUES ('${propertie.address.label}', '${propertie.address.cep}', '${propertie.address.city}', '${propertie.address.public_place}', ${propertiStatusDecode(propertie.status)}, '${propertie.label}')");
+        "INSERT Into properties (user_id, address_label, address_cep, address_city, address_public_place, status, label)"
+        "VALUES (${this._user_id}, '${propertie.address.label}', '${propertie.address.cep}', '${propertie.address.city}', '${propertie.address.public_place}', ${propertiStatusDecode(propertie.status)}, '${propertie.label}')");
     return res;
   }
 
   addImage(String url, String propertie_id) async {
     final db = await database;
 
-    String values = "VALUES";
-    int i;
+    // String values = "VALUES";
+    // int i;
     // for (i = 0; i < medias.length; i++) {
     //   values +=
     //       '(${propertie_id}, "${medias[i]})${i == (medias.length - 1) ? ';' : ','}';
     // }
 
-    var res = await db
-        .rawInsert("INSERT Into images (propertie_id, path)" "VALUES ('${propertie_id}', '${url}')");
-        print('resposta => $res');
+    final String created_at = DateFormat('dd MMM yyyy').format(DateTime.now());
+    print('date image => $created_at');
+    var res = await db.rawInsert(
+        "INSERT Into images (propertie_id, path, created_at, is_favorite)"
+        "VALUES ('${propertie_id}', '${url}', '${created_at}', ${0})");
+    print('resposta => $res');
     return res;
   }
-
 
   // addMedias(List<StoneMediaModel> medias, int stone_id, String type) async {
   //   final db = await database;
@@ -171,8 +183,8 @@ class DBProvider {
     var res = [];
     res = await db.query(
       "properties",
-      // where: 'user_id = ?',
-      // whereArgs: [this._user_id],
+      where: 'user_id = ?',
+      whereArgs: [this._user_id],
       orderBy: "id DESC",
     );
 
@@ -235,7 +247,7 @@ class DBProvider {
 
       // Future.wait(medias.map((e) => deleteMedia(e['id'], e['path'])));
     } catch (error) {
-      print("Algo de errado na deleção do bloco -> $error");
+      print("Algo de errado na deleção do imagens -> $error");
     }
   }
 

@@ -57,7 +57,7 @@ class _PropertiesScreamState extends State<PropertiesScream> {
   _handleFilter(String str) {
     setState(() {
       this.key_filter_properties = str;
-    print('str => $str');
+      print('str => $str');
     });
   }
 
@@ -82,7 +82,7 @@ class _PropertiesScreamState extends State<PropertiesScream> {
           // icon: ,
           child: Icon(
             Icons.add,
-            color: Theme.of(context).primaryColor,
+            color: Colors.white,
           ),
         ),
         body: this.currentStatus == AppStatus.LOADING
@@ -98,32 +98,64 @@ class _PropertiesScreamState extends State<PropertiesScream> {
                     changed_call: _handleFilter,
                   ),
                   SizedBox(height: 16),
-                  Expanded(
-                    child: ListView(
-                        padding: const EdgeInsets.all(8),
-                        children: 
-                        (
-                          this.key_filter_properties != ''
-                          ? propertie_controller.prorpertieList.where((el) => el.label.contains(this.key_filter_properties))
-                          : propertie_controller.prorpertieList)
-                        .map((e) => PrortiesCard(
-                                  propertie: e,
-                                  small: true,
-                                  onClock: () => {
-                                    this
-                                        .propertie_controller
-                                        .propertie_selected_id = e.id,
-                                    this.propertie_controller.propertirDtatil =
-                                        e,
-                                    Navigator.pushNamed(
-                                        context, '/propertie_detail',
-                                        arguments: {"propertie_id": e.id})
-                                  },
-                                ))
-                            .toList()
-                        //  [PrortiesCard(), PrortiesCard()],
+                  if (propertie_controller.prorpertieList.length > 0)
+                    Expanded(
+                      child: ListView(
+                          padding: const EdgeInsets.all(8),
+                          children: (this.key_filter_properties != ''
+                                  ? propertie_controller.prorpertieList.where(
+                                      (el) => el.label
+                                          .contains(this.key_filter_properties))
+                                  : propertie_controller.prorpertieList)
+                              .map((e) => PrortiesCard(
+                                    propertie: e,
+                                    small: true,
+                                    onClock: () => {
+                                      this
+                                          .propertie_controller
+                                          .propertie_selected_id = e.id,
+                                      this
+                                          .propertie_controller
+                                          .propertirDtatil = e,
+                                      Navigator.pushNamed(
+                                          context, '/propertie_detail',
+                                          arguments: {"propertie_id": e.id})
+                                    },
+                                  ))
+                              .toList()
+                          //  [PrortiesCard(), PrortiesCard()],
+                          ),
+                    )
+                  else
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Container(
+                        width: double.infinity,
+                        height: 200.0,
+                        child: Card(
+                          child: InkWell(
+                            onTap: () =>
+                                Navigator.pushNamed(context, '/new_properti'),
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Center(
+                                  child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                    Icon(
+                                      Icons.home,
+                                      color: Colors.grey,
+                                    ),
+                                    Text('Cadastrado primeiro imóvel!')
+                                  ])),
+                            ),
+                          ),
                         ),
-                  ),
+                      ),
+                    )
                 ],
               ));
   }
