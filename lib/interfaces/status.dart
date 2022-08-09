@@ -21,6 +21,24 @@ int propertiStatusDecode(PropertiesStatus num) {
   return -1;
 }
 
+String propertyStatusGetLabel(PropertiesStatus num) {
+  if (num == PropertiesStatus.AVALIABLE) return 'Disponivel';
+  if (num == PropertiesStatus.DISABLED) return 'Desativado';
+  if (num == PropertiesStatus.MAINTENANCE) return 'Em manutenção';
+  if (num == PropertiesStatus.RENTED) return 'Alugado';
+  return '--';
+}
+
+Color propertyStatusColor(PropertiesStatus num) {
+  if (num == PropertiesStatus.AVALIABLE) return Colors.blue;
+  if (num == PropertiesStatus.DISABLED) return Colors.grey;
+  if (num == PropertiesStatus.MAINTENANCE) return Colors.red;
+  ;
+  if (num == PropertiesStatus.RENTED) return Colors.green;
+
+  return Colors.grey;
+}
+
 // RentStatus rentModelFromJson(int num) {
 //   if (num == 0) return RentStatus.SCHEDULE;
 //   if (num == 1) return RentStatus.COMFIRMED;

@@ -13,30 +13,14 @@ import '../models/propertie-model.dart';
 import '../models/propertie-model.dart';
 
 class DBProvider {
-  // DBProvider._();
-  // static final DBProvider db = DBProvider._internal();
-  // DBProvider._internal();
-
-  // static Database get singleton => _database;
-
-  // DBProvider._privateConstructor();
-  // static final DBProvider instance = DBProvider._privateConstructor();
-
-  // only have a single app-wide reference to the database
-  // static Database _database = initDB();
-
   int _user_id = -1;
 
   setUserId(int id) {
     this._user_id = id;
   }
 
-  // static DBProvider get singleton =>
   Future<Database> get database async {
-    // if (_database != null) return _database;
-
-    // if _database is null we instantiate it
-    // _database = await initDB();
+    ;
     return await initDB();
   }
 
@@ -96,15 +80,6 @@ class DBProvider {
         "installments INTEGER,"
         "mode INTEGER"
         ")");
-
-    // await db.execute("CREATE TABLE medias ("
-    //     "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-    //     "propertie_id INTEGER,"
-    //     "path TEXT,"
-    //     "type TEXT," //IMAGE OU VIDEO
-    //     "is_favorite NUMERIC," // BOOL
-    //     "FOREIGN KEY(stone_id) REFERENCES stones(id)"
-    //     ")");
   }
 
   newUser(String name, String email, String password) async {
@@ -136,7 +111,6 @@ class DBProvider {
 
   newProperties(PropertieModel propertie) async {
     final db = await database;
-    // final created_at = DateTime.now().toString();
 
     var res = await db.rawInsert(
         "INSERT Into properties (user_id, address_label, address_cep, address_city, address_public_place, status, label)"
@@ -290,7 +264,7 @@ class DBProvider {
     return res;
   }
 
-  Future<int> updateRent(RentModel rent, String propertie_id) async {
+  Future<int> updateRent(RentModel rent) async {
     final db = await database;
     dynamic rentToMat = rent.toMap();
     dynamic data = {
@@ -306,6 +280,7 @@ class DBProvider {
     };
 
     print('data $data');
+    print('rentId =>  ${rent.id}');
 
     return await db.update('rents', data,
         where: 'id = ?', whereArgs: [int.parse(rent.id)]);

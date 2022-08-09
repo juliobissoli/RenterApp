@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:provider/provider.dart';
+// import 'package:fluttertoast/fluttertoast.dart';
+// import 'package:provider/provider.dart';
 import 'package:renter_app/components/communs/btn.dart';
 import 'package:renter_app/components/communs/inout_primary.dart';
 import 'package:renter_app/core/controller/user-controller.dart';

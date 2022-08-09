@@ -70,7 +70,7 @@ class RentController extends ChangeNotifier {
     this.setFetchingState(AppStatus.LOADING);
 
     try {
-      final res = await this.db_local.updateRent(rent, propertie_id);
+      final res = await this.db_local.updateRent(rent);
       print('Atualização feita com sucesso: $res');
       this.loadRent(propertie_id);
       this.setFetchingState(AppStatus.SUCCESS);
