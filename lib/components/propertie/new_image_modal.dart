@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:renter_app/components/communs/btn.dart';
+import 'package:renter_app/components/communs/image-box.dart';
 import 'package:renter_app/components/communs/inout_primary.dart';
 import 'package:renter_app/core/controller/properties-controller.dart';
 import 'package:renter_app/interfaces/status.dart';
@@ -21,6 +22,8 @@ class _NewImageModalState extends State<NewImageModal> {
 
   TextEditingController urlControllert = TextEditingController();
   String propert_id = '';
+
+  bool url_is_valid = false;
   @override
   void initState() {
     // TODO: implement initState
@@ -48,6 +51,18 @@ class _NewImageModalState extends State<NewImageModal> {
     }
   }
 
+  _valideUrl(String? text) {
+    if (text != null) {
+      bool res = Uri.parse(text).isAbsolute;
+      print('Bateu aqui $res');
+      if (res != this.url_is_valid) {
+        setState(() {
+          this.url_is_valid = res;
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -57,6 +72,7 @@ class _NewImageModalState extends State<NewImageModal> {
           controller: urlControllert,
           keyboardType: TextInputType.text,
           maxLines: 3,
+          onChanged: _valideUrl,
           decoration: InputDecoration(
             fillColor: Theme.of(context).scaffoldBackgroundColor,
             focusColor: Theme.of(context).scaffoldBackgroundColor,
@@ -70,13 +86,22 @@ class _NewImageModalState extends State<NewImageModal> {
           ),
         ),
         SizedBox(height: 16),
+        ImageBox(
+          exist: url_is_valid,
+          url_image: urlControllert.text,
+          width: double.infinity,
+          height: 240.0,
+        ),
+        SizedBox(height: 16),
         Btn(
             isLoading:
                 this.propertie_controller.fetchingState == AppStatus.LOADING,
-            func: () => {
-                  _handleAddImage(
-                      this.propert_id, this.urlControllert.text, context)
-                },
+            func: url_is_valid
+                ? () => {
+                      _handleAddImage(
+                          this.propert_id, this.urlControllert.text, context)
+                    }
+                : null,
             label: 'Adicionar imagen')
       ]),
     );

@@ -25,8 +25,13 @@ class PropertieModel {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'address': address,
-      'status': status,
+      'address': AddressModal(
+        label: address.label,
+        cep: address.cep,
+        city: address.city,
+        public_place: address.public_place,
+      ).toMap(),
+      'status': propertiStatusDecode(status),
       'images': images.toList(),
       'label': label,
       // 'last_rents': last_rents?.map((x) => x.toMap()).toList(),

@@ -20,6 +20,7 @@ import 'package:renter_app/components/propertie/rent_card.dart';
 import 'package:renter_app/components/propertie/rent_detail.dart';
 import 'package:renter_app/core/controller/properties-controller.dart';
 import 'package:renter_app/core/controller/rent_controller.dart';
+import 'package:renter_app/core/models/address-model.dart';
 import 'package:renter_app/core/models/propertie-model.dart';
 import 'package:renter_app/core/models/rent-model.dart';
 import 'package:renter_app/interfaces/rent.dart';
@@ -50,17 +51,7 @@ class _PropertieDetailState extends State<PropertieDetail> {
     PropertiesStatus.DISABLED
   ];
 
-  List<String> actionsElipsed = [
-    'Adicionar imagen',
-    'Editar imóvel',
-    'Excluir imóvel'
-  ];
-
-  String actionSelected = 'Adicionar imagen';
   void initState() {
-    print('Init state');
-
-    // await propertie_controller.loadPropertieDetail(propertie_id)
     super.initState();
 
     this
@@ -73,6 +64,11 @@ class _PropertieDetailState extends State<PropertieDetail> {
     this.rent_controller.addListener(() {
       print('Atualiza');
       setState(() {});
+    });
+    this.propertie_controller.addListener(() {
+      setState(() {
+        print('Atualiza o Porperte controlle');
+      });
     });
   }
 
@@ -161,7 +157,7 @@ class _PropertieDetailState extends State<PropertieDetail> {
           backgroundColor: Colors.transparent,
           builder: (builder) {
             return new Modal(
-              size_height: 400,
+              size_height: MediaQuery.of(context).size.height * 0.8,
               title: 'Adicionar imagem',
               // show_top: false,
               child: NewImageModal(),
@@ -171,6 +167,27 @@ class _PropertieDetailState extends State<PropertieDetail> {
 
     _handleSetNewStats(PropertiesStatus? newValue) {
       print('NEW => $newValue');
+      if (newValue != dropdownPropertyStatusValus &&
+          this.propertie_controller.propertirDtatil != null) {
+        PropertieModel? p = this.propertie_controller.propertirDtatil;
+        // var currentPropMap =
+        //     (this.propertie_controller?.propertirDtatil?.toMap() ?? {});
+        // currentPropMap['status'] = newValue;
+        // PropertieModel newProp = PropertieModel.fromMap(currentPropMap);
+        PropertieModel newProp = PropertieModel(
+            id: p?.id ?? '-1',
+            address: AddressModal(
+              cep: p?.address.cep ?? '-',
+              city: p?.address.city ?? '-',
+              label: p?.address.label ?? '-',
+              public_place: p?.address.public_place ?? '-',
+            ),
+            images: [],
+            status: newValue ?? dropdownPropertyStatusValus,
+            label: p?.label ?? '--');
+        this.propertie_controller.updateProperty(newProp);
+        // (id: currentProp?.id ?? '-1', address: currentProp?.address, images: images, status: status, label: label)
+      }
     }
 
     _handleSetAction() {
@@ -239,6 +256,10 @@ class _PropertieDetailState extends State<PropertieDetail> {
             : CustomScrollView(
                 slivers: [
                   SliverAppBar(
+                    leading: IconButton(
+                      icon: Icon(CupertinoIcons.back),
+                      onPressed: () => Navigator.pushNamed(context, '/home'),
+                    ),
                     actions: [
                       IconButton(
                           onPressed: () => _handleSetAction(),
@@ -253,7 +274,7 @@ class _PropertieDetailState extends State<PropertieDetail> {
                       title: Text(
                         propertie_controller.propertirDtatil?.label ?? '',
                         style: TextStyle(
-                            fontSize: 24, fontWeight: FontWeight.w200),
+                            fontSize: 22, fontWeight: FontWeight.w300),
                       ),
                       background: ImageBox(
                         width: double.infinity,
@@ -293,6 +314,7 @@ class _PropertieDetailState extends State<PropertieDetail> {
                                 borderRadius: BorderRadius.circular(10),
                                 underline: SizedBox(),
                                 onChanged: (PropertiesStatus? newValue) {
+                                  print('clicoo');
                                   _handleSetNewStats(newValue);
                                 },
                                 items: propertiesStatusAvailable

@@ -72,19 +72,29 @@ class PropertieController extends ChangeNotifier {
     return propertie;
   }
 
-  Future addImage(String propertie_id, String url)async {
-    if(propertie_id != '-1'){
-
+  Future addImage(String propertie_id, String url) async {
+    if (propertie_id != '-1') {
       try {
-      this.setFetchingState(AppStatus.LOADING);
-        
-      final res = await this.db_local.addImage(url, propertie_id);
-      this.setFetchingState(AppStatus.SUCCESS);
-  
+        this.setFetchingState(AppStatus.LOADING);
+
+        final res = await this.db_local.addImage(url, propertie_id);
+        this.setFetchingState(AppStatus.SUCCESS);
       } catch (e) {
-      this.setFetchingState(AppStatus.ERROR);
+        this.setFetchingState(AppStatus.ERROR);
         print('Erro ao adicionar imagen: $e');
       }
+    }
+  }
+
+  Future updateProperty(PropertieModel property) async {
+    try {
+      this.setFetchingState(AppStatus.LOADING);
+      this.db_local.updatePropert(property);
+      this.setFetchingState(AppStatus.SUCCESS);
+    } catch (e) {
+      this.setFetchingState(AppStatus.ERROR);
+
+      print('Erro ao aatualizar imovel: $e');
     }
   }
 }

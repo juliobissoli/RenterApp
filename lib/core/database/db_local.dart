@@ -297,4 +297,32 @@ class DBProvider {
     return await db
         .update('users', data, where: 'id = ?', whereArgs: [this._user_id]);
   }
+
+  Future<int> updatePropert(PropertieModel property) async {
+    final db = await database;
+    dynamic data = {
+      'address_label': property.address.label,
+      'address_cep': property.address.cep,
+      'address_city': property.address.city,
+      'address_public_place': property.address.public_place,
+      'label': property.label,
+      'status': propertiStatusDecode(property.status)
+
+      // "date_init": rentToMat['date_init'],
+      // "date_end": rentToMat['date_end'],
+      // "status": rentToMat['status'],
+      // "client_name": rent.client.name,
+      // "client_phone": rent.client.phone,
+      // "total_value": rent.total_value,
+      // "value_installments": rent.value_installments,
+      // "installments": rent.installments,
+      // "mode": rentToMat['mode'] // "propertie_id": int.parse(propertie_id),
+    };
+
+    print('data $data');
+    print('rentId =>  ${property.id}');
+
+    return await db.update('properties', data,
+        where: 'id = ?', whereArgs: [int.parse(property.id)]);
+  }
 }
