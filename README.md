@@ -14,7 +14,9 @@
 O Renter e uma plataforma que visa prover serviços de gerência e
 administração de locação de imóveis pessoal, por meio de um aplicativo móvel.
 
-<img src="img/screen1.png" alt="screenshot" width="300"/> <img src="img/screen2.png" alt="screenshot" width="300"/> <img src="img/screen3.png" alt="screenshot" width="300"/> <img src="img/screen4.png" alt="screenshot" width="300"/> <img src="img/screen5.png" alt="screenshot" width="315"/>
+<img src="img/screen1.png" alt="screenshot" width="350"/> <img src="img/screen2.png" alt="screenshot" width="350"/> 
+
+<img src="img/screen3.png" alt="screenshot" height="430"/> <img src="img/screen4.png" alt="screenshot" height="430"/> <img src="img/screen5.png" alt="screenshot" height="430"/>
 
 # Funcionalidades:
 - Crie uma conta offline para proteger as informações dos seus imóveis de curiosos;
