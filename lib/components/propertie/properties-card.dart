@@ -15,36 +15,6 @@ class PrortiesCard extends StatelessWidget {
       : super();
 
   @override
-  Color handleGetBadjeColor(PropertiesStatus? status) {
-    switch (status) {
-      case PropertiesStatus.RENTED:
-        return Colors.green;
-
-      case PropertiesStatus.MAINTENANCE:
-        return Colors.red;
-
-      case PropertiesStatus.DISABLED:
-        return Colors.grey;
-      default:
-        return Colors.grey;
-    }
-  }
-
-  String handleGetBadjeLabel(PropertiesStatus? status) {
-    switch (status) {
-      case PropertiesStatus.RENTED:
-        return 'Alugada';
-
-      case PropertiesStatus.MAINTENANCE:
-        return 'Manutenção';
-
-      case PropertiesStatus.DISABLED:
-        return 'Desativada';
-      default:
-        return '--';
-    }
-  }
-
   Widget build(BuildContext context) {
     return SizedBox(
       width: 260,
@@ -83,12 +53,12 @@ class PrortiesCard extends StatelessWidget {
                         shape: BadgeShape.square,
                         padding: const EdgeInsets.symmetric(
                             horizontal: 4, vertical: 2),
-                        badgeColor: handleGetBadjeColor(this.propertie.status),
+                        badgeColor: propertyStatusColor(this.propertie.status),
                         borderRadius: BorderRadius.circular(8),
                         badgeContent: Text(
-                            handleGetBadjeLabel(this.propertie.status),
+                            propertyStatusGetLabel(this.propertie.status),
                             style: TextStyle(fontSize: 8)),
-                      )
+                      ),
                     ],
                   ),
                   SizedBox(

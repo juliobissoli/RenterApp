@@ -77,6 +77,7 @@ class _PropertiesScreamState extends State<PropertiesScream> {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           onPressed: () {
+            this.propertie_controller.propertToUpdate = null;
             Navigator.pushNamed(context, '/new_properti');
           },
           // icon: ,
@@ -134,8 +135,10 @@ class _PropertiesScreamState extends State<PropertiesScream> {
                         height: 200.0,
                         child: Card(
                           child: InkWell(
-                            onTap: () =>
-                                Navigator.pushNamed(context, '/new_properti'),
+                            onTap: () => {
+                              this.propertie_controller.propertToUpdate = null,
+                              Navigator.pushNamed(context, '/new_properti'),
+                            },
                             child: Padding(
                               padding: const EdgeInsets.all(16.0),
                               child: Center(
@@ -149,7 +152,7 @@ class _PropertiesScreamState extends State<PropertiesScream> {
                                       Icons.home,
                                       color: Colors.grey,
                                     ),
-                                    Text('Cadastrado primeiro imóvel!')
+                                    Text('Cadastrar primeiro imóvel!')
                                   ])),
                             ),
                           ),

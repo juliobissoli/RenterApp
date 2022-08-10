@@ -20,7 +20,6 @@ class RentDetail extends StatefulWidget {
 
 class _RentDetailState extends State<RentDetail> {
   final RentController rent_controller = KiwiContainer().resolve();
-  
 
   @override
   RentStatus dropdownValue = RentStatus.EMPYT;
@@ -33,17 +32,20 @@ class _RentDetailState extends State<RentDetail> {
   }
 
   Future _handleSetNewStats(RentStatus? newValue) async {
-    if (newValue != null && newValue != widget.rent.status && widget.propertie_id != null) {
+    if (newValue != null &&
+        newValue != widget.rent.status &&
+        widget.propertie_id != null) {
       var r = widget.rent;
-      var copyRent = new RentModel(id: r.id,
-       date_init: r.date_init,
-       date_end: r.date_end,
-       status: newValue,
-       client: r.client,
-       total_value: r.total_value,
-       value_installments: r.value_installments,
-       installments: r.installments,
-       mode: r.mode);
+      var copyRent = new RentModel(
+          id: r.id,
+          date_init: r.date_init,
+          date_end: r.date_end,
+          status: newValue,
+          client: r.client,
+          total_value: r.total_value,
+          value_installments: r.value_installments,
+          installments: r.installments,
+          mode: r.mode);
       this.rent_controller.updateRent(copyRent, widget.propertie_id ?? '');
       setState(() {
         print(newValue);
@@ -55,7 +57,6 @@ class _RentDetailState extends State<RentDetail> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,13 +72,6 @@ class _RentDetailState extends State<RentDetail> {
                 value: dropdownValue,
                 icon: Visibility(
                     visible: false, child: Icon(Icons.arrow_downward)),
-                // icon: const Icon(Icons.arrow_downward),
-                // elevation: 16,
-                // style: const TextStyle(color: Colors.deepPurple),
-                // underline: Container(
-                //   height: 2,
-                //   color: Colors.deepPurpleAccent,
-                // )
                 borderRadius: BorderRadius.circular(10),
                 underline: SizedBox(),
                 onChanged: (RentStatus? newValue) {

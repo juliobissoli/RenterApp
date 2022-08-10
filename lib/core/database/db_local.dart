@@ -13,30 +13,14 @@ import '../models/propertie-model.dart';
 import '../models/propertie-model.dart';
 
 class DBProvider {
-  // DBProvider._();
-  // static final DBProvider db = DBProvider._internal();
-  // DBProvider._internal();
-
-  // static Database get singleton => _database;
-
-  // DBProvider._privateConstructor();
-  // static final DBProvider instance = DBProvider._privateConstructor();
-
-  // only have a single app-wide reference to the database
-  // static Database _database = initDB();
-
   int _user_id = -1;
 
   setUserId(int id) {
     this._user_id = id;
   }
 
-  // static DBProvider get singleton =>
   Future<Database> get database async {
-    // if (_database != null) return _database;
-
-    // if _database is null we instantiate it
-    // _database = await initDB();
+    ;
     return await initDB();
   }
 
@@ -96,15 +80,6 @@ class DBProvider {
         "installments INTEGER,"
         "mode INTEGER"
         ")");
-
-    // await db.execute("CREATE TABLE medias ("
-    //     "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-    //     "propertie_id INTEGER,"
-    //     "path TEXT,"
-    //     "type TEXT," //IMAGE OU VIDEO
-    //     "is_favorite NUMERIC," // BOOL
-    //     "FOREIGN KEY(stone_id) REFERENCES stones(id)"
-    //     ")");
   }
 
   newUser(String name, String email, String password) async {
@@ -136,7 +111,6 @@ class DBProvider {
 
   newProperties(PropertieModel propertie) async {
     final db = await database;
-    // final created_at = DateTime.now().toString();
 
     var res = await db.rawInsert(
         "INSERT Into properties (user_id, address_label, address_cep, address_city, address_public_place, status, label)"
@@ -147,35 +121,12 @@ class DBProvider {
   addImage(String url, String propertie_id) async {
     final db = await database;
 
-    // String values = "VALUES";
-    // int i;
-    // for (i = 0; i < medias.length; i++) {
-    //   values +=
-    //       '(${propertie_id}, "${medias[i]})${i == (medias.length - 1) ? ';' : ','}';
-    // }
-
-    final String created_at = DateFormat('dd MMM yyyy').format(DateTime.now());
-    print('date image => $created_at');
-    var res = await db.rawInsert(
-        "INSERT Into images (propertie_id, path, created_at, is_favorite)"
-        "VALUES ('${propertie_id}', '${url}', '${created_at}', ${0})");
+    var res = await db
+        .rawInsert("INSERT Into images (propertie_id, path, is_favorite)"
+            "VALUES ('${propertie_id}', '${url}', ${0})");
     print('resposta => $res');
     return res;
   }
-
-  // addMedias(List<StoneMediaModel> medias, int stone_id, String type) async {
-  //   final db = await database;
-  //   String values = "VALUES";
-  //   int i;
-  //   for (i = 0; i < medias.length; i++) {
-  //     values +=
-  //         '(${stone_id}, "${medias[i].path}", ${medias[i].is_favoryt ? 1 : 0}, "${type}")${i == (medias.length - 1) ? ';' : ','}';
-  //   }
-
-  //   var res = await db.rawInsert(
-  //       "INSERT Into medias (stone_id, path, is_favorite, type)" "${values}");
-  //   return res;
-  // }
 
   Future<List<PropertieModel>> getProperties() async {
     print('Bateu aqui=============');
@@ -233,19 +184,22 @@ class DBProvider {
     return res;
   }
 
-  deleteProperties(int propertie_id) async {
+  deleteProperties(String propertie_id) async {
     final db = await database;
+    print('Vai exclui =====> $propertie_id');
 
     try {
-      await db.delete(
+      final res = await db.delete(
         'properties',
         where: 'id = ?',
-        whereArgs: [propertie_id],
+        whereArgs: [int.parse(propertie_id)],
       );
-      List<Map> medias = await db
-          .rawQuery('SELECT * FROM images WHERE propertie_id = $propertie_id');
+      // List<Map> medias = await db
+      //     .rawQuery('SELECT * FROM images WHERE propertie_id = $propertie_id');
 
       // Future.wait(medias.map((e) => deleteMedia(e['id'], e['path'])));
+      print('Resultado da deleçao == $res');
+      return res;
     } catch (error) {
       print("Algo de errado na deleção do imagens -> $error");
     }
@@ -313,7 +267,7 @@ class DBProvider {
     return res;
   }
 
-  Future<int> updateRent(RentModel rent, String propertie_id) async {
+  Future<int> updateRent(RentModel rent) async {
     final db = await database;
     dynamic rentToMat = rent.toMap();
     dynamic data = {
@@ -329,8 +283,51 @@ class DBProvider {
     };
 
     print('data $data');
+    print('rentId =>  ${rent.id}');
 
     return await db.update('rents', data,
         where: 'id = ?', whereArgs: [int.parse(rent.id)]);
+  }
+
+  Future<int> changePassword(String password) async {
+    final db = await database;
+    dynamic data = {
+      "password": password,
+    };
+
+    print('data $data');
+
+    return await db
+        .update('users', data, where: 'id = ?', whereArgs: [this._user_id]);
+  }
+
+  Future<int> updatePropert(PropertieModel property) async {
+    final db = await database;
+    dynamic data = {
+      'address_label': property.address.label,
+      'address_cep': property.address.cep,
+      'address_city': property.address.city,
+      'address_public_place': property.address.public_place,
+      'label': property.label,
+      'status': propertiStatusDecode(property.status)
+
+      // "date_init": rentToMat['date_init'],
+      // "date_end": rentToMat['date_end'],
+      // "status": rentToMat['status'],
+      // "client_name": rent.client.name,
+      // "client_phone": rent.client.phone,
+      // "total_value": rent.total_value,
+      // "value_installments": rent.value_installments,
+      // "installments": rent.installments,
+      // "mode": rentToMat['mode'] // "propertie_id": int.parse(propertie_id),
+    };
+
+    print('data $data');
+    print('rentId =>  ${property.id}');
+
+    final res = await db.update('properties', data,
+        where: 'id = ?', whereArgs: [int.parse(property.id)]);
+    print('Resultado =========> $res');
+    return res;
   }
 }

@@ -6,6 +6,7 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:renter_app/components/communs/btn.dart';
 import 'package:renter_app/components/communs/inout_primary.dart';
 import 'package:renter_app/core/controller/properties-controller.dart';
+import 'package:renter_app/core/models/propertie-model.dart';
 import 'package:renter_app/interfaces/status.dart';
 
 import '../interfaces/status.dart';
@@ -31,9 +32,23 @@ class _NewPropertirScreamState extends State<NewPropertirScream> {
   TextEditingController cityControllert = TextEditingController();
   TextEditingController labelAddressControllert = TextEditingController();
 
+  bool edite_mode = false;
+
   initState() {
     isValidForm = false;
 
+    super.initState();
+
+    if (this.propertie_controller.propertToUpdate != null) {
+      this.edite_mode = this.propertie_controller.propertToUpdate != null;
+
+      final p = this.propertie_controller.propertToUpdate;
+      this.labelControllert.text = p?.label ?? '';
+      this.publicPlaceControllert.text = p?.address.public_place ?? '';
+      this.cepControllert.text = p?.address.cep ?? '';
+      this.cityControllert.text = p?.address.city ?? '';
+      this.labelAddressControllert.text = p?.address.label ?? '';
+    }
     // this.propertie_controller.addListener(() {
     //   super.setState(() {});
     // });
@@ -54,11 +69,14 @@ class _NewPropertirScreamState extends State<NewPropertirScream> {
     }
   }
 
-  _handleAddProrpertie() async {
+  _handleSendData() async {
+    print('Mode ---> $edite_mode');
     dynamic data = {
-      "id": "1234",
+      "id": this.propertie_controller.propertToUpdate?.id ?? "1234",
       "label": this.labelControllert.text,
-      "status": 1,
+      "status": propertiStatusDecode(
+          this.propertie_controller.propertToUpdate?.status ??
+              PropertiesStatus.AVALIABLE),
       "last_rents": [],
       "address": {
         "label": this.labelAddressControllert.text,
@@ -72,10 +90,19 @@ class _NewPropertirScreamState extends State<NewPropertirScream> {
     this.current_status = AppStatus.LOADING;
     this.setState(() {});
     try {
-      await this.propertie_controller.createPropertie(data);
+      if (this.edite_mode) {
+        await this
+            .propertie_controller
+            .updateProperty(PropertieModel.fromMap(data));
+        this.propertie_controller.propertToUpdate = null;
+      } else {
+        await this.propertie_controller.createPropertie(data);
+      }
 
       await Future.delayed(Duration(seconds: 1));
-      this.showToats('Imóvel cadastrado', true);
+      final str_success =
+          this.edite_mode ? 'Imóvel altrado :)' : 'Imóvel cadastrado :)';
+      this.showToats(str_success, true);
 
       this.current_status = AppStatus.SUCCESS;
       this.setState(() {});
@@ -87,7 +114,10 @@ class _NewPropertirScreamState extends State<NewPropertirScream> {
       this.setState(() {});
 
       print(e);
-      this.showToats('Erro ao cadastrar aluguel', false);
+      final str_error = this.edite_mode
+          ? 'Erro ao altrado o imóvel'
+          : ' Erro ao cadastrar imóvel';
+      this.showToats(str_error, false);
     }
   }
 
@@ -107,6 +137,7 @@ class _NewPropertirScreamState extends State<NewPropertirScream> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text(this.edite_mode ? 'Editar imóvel' : 'Cadastrar imóvel'),
         leading: IconButton(
           icon: Icon(CupertinoIcons.back),
           onPressed: () => Navigator.of(context).pop(),
@@ -137,7 +168,7 @@ class _NewPropertirScreamState extends State<NewPropertirScream> {
                   // changed_call: _handleValidade,
                 ),
                 Text(
-                  'Escreva a forma como deseja chamar o local onde está o(s) imóvel. Ex.: Codomínio 1, Sítio, etc',
+                  'Escreva a forma como deseja chamar o local onde está o imóvel. Ex.: Codomínio 1, Sítio, etc',
                   style: TextStyle(fontSize: 12, color: Colors.grey),
                 ),
                 Padding(
@@ -173,7 +204,7 @@ class _NewPropertirScreamState extends State<NewPropertirScream> {
                 ),
                 InputPrimary(
                   type_input: TextInputType.text,
-                  label: 'Lagradouro',
+                  label: 'Logradouro',
                   controller_input: publicPlaceControllert,
                   changed_call: _handleValidade,
                 ),
@@ -208,7 +239,7 @@ class _NewPropertirScreamState extends State<NewPropertirScream> {
           child: Btn(
             isLoading: this.current_status == AppStatus.LOADING,
             label: 'Cadastrar imóvels',
-            func: isValidForm ? _handleAddProrpertie : null,
+            func: isValidForm ? _handleSendData : null,
           ),
         ),
       ),
