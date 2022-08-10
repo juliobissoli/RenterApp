@@ -80,6 +80,7 @@ class PropertieController extends ChangeNotifier {
         this.setFetchingState(AppStatus.LOADING);
 
         final res = await this.db_local.addImage(url, propertie_id);
+        this.propertirDtatil?.images?.add(url);
         this.setFetchingState(AppStatus.SUCCESS);
       } catch (e) {
         this.setFetchingState(AppStatus.ERROR);
@@ -109,6 +110,8 @@ class PropertieController extends ChangeNotifier {
   }
 
   Future deletePropertie(String propert_id) async {
+    print('vai deleta $propertToUpdate');
+
     try {
       this.setFetchingState(AppStatus.LOADING);
       await this.db_local.deleteProperties(propert_id);

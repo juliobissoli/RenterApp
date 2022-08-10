@@ -2,6 +2,7 @@ import 'package:badges/badges.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:renter_app/components/communs/box_alert.dart';
 import 'package:renter_app/components/communs/btn.dart';
 import 'package:renter_app/components/communs/btn_outlined.dart';
 import 'package:renter_app/components/communs/car-buttom.dart';
@@ -98,6 +99,7 @@ class _PropertieDetailState extends State<PropertieDetail> {
     }
 
     _handleDeletePropertie() async {
+      print('Vai esclui');
       try {
         this
             .propertie_controller
@@ -106,6 +108,28 @@ class _PropertieDetailState extends State<PropertieDetail> {
       } catch (e) {
         showToats('Erro ao excluir imóvel', false);
       }
+    }
+
+    checkDeletPropert(context) {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) => CustomAlertDialog(
+                title: 'Deseja excluir o imóvel?',
+                positiveBtnText: 'Sim',
+                negativeBtnText: 'Não',
+                onPostivePressed: () async {
+                  print('Vai esclui');
+                  try {
+                    Navigator.of(context).pop();
+                    await this.propertie_controller.deletePropertie(
+                        this.propertie_controller.propertie_selected_id);
+                    Navigator.of(context).pop();
+                  } catch (e) {
+                    showToats('Erro ao excluir imóvel', false);
+                  }
+                },
+                onNegativePressed: () => Navigator.of(context).pop(),
+              ));
     }
 
     _handleUpdatePropertie() {
@@ -149,7 +173,7 @@ class _PropertieDetailState extends State<PropertieDetail> {
       }
     }
 
-    _handleSetAction() {
+    _handleSetAction(context) {
       showModalBottomSheet(
           isScrollControlled: true,
           context: context,
@@ -190,7 +214,7 @@ class _PropertieDetailState extends State<PropertieDetail> {
                           func: () {
                             print('Add Excluir');
                             Navigator.of(context).pop();
-                            _handleDeletePropertie();
+                            checkDeletPropert(context);
                           },
                           mode: 'danger',
                           label: 'Excluir imovóvel'),
@@ -227,7 +251,7 @@ class _PropertieDetailState extends State<PropertieDetail> {
                           radius: 20,
                           backgroundColor: Color(0x33000000),
                           child: IconButton(
-                            onPressed: () => _handleSetAction(),
+                            onPressed: () => _handleSetAction(context),
                             icon: Icon(Icons.more_vert),
                             color: Colors.white,
                           ),
