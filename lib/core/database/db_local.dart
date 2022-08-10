@@ -184,19 +184,22 @@ class DBProvider {
     return res;
   }
 
-  deleteProperties(int propertie_id) async {
+  deleteProperties(String propertie_id) async {
     final db = await database;
+    print('Vai exclui =====> $propertie_id');
 
     try {
-      await db.delete(
+      final res = await db.delete(
         'properties',
         where: 'id = ?',
-        whereArgs: [propertie_id],
+        whereArgs: [int.parse(propertie_id)],
       );
-      List<Map> medias = await db
-          .rawQuery('SELECT * FROM images WHERE propertie_id = $propertie_id');
+      // List<Map> medias = await db
+      //     .rawQuery('SELECT * FROM images WHERE propertie_id = $propertie_id');
 
       // Future.wait(medias.map((e) => deleteMedia(e['id'], e['path'])));
+      print('Resultado da deleçao == $res');
+      return res;
     } catch (error) {
       print("Algo de errado na deleção do imagens -> $error");
     }
@@ -322,7 +325,9 @@ class DBProvider {
     print('data $data');
     print('rentId =>  ${property.id}');
 
-    return await db.update('properties', data,
+    final res = await db.update('properties', data,
         where: 'id = ?', whereArgs: [int.parse(property.id)]);
+    print('Resultado =========> $res');
+    return res;
   }
 }

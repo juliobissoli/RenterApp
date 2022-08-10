@@ -25,6 +25,7 @@ import 'package:renter_app/core/models/propertie-model.dart';
 import 'package:renter_app/core/models/rent-model.dart';
 import 'package:renter_app/interfaces/rent.dart';
 import 'package:renter_app/interfaces/status.dart';
+import 'package:renter_app/utils/showToats.dart';
 
 import '../interfaces/status.dart';
 
@@ -96,58 +97,21 @@ class _PropertieDetailState extends State<PropertieDetail> {
       );
     }
 
-    _handeInpectImage(context, String url_img) {
-      showModalBottomSheet(
-        isScrollControlled: true,
-        context: context,
-        backgroundColor: Colors.transparent,
-        builder: (builder) {
-          return new Modal(
-              size_height: MediaQuery.of(context).size.width + 48,
-              show_top: false,
-              child: Stack(
-                children: [
-                  ImageBox(
-                    url_image: url_img,
-                    size: MediaQuery.of(context).size.width,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      // crossAxisAlignment: CrossAxisAlignment.,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CircleAvatar(
-                          backgroundColor: Colors.black,
-                          child: IconButton(
-                            onPressed: () {
-                              print('Compartilhar');
-                            },
-                            icon: Icon(
-                              Icons.share,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                        CircleAvatar(
-                          backgroundColor: Colors.black,
-                          child: IconButton(
-                            onPressed: () {
-                              print('Compartilhar');
-                            },
-                            icon: Icon(
-                              Icons.delete_outline_outlined,
-                              color: Colors.red,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ));
-        },
-      );
+    _handleDeletePropertie() async {
+      try {
+        this
+            .propertie_controller
+            .deletePropertie(this.propertie_controller.propertie_selected_id);
+        Navigator.of(context).pop();
+      } catch (e) {
+        showToats('Erro ao excluir imóvel', false);
+      }
+    }
+
+    _handleUpdatePropertie() {
+      this.propertie_controller.propertToUpdate =
+          this.propertie_controller.propertirDtatil;
+      Navigator.pushNamed(context, '/new_properti');
     }
 
     _handleAddImage() {
@@ -166,14 +130,9 @@ class _PropertieDetailState extends State<PropertieDetail> {
     }
 
     _handleSetNewStats(PropertiesStatus? newValue) {
-      print('NEW => $newValue');
       if (newValue != dropdownPropertyStatusValus &&
           this.propertie_controller.propertirDtatil != null) {
         PropertieModel? p = this.propertie_controller.propertirDtatil;
-        // var currentPropMap =
-        //     (this.propertie_controller?.propertirDtatil?.toMap() ?? {});
-        // currentPropMap['status'] = newValue;
-        // PropertieModel newProp = PropertieModel.fromMap(currentPropMap);
         PropertieModel newProp = PropertieModel(
             id: p?.id ?? '-1',
             address: AddressModal(
@@ -221,6 +180,7 @@ class _PropertieDetailState extends State<PropertieDetail> {
                           func: () {
                             print('Add image');
                             Navigator.of(context).pop();
+                            _handleUpdatePropertie();
                           },
                           label: 'Editar dados do imóvel'),
                     ),
@@ -230,6 +190,7 @@ class _PropertieDetailState extends State<PropertieDetail> {
                           func: () {
                             print('Add Excluir');
                             Navigator.of(context).pop();
+                            _handleDeletePropertie();
                           },
                           mode: 'danger',
                           label: 'Excluir imovóvel'),
@@ -261,12 +222,20 @@ class _PropertieDetailState extends State<PropertieDetail> {
                       onPressed: () => Navigator.pushNamed(context, '/home'),
                     ),
                     actions: [
-                      IconButton(
-                          onPressed: () => _handleSetAction(),
-                          icon: Icon(Icons.more_vert))
+                      Container(
+                        child: CircleAvatar(
+                          radius: 20,
+                          backgroundColor: Color(0x33000000),
+                          child: IconButton(
+                            onPressed: () => _handleSetAction(),
+                            icon: Icon(Icons.more_vert),
+                            color: Colors.white,
+                          ),
+                        ),
+                      )
                     ],
 
-                    // pinned: true,
+                    pinned: true,
                     // snap: _snap,
                     // floating: _floating,
                     expandedHeight: 200.0,
@@ -285,7 +254,6 @@ class _PropertieDetailState extends State<PropertieDetail> {
                       ),
                     ),
                   ),
-
                   SliverFillRemaining(
                     hasScrollBody: false,
                     child: Column(
@@ -404,11 +372,7 @@ class _PropertieDetailState extends State<PropertieDetail> {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.center,
                                               children: [
-                                            // Icon(
-                                            //   Icons.home,
-                                            //   color: Colors.grey,
-                                            // ),
-                                            Text('Cadastrado primeiro aluguel!')
+                                            Text('Cadastrar primeiro aluguel!')
                                           ])),
                                     ),
                                   ),
@@ -420,122 +384,6 @@ class _PropertieDetailState extends State<PropertieDetail> {
                       ],
                     ),
                   ),
-
-                  // const SliverToBoxAdapter(
-                  //   child: Expanded(
-                  //     child: Center(
-                  //       child:
-                  //           Text('Scroll to see the SliverAppBar in effect.'),
-                  //     ),
-                  //   ),
-                  // ),
-
-                  // Padding(
-                  //   padding: const EdgeInsets.all(16.0),
-                  //   child: Row(
-                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //     children: [
-                  //       Column(
-                  //         crossAxisAlignment: CrossAxisAlignment.start,
-                  //         children: [
-                  //           Text(
-                  //             propertie_controller.propertirDtatil?.label ?? '',
-                  //             style: TextStyle(
-                  //                 fontSize: 24, fontWeight: FontWeight.w200),
-                  //           ),
-                  //           Text(
-                  //             propertie_controller
-                  //                     .propertirDtatil?.address.label ??
-                  //                 '',
-                  //             style: TextStyle(color: Colors.grey),
-                  //           ),
-                  //         ],
-                  //       ),
-                  //       BadgePropertie(
-                  //           status: this
-                  //                   .propertie_controller
-                  //                   .propertirDtatil
-                  //                   ?.status ??
-                  //               PropertiesStatus.RENTED)
-                  //     ],
-                  //   ),
-                  // ),
-                  // Container(
-                  //   width: double.infinity,
-                  //   height: MediaQuery.of(context).size.width - 130,
-                  //   child: ListImagens(
-                  //     onLongPress: (url) {
-                  //       _handeInpectImage(context, url);
-                  //     },
-                  //     newImageFunc: _handleAddImage,
-                  //     list: propertie_controller.propertirDtatil?.images ?? [],
-                  //     size: 230,
-                  //   ),
-                  // ),
-                  // SizedBox(
-                  //   height: 16,
-                  // ),
-                  // Card(
-                  //   child: Column(children: [
-                  //     Padding(
-                  //       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  //       child: Row(
-                  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //         children: [
-                  //           Text(
-                  //             'Alugueis',
-                  //             style: TextStyle(fontSize: 22),
-                  //           ),
-                  //           IconButton(
-                  //               onPressed: () {
-                  //                 Navigator.pushNamed(context, '/new_rent');
-                  //               },
-                  //               icon: Icon(Icons.add))
-                  //         ],
-                  //       ),
-                  //     ),
-                  //     ...rent_controller.rentList
-                  //         .map(
-                  //           ((e) => Padding(
-                  //                 padding: const EdgeInsets.only(
-                  //                     bottom: 8, right: 8, left: 8),
-                  //                 child: RentCard(
-                  //                   rent: e,
-                  //                   onTap: () {
-                  //                     _handeInpectRent(context, e);
-                  //                   },
-                  //                 ),
-                  //               )),
-                  //         )
-                  //         .toList(),
-                  //     if (rent_controller.rentList.length == 0)
-                  //       Padding(
-                  //         padding: const EdgeInsets.all(8.0),
-                  //         child: CardSecondary(
-                  //           child: InkWell(
-                  //             onTap: () =>
-                  //                 Navigator.pushNamed(context, '/new_rent'),
-                  //             child: Padding(
-                  //               padding: const EdgeInsets.all(16.0),
-                  //               child: Center(
-                  //                   child: Column(
-                  //                       mainAxisAlignment:
-                  //                           MainAxisAlignment.center,
-                  //                       crossAxisAlignment:
-                  //                           CrossAxisAlignment.center,
-                  //                       children: [
-                  //                     Icon(
-                  //                       Icons.home,
-                  //                       color: Colors.grey,
-                  //                     ),
-                  //                     Text('Cadastrado primeiro aluguel!')
-                  //                   ])),
-                  //             ),
-                  //           ),
-                  //         ),
-                  //       )
-                  //   ]),
-                  // )
                 ],
               ));
   }

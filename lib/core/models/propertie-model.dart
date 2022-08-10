@@ -53,7 +53,6 @@ class PropertieModel {
   }
 
   factory PropertieModel.fromJson(Map<String, dynamic> map) {
-    print('fromJson ====> $map');
     return PropertieModel(
       id: map['id'],
       label: map['label'],

@@ -158,7 +158,9 @@ class _NewRentScrean extends State<NewRentScrean> {
     print(data);
     try {
       this.currentSatus = AppStatus.LOADING;
-      await this.rent_controller.createRent(data, this.propertie_controller.propertie_selected_id);
+      await this
+          .rent_controller
+          .createRent(data, this.propertie_controller.propertie_selected_id);
 
       this.setState(() {});
 
@@ -226,7 +228,7 @@ class _NewRentScrean extends State<NewRentScrean> {
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
                     child: InputPrimary(
                       type_input: TextInputType.number,
-                      label: 'Telephone',
+                      label: 'Telefone',
                       controller_input: phoneControllert,
                       changed_call: _handleValidade,
                       inputFormatters: [
@@ -374,7 +376,7 @@ class _NewRentScrean extends State<NewRentScrean> {
                           //       filter: {"#": RegExp(r'[+-]?([0-9]*[.])?[0-9]+')})
                           // ],
                           icon_sufix: Icon(
-                            Icons.payment,
+                            Icons.attach_money,
                             color: Colors.grey,
                           ),
                         ),

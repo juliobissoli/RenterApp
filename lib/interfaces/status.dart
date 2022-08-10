@@ -22,7 +22,7 @@ int propertiStatusDecode(PropertiesStatus num) {
 }
 
 String propertyStatusGetLabel(PropertiesStatus num) {
-  if (num == PropertiesStatus.AVALIABLE) return 'Disponivel';
+  if (num == PropertiesStatus.AVALIABLE) return 'Disponível';
   if (num == PropertiesStatus.DISABLED) return 'Desativado';
   if (num == PropertiesStatus.MAINTENANCE) return 'Em manutenção';
   if (num == PropertiesStatus.RENTED) return 'Alugado';

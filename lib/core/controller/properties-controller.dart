@@ -20,6 +20,8 @@ class PropertieController extends ChangeNotifier {
   PropertieModel? propertirDtatil;
 
   String propertie_selected_id = '-1';
+
+  PropertieModel? propertToUpdate;
   // List<RentModel> rentSelected = [];
 
   RenterApi get api => RenterApi.singleton;
@@ -89,7 +91,27 @@ class PropertieController extends ChangeNotifier {
   Future updateProperty(PropertieModel property) async {
     try {
       this.setFetchingState(AppStatus.LOADING);
-      this.db_local.updatePropert(property);
+      await this.db_local.updatePropert(property);
+      PropertieModel newProp = PropertieModel(
+          id: this.propertirDtatil?.id ?? '-1',
+          address: property.address,
+          label: property.label,
+          status: property.status,
+          images: this.propertirDtatil?.images ?? []);
+      propertirDtatil = newProp;
+
+      this.setFetchingState(AppStatus.SUCCESS);
+    } catch (e) {
+      this.setFetchingState(AppStatus.ERROR);
+
+      print('Erro ao aatualizar imovel: $e');
+    }
+  }
+
+  Future deletePropertie(String propert_id) async {
+    try {
+      this.setFetchingState(AppStatus.LOADING);
+      await this.db_local.deleteProperties(propert_id);
       this.setFetchingState(AppStatus.SUCCESS);
     } catch (e) {
       this.setFetchingState(AppStatus.ERROR);

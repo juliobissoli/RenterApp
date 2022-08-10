@@ -79,8 +79,8 @@ class _TitlePropertieScreamState extends State<TitlePropertieScream> {
                     padding: const EdgeInsets.all(8.0),
                     child: InputPrimary(
                       type_input: TextInputType.text,
-                      changed_call:  this.widget.changed_call,
-                      label: 'Busacar',
+                      changed_call: this.widget.changed_call,
+                      label: 'Buscar',
                     ),
                   )),
                   // SizedBox(
