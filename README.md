@@ -1,3 +1,6 @@
+![https://github.com/juliobissoli/RenterApp](https://img.shields.io/badge/version-1.0.0-brightgreen?style=for-the-badge&logo=v)
+![https://github.com/juliobissoli/RenterApp](https://img.shields.io/badge/flutter-2.10.4-blue?style=for-the-badge&logo=flutter)
+![https://github.com/juliobissoli/RenterApp](https://img.shields.io/badge/license-Apache%202.0-green?style=for-the-badge&logo=apache)
 
 <p align="center">
 <img
@@ -11,13 +14,17 @@
 O Renter e uma plataforma que visa prover serviços de gerência e
 administração de locação de imóveis pessoal, por meio de um aplicativo móvel.
 
+
+
 # Funcionalidades:
 - Crie uma conta offline para proteger as informações dos seus imóveis de curiosos;
 - Cadastre imóveis para gerenciá-los;
 - Adicione uma foto do imóvel;
 - Selecione o estado atual do imóvel (Alugado, indisponível, em manutenção, etc...)
-- Cadastre contrataçÕes de alugueis, adicionando o inquilino à contratação;
+- Cadastre contratações de alugueis, adicionando o inquilino à contratação;
   - É possível alugar por diferentes períodos: Horas, dias, anos;
+  
+[Demonstração do uso (Youtube)](https://youtu.be/HTAkJhYCOQ4)
 
 # Tecnologías utilizadas:
 
@@ -57,3 +64,7 @@ fvm flutter run
 ```
 fvm flutter build apk
 ```
+
+## License
+
+Distributed under the APACHE 2.0 License. See `LICENSE` for more information.
